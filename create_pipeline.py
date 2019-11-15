@@ -1,7 +1,7 @@
 import sys
 import tensorflow as tf
 from google.protobuf import text_format
-from object_detection.protos import -pipeline_pb2
+from object_detection.protos import pipeline_pb2
 import argparse
 
 def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path):
