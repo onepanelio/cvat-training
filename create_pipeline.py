@@ -10,7 +10,7 @@ def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval
     with tf.gfile.GFile(pipeline_path, "r") as f:                                                                                                                                                                                                                     
         proto_str = f.read()                                                                                                                                                                                                                                          
         text_format.Merge(proto_str, pipeline_config) 
-    pipeline_config.model.ssd.num_classes=num_classes
+    pipeline_config.model.ssd.num_classes=int(num_classes)
     pipeline_config.train_config.fine_tune_checkpoint=model_path
     pipeline_config.train_config.num_steps=int(epochs)
     pipeline_config.train_input_reader.label_map_path=label_path
