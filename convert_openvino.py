@@ -12,7 +12,7 @@ from random import randint
 os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer/")
 os.system("python mo_tf.py --input_model=/onepanel/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=extensions/front/tf/ssd_v2_support.json --tensorflow_object_detection_api_pipeline_config=/onepanel/output/pipeline.config")
 #generate lable map
-# os.system("python /onepanel/code/convert_json.py path_to_Dataset")
+os.system("python /onepanel/code/convert_json_2.py /onepanel/input/datasets/aleksandr-cluster0-01/cvat-cpu-testing-1-car-88f9cbb714784fe89e9041baa4472bc6d1e8da7f61b9426d8738a77dfcca3ff1/3/label_map.pbtxt")
 dataset_name = "modeloutput{}".format(randint(1000000000, 2000000000))
 os.system("onepanel datasets create {}".format(dataset_name))
 os.system("mv frozen_inference_graph.bin {}/".format(dataset_name))
