@@ -13,7 +13,7 @@ os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer/")
 os.system("python mo_tf.py --input_model=/onepanel/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=extensions/front/tf/ssd_v2_support.json --tensorflow_object_detection_api_pipeline_config=/onepanel/output/pipeline.config")
 #generate lable map
 # os.system("python /onepanel/code/convert_json.py path_to_Dataset")
-dataset_name = "model_output_{}".format(randint(1000000000, 2000000000))
+dataset_name = "modeloutput{}".format(randint(1000000000, 2000000000))
 os.system("onepanel datasets create {}".format(dataset_name))
 os.system("mv frozen_inference_graph.bin {}/".format(dataset_name))
 os.system("mv frozen_inference_graph.xml {}/".format(dataset_name)
