@@ -2,13 +2,13 @@ import json
 import tensorflow as tf
 import os
 from google.protobuf import text_format
-
+import sys
 
 def converter(path)
 	with open(os.path.join(path, "label_map.pbtxt"),'r') as f:
 		txt = f.readlines()
 
-	f_out = open("sample_out2.json","w")
+	f_out = open("label_map.json","w")
 	f_out.write('{ "label_map": { \n')
 	for line in txt:
 
@@ -23,3 +23,6 @@ def converter(path)
 			# data["label_map"][i] = n.replace('\\"', "\"")
 
 	f_out.write("}}")
+
+if __name__ == "__main__":
+	converter(sys.argv[1])
