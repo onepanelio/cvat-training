@@ -4,7 +4,7 @@ import os
 from google.protobuf import text_format
 import sys
 
-def converter(path)
+def converter(path):
 	with open(os.path.join(path, "label_map.pbtxt"),'r') as f:
 		txt = f.readlines()
 
