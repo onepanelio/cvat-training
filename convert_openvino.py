@@ -23,12 +23,13 @@ os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/frozen_inference_graph
 os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/frozen_inference_graph.xml /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 if "ssd" in sys.argv[2]:
 	os.system("mv /onepanel/code/interp_scripts/ssd_interp.py /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
+	os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/{}/ssd_interp.py /onepanel/code/dldt-2018_R5/model-optimizer/modeloutput{}/interp.py".format(dataset_name, dataset_name))
+
 elif "faster" in sys.argv[2]:
 	os.system("mv /onepanel/code/interp_scripts/faster_rcnn.py /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 
 os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/label_map.json /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer/{}".format(dataset_name))
-os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/modeloutput{}/ssd_interp.py /onepanel/code/dldt-2018_R5/model-optimizer/modeloutput{}/interp.py".format(dataset_name, dataset_name))
 os.system('onepanel datasets push -m "update"')
 #
 

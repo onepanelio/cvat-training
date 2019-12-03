@@ -5,9 +5,10 @@ from google.protobuf import text_format
 import sys
 
 def converter(path):
+	print("reading pbtxt file...")
 	with open(os.path.join(path, "label_map.pbtxt"),'r') as f:
 		txt = f.readlines()
-
+	print("generating label_map.json file...")
 	f_out = open(os.path.join(path, "label_map.json"),"w")
 	f_out.write('{ "label_map": { \n')
 	for line in txt:
@@ -21,7 +22,7 @@ def converter(path):
 			# print(n)
 			f_out.write("{}, \n".format(n))
 			# data["label_map"][i] = n.replace('\\"', "\"")
-
+	print("writing json file...")
 	f_out.write("}}")
 
 if __name__ == "__main__":
