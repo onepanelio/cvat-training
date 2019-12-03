@@ -11,7 +11,7 @@ import sys
 # Check if dataset already exists
 os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer/")
 if "ssd" in sys.argv[2]:
-	os.system("python mo_tf.py --input_model=/onepanel/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=extensions/front/tf/ssd_v2_support.json --tensorflow_object_detection_api_pipeline_config=/onepanel/output/pipeline.config --log_level=DEBUG")
+	os.system("python mo_tf.py --input_model_graph=/onepanel/output/model.ckpt-10.meta --tensorflow_use_custom_operations_config=extensions/front/tf/ssd_v2_support.json --tensorflow_object_detection_api_pipeline_config=/onepanel/output/pipeline.config --log_level=DEBUG")
 elif "faster" in sys.argv[2]:
 	os.system("python mo_tf.py --input_model=/onepanel/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=extensions/front/tf/faster_rcnn_support_api_v1.10.json --tensorflow_object_detection_api_pipeline_config=/onepanel/output/pipeline.config")
 
