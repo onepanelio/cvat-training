@@ -54,7 +54,7 @@
                 "Postprocessor/scale_logits",
                 "Postprocessor/Tile",
                 "Postprocessor/Reshape_1",
-                "Postprocessor/Cast"
+                "Postprocessor/Cast_1"
             ]
         },
         "match_kind": "points"
