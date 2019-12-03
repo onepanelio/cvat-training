@@ -28,7 +28,7 @@ if "ssd" in sys.argv[2]:
 elif "faster" in sys.argv[2]:
 	os.system("mv /onepanel/code/interp_scripts/faster_rcnn.py /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 
-os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/label_map.json /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
+os.system("mv /onepanel/output/label_map.json /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer/{}".format(dataset_name))
 os.system('onepanel datasets push -m "update"')
 #

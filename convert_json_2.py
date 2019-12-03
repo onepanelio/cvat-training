@@ -5,11 +5,11 @@ from google.protobuf import text_format
 import sys
 
 def converter(path):
-	print("reading pbtxt file...")
+	print("reading pbtxt file...", os.path.join(path, "label_map.pbtxt"))
 	with open(os.path.join(path, "label_map.pbtxt"),'r') as f:
 		txt = f.readlines()
 	print("generating label_map.json file...")
-	f_out = open(os.path.join(path, "label_map.json"),"w")
+	f_out = open(os.path.join("/onepanel/output/", "label_map.json"),"w")
 	f_out.write('{ "label_map": { \n')
 	for line in txt:
 
