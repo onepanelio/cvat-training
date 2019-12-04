@@ -55,7 +55,7 @@ os.system("python /onepanel/extra_repos/tensorflow_models/research/object_detect
 os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer/")
 if "ssd" in params['model']:
 	os.system("python mo_tf.py --input_model=/onepanel/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=/onepanel/code/ssd_support_api_v1.14.json --tensorflow_object_detection_api_pipeline_config=/onepanel/output/pipeline.config")
-elif "faster" in params['model']:
+elif "faster-rcnn" in params['model']:
 	os.system("python mo_tf.py --input_model=/onepanel/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=extensions/front/tf/faster_rcnn_support.json --tensorflow_object_detection_api_pipeline_config=/onepanel/output/pipeline.config")
 
 #generate lable map
@@ -69,7 +69,8 @@ if "ssd" in params['model']:
 	os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/{}/ssd_interp.py /onepanel/code/dldt-2018_R5/model-optimizer/{}/interp.py".format(dataset_name, dataset_name))
 
 elif "faster" in params['model']:
-	os.system("mv /onepanel/code/interp_scripts/faster_rcnn.py /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
+	os.system("mv /onepanel/code/interp_scripts/faster_interp.py /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
+	os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/{}/faster_interp.py /onepanel/code/dldt-2018_R5/model-optimizer/{}/interp.py".format(dataset_name, dataset_name))
 
 os.system("mv /onepanel/output/label_map.json /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer/{}".format(dataset_name))

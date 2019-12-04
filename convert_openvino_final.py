@@ -14,6 +14,16 @@ for item in sys.argv[1].split(","):
 # dataset
 # model
 #print(params)
+# ssd-mobilenet-v2-coco
+#faster-rcnn-resnet50-lowp
+#faster-rcnn-resnet101-coc
+#          resnet101-low
+#          nas-coco-2018 
+#         nas-lowpropos
+#         mask-rcnn-inception-resne(t)
+#         mask-rcnn-inception-v2-co
+#         mask-rcnn-resnet101-atrou
+#
 os.system("pip install test-generator")
 os.system("wget https://github.com/opencv/dldt/archive/2018_R5.zip")
 os.system("unzip 2018_R5.zip")
@@ -41,8 +51,8 @@ os.system("python /onepanel/extra_repos/tensorflow_models/research/object_detect
 os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer/")
 if "ssd" in params['model']:
 	os.system("python mo_tf.py --input_model=/onepanel/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=/onepanel/code/ssd_support_api_v1.14.json --tensorflow_object_detection_api_pipeline_config=/onepanel/output/pipeline.config")
-elif "faster" in params['model']:
-	os.system("python mo_tf.py --input_model=/onepanel/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=extensions/front/tf/faster_rcnn_support_api_v1.10.json --tensorflow_object_detection_api_pipeline_config=/onepanel/output/pipeline.config")
+elif "faster-rcnn" in params['model']:
+	os.system("python mo_tf.py --input_model=/onepanel/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=extensions/front/tf/faster_rcnn_support.json --tensorflow_object_detection_api_pipeline_config=/onepanel/output/pipeline.config")
 
 #generate lable map
 os.system("python /onepanel/code/convert_json_2.py {}/".format(params['dataset']))
