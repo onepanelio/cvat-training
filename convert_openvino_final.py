@@ -6,7 +6,7 @@ import sys
 # sample: epochs=100;num_classes=1
 params = {}
 for item in sys.argv[1].split(","):
-	print(item)
+	print(item)	
 	temp = item.split("=")
 	print(temp[1])
 	params[temp[0].strip()] = temp[1].strip()
@@ -43,22 +43,22 @@ os.chdir("/onepanel/code")
 
 # Check if dataset already exists
 os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer/")
-if "ssd" in sys.argv[2]:
+if "ssd" in params['model']:
 	os.system("python mo_tf.py --input_model=/onepanel/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=/onepanel/code/ssd_support_api_v1.14.json --tensorflow_object_detection_api_pipeline_config=/onepanel/output/pipeline.config")
-elif "faster" in sys.argv[2]:
+elif "faster" in params['model']:
 	os.system("python mo_tf.py --input_model=/onepanel/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=extensions/front/tf/faster_rcnn_support_api_v1.10.json --tensorflow_object_detection_api_pipeline_config=/onepanel/output/pipeline.config")
 
 #generate lable map
-os.system("python /onepanel/code/convert_json_2.py {}/".format(sys.argv[1]))
+os.system("python /onepanel/code/convert_json_2.py {}/".format(params['dataset']))
 dataset_name = "modeloutput{}".format(randint(1000000000, 2000000000))
 os.system("onepanel datasets create {}".format(dataset_name))
 os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/frozen_inference_graph.bin /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/frozen_inference_graph.xml /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
-if "ssd" in sys.argv[2]:
+if "ssd" in params['model']:
 	os.system("mv /onepanel/code/interp_scripts/ssd_interp.py /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 	os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/{}/ssd_interp.py /onepanel/code/dldt-2018_R5/model-optimizer/{}/interp.py".format(dataset_name, dataset_name))
 
-elif "faster" in sys.argv[2]:
+elif "faster" in params['model']:
 	os.system("mv /onepanel/code/interp_scripts/faster_rcnn.py /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 
 os.system("mv /onepanel/output/label_map.json /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
