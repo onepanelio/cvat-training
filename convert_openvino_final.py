@@ -15,17 +15,17 @@ for item in sys.argv[1].split(","):
 # num_classe
 # dataset
 # model
-print(params)
+#print(params)
 os.system("pip install test-generator")
 os.system("wget https://github.com/opencv/dldt/archive/2018_R5.zip")
 os.system("unzip 2018_R5.zip")
-os.system("git clone https://github.com/tensorflow/models.git /onepanel/extra_repos/tensorflow_models")
+#os.system("git clone https://github.com/tensorflow/models.git /onepanel/extra_repos/tensorflow_models")
 os.system("mkdir -p /onepanel/bin/protoc")
 os.system("wget -P /onepanel/bin/protoc https://github.com/protocolbuffers/protobuf/releases/download/v3.10.1/protoc-3.10.1-linux-x86_64.zip")
-os.system("cd /onepanel/bin/protoc")
+os.chdir("/onepanel/bin/protoc/")
 os.system("unzip protoc-3.10.1-linux-x86_64.zip")
-os.system("cd /onepanel/extra_repos/tensorflow_models/research")
-os.system("export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim")
+#os.chdir("/onepanel/extra_repos/tensorflow_models/research/")
+#os.system("export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim")
 os.system("/onepanel/bin/protoc/bin/protoc object_detection/protos/*.proto --python_out=.")
 os.chdir(params['dataset'])
 os.system('latest=$(find . -name "*.tfrecord*.zip" -print0 | xargs -r -0 ls -1 -t | head -n1)')
