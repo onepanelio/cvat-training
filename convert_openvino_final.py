@@ -30,7 +30,7 @@ os.system("/onepanel/bin/protoc/bin/protoc object_detection/protos/*.proto --pyt
 os.chdir(params['dataset'])
 os.system('latest=$(find . -name "*.tfrecord*.zip" -print0 | xargs -r -0 ls -1 -t | head -n1)')
 os.system('unzip -o "$latest"')
-os.system("python /onepanel/code/create_pipeline.py -in_pipeline /onepanel/input/datasets/aleksandr-cluster0-01/ssd-mobilenet-v2-coco-201/2/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/aleksandr-cluster0-01/ssd-mobilenet-v2-coco-201/2/model.ckpt -label {}/label_map.pbtxt -train_data {}/car.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"]))
+os.system("python /onepanel/code/create_pipeline.py -in_pipeline /onepanel/input/datasets/aleksandr-cluster0-01/ssd-mobilenet-v2-coco-201/2/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/aleksandr-cluster0-01/ssd-mobilenet-v2-coco-201/2/model.ckpt -label {}/label_map.pbtxt -train_data {}/car.tfrecord -eval_data {}/car.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
 os.system("python /onepanel/extra_repos/tensorflow_models/research/object_detection/legacy/train.py --train_dir=/onepanel/output/ --pipeline_config_path=/onepanel/output/pipeline.config")
 os.system("python /onepanel/extra_repos/tensorflow_models/research/object_detection/export_inference_graph.py --input-type=image_tensor --pipeline_config_path=/onepanel/output/pipeline.config --trained_checkpoint_prefix=/onepanel/output/model.ckpt-{} --output_directory=/onepanel/output".format(params["epochs"]))
 os.chdir("/onepanel/code")
