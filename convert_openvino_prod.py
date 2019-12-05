@@ -24,6 +24,7 @@ for item in sys.argv[1].split(","):
 #         mask-rcnn-inception-v2-co
 #         mask-rcnn-resnet101-atrou
 #
+print(params)
 os.system("pip install test-generator")
 os.system("wget https://github.com/opencv/dldt/archive/2018_R5.zip")
 os.system("unzip 2018_R5.zip")
