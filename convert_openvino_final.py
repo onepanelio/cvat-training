@@ -48,12 +48,24 @@ if "ssd" in params['model']:
 	os.system("python /onepanel/code/create_pipeline.py -in_pipeline /onepanel/input/datasets/aleksandr-cluster0-01/ssd-mobilenet-v2-coco-201/2/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/aleksandr-cluster0-01/ssd-mobilenet-v2-coco-201/2/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
 elif "faster-rcnn-resnet101" in params['model']:
 	if 'epochs' not in params:
-		params['epochs'] = 100000
-	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/san999/faster-rcnn-resnet101-coco/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/san999/faster-rcnn-resnet101-coco/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
+		params['epochs'] = 10
+	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/joinalop/faster-rcnn-resnet101-coco/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/joinalop/faster-rcnn-resnet101-coco/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
 elif "faster-rcnn-resnet50" in params['model']:
 	if 'epochs' not in params:
-		paramsp['epochs'] = 100000
+		paramsp['epochs'] = 10
 	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/joinalop/faster-rcnn-resnet50-lowp/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/joinalop/faster-rcnn-resnet50-lowp/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
+elif "faster-rcnn-resnet101-low" in params['model']:
+	if 'epochs' not in params:
+		paramsp['epochs'] = 10
+	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/joinalop/faster-rcnn-resnet101-low/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/joinalop/faster-rcnn-resnet101-low/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
+elif "faster-rcnn-nas-coco" in params['model']:
+	if 'epochs' not in params:
+		paramsp['epochs'] = 10
+	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/joinalop/faster-rcnn-nas-coco-2018/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/joinalop/faster-rcnn-nas-coco-2018/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
+elif "faster-rcnn-nas-low" in params['model']:
+	if 'epochs' not in params:
+		paramsp['epochs'] = 10
+	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/joinalop/faster-rcnn-nas-lowpropos/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/joinalop/faster-rcnn-nas-lowpropos/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
 
 
 os.system("python /onepanel/extra_repos/tensorflow_models/research/object_detection/legacy/train.py --train_dir=/onepanel/output/ --pipeline_config_path=/onepanel/output/pipeline.config --num_clones={}".format(params['num_clones']))
