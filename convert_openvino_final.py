@@ -11,6 +11,9 @@ for item in sys.argv[1].split(","):
 
 if 'num_clones' not in params:
 	params['num_clones'] = 1
+
+#TODO: add param for decays
+
 # epochs
 # num_classe
 # dataset
@@ -19,12 +22,12 @@ if 'num_clones' not in params:
 # ssd-mobilenet-v2-coco  (Tested)
 #faster-rcnn-resnet50-lowp (tested)
 #faster-rcnn-resnet101-coc (tested)
-#          resnet101-low
-#          nas-coco-2018 
-#         nas-lowpropos
-#         mask-rcnn-inception-resne(t)
-#         mask-rcnn-inception-v2-co
-#         mask-rcnn-resnet101-atrou
+#          resnet101-low (tested)
+#          nas-coco-2018  (tested)
+#         nas-lowpropos   (tested)
+#         mask-rcnn-inception-resne(t) (failed)
+#         mask-rcnn-inception-v2-co (tested)
+#         mask-rcnn-resnet101-atrou (tested)
 #
 os.system("pip install test-generator")
 os.system("wget https://github.com/opencv/dldt/archive/2018_R5.zip")
