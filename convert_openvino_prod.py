@@ -65,7 +65,7 @@ elif "faster-rcnn" in params['model']:
 
 #generate lable map
 os.system("python /onepanel/code/convert_json_2.py {}/".format(params['dataset']))
-dataset_name = "modeloutput{}".format(randint(1000000000, 2000000000))
+dataset_name = "model-output-{}".format(randint(1000000000, 2000000000))
 os.system("onepanel datasets create {}".format(dataset_name))
 os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/frozen_inference_graph.bin /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/frozen_inference_graph.xml /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))

@@ -40,11 +40,11 @@ os.system("/onepanel/bin/protoc/bin/protoc object_detection/protos/*.proto --pyt
 os.chdir(params['dataset'])
 os.system('latest=$(find . -name "*.tfrecord*.zip" -print0 | xargs -r -0 ls -1 -t | head -n1) && unzip -o "$latest"')
 if "ssd" in params['model']:
-	if 'epochs' not in params:
+	if 'epochs' not in params['model']:
 		params['epochs'] = 30000
 	os.system("python /onepanel/code/create_pipeline.py -in_pipeline /onepanel/input/datasets/aleksandr-cluster0-01/ssd-mobilenet-v2-coco-201/2/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/aleksandr-cluster0-01/ssd-mobilenet-v2-coco-201/2/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
 elif "faster-rcnn-resnet101" in params['model']:
-	if 'epochs' not in params:
+	if 'epochs' not in params['epochs']:
 		params['epochs'] = 100000
 	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/san999/faster-rcnn-resnet101-coco/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/san999/faster-rcnn-resnet101-coco/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
 
@@ -67,7 +67,7 @@ elif "faster-rcnn" in params['model']:
 
 #generate lable map
 os.system("python /onepanel/code/convert_json_2.py {}/".format(params['dataset']))
-dataset_name = "modeloutput{}".format(randint(1000000000, 2000000000))
+dataset_name = "model-output-{}".format(randint(1000000000, 2000000000))
 os.system("onepanel datasets create {}".format(dataset_name))
 os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/frozen_inference_graph.bin /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/frozen_inference_graph.xml /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
@@ -80,7 +80,7 @@ elif "faster" in params['model']:
 
 os.system("mv /onepanel/output/label_map.json /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer/{}".format(dataset_name))
-os.system('onepanel datasets push -m "update" --source job')
+os.system('onepanel datasets push -m "update"')
 #
 
 
