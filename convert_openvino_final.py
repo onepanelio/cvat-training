@@ -46,23 +46,23 @@ if "ssd" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 30000
 	os.system("python /onepanel/code/create_pipeline.py -in_pipeline /onepanel/input/datasets/onepanel-demo/ssd-mobilenet-v2-coco-201/2/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/onepanel-demo/ssd-mobilenet-v2-coco-201/2/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
-elif "faster-rcnn-resnet101" in params['model']:
+elif "frcnn-res101-coco" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 10
 	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/onepanel-demo/frcnn-res101-coco/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/onepanel-demo/frcnn-res101-coco/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
-elif "faster-rcnn-resnet50" in params['model']:
+elif "frcnn-res50-low" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 10
 	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/onepanel-demo/frcnn-res50-low/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/onepanel-demo/frcnn-res50-low/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
-elif "faster-rcnn-resnet101-low" in params['model']:
+elif "frcnn-res101-low" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 10
 	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/onepanel-demo/frcnn-res101-low/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/onepanel-demo/frcnn-res101-low/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
-elif "faster-rcnn-nas-coco" in params['model']:
+elif "frcnn-nas-coco" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 10
 	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/onepanel-demo/frcnn-nas-coco/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/onepanel-demo/frcnn-nas-coco/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
-elif "faster-rcnn-nas-low" in params['model']:
+elif "frcnn-nas-low" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 10
 	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/onepanel-demo/frcnn-nas-low/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/onepanel-demo/frcnn-nas-low/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
