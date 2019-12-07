@@ -81,9 +81,9 @@ os.system("python /onepanel/extra_repos/tensorflow_models/research/object_detect
 os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer/")
 if "ssd" in params['model']:
 	os.system("python mo_tf.py --input_model=/onepanel/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=/onepanel/code/ssd_support_api_v1.14.json --tensorflow_object_detection_api_pipeline_config=/onepanel/output/pipeline.config")
-elif "faster-rcnn-resnet101" in params['model']:
+elif "frcnn" in params['model']:
 	os.system("python mo_tf.py --input_model=/onepanel/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=extensions/front/tf/faster_rcnn_support.json --tensorflow_object_detection_api_pipeline_config=/onepanel/output/pipeline.config")
-elif "faster-rcnn-resnet50-lowp" in params['model']:
+
 
 
 
