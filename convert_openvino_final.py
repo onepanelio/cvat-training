@@ -99,6 +99,7 @@ if "ssd" in params['model']:
 
 elif "faster" in params['model']:
 	os.system("mv /onepanel/code/interp_scripts/faster_rcnn.py /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
+	os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/{}/faster_rcnn.py /onepanel/code/dldt-2018_R5/model-optimizer/{}/interp.py".format(dataset_name, dataset_name))
 
 os.system("mv /onepanel/output/label_map.json /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer/{}".format(dataset_name))
