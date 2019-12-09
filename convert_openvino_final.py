@@ -7,8 +7,7 @@ import uuid
 params = {}
 for item in sys.argv[1].split(","):
 	temp = item.split("=")
-	if len(temp) == 2:
-		params[temp[0].strip()] = temp[1].strip()
+	params[temp[0].strip()] = temp[1].strip()
 
 if 'num_clones' not in params:
 	params['num_clones'] = 1
@@ -54,7 +53,7 @@ elif "frcnn-res101-coco" in params['model']:
 elif "frcnn-res50-low" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 10
-	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/onepanel-demo/frcnn-res50-low/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/onepanel-demo/frcnn-res50-low/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
+	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/onepanel-demo/frcnn-res50-lowp/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/onepanel-demo/frcnn-res50-lowp/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
 elif "frcnn-res101-low" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 10
