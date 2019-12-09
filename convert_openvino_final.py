@@ -7,7 +7,8 @@ import uuid
 params = {}
 for item in sys.argv[1].split(","):
 	temp = item.split("=")
-	params[temp[0].strip()] = temp[1].strip()
+	if len(temp) == 2:
+		params[temp[0].strip()] = temp[1].strip()
 
 if 'num_clones' not in params:
 	params['num_clones'] = 1
