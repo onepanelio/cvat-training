@@ -95,6 +95,7 @@ os.system("onepanel datasets create {}".format(dataset_name))
 os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer/{}".format(dataset_name))
 os.mkdir("tf_annotation_model")
 os.system("mv /onepanel/output/frozen_inference_graph.pb /onepanel/code/dldt-2018_R5/model-optimizer/{}/tf_annotation_model/".format(dataset_name))
+os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/{}/tf_annotation_model/frozen_inference_graph.pb /onepanel/code/dldt-2018_R5/model-optimizer/{}/tf_annotation_model/{}_frozen_inference_graph.pb".format(dataset_name, dataset_name, params['model']))
 os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/frozen_inference_graph.bin /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 os.system("mv /onepanel/code/dldt-2018_R5/model-optimizer/frozen_inference_graph.xml /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 if "ssd" in params['model']:
