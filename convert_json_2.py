@@ -78,10 +78,8 @@ def converter_withcsv(path):
 		if "name"  in line:
 			n = line.split(":")[1].strip().strip("'")
 			# print(n)
-            csv_writer.writerow([n])
+			csv_writer.writerow([n])
 			data[i] = n
-#           f_out.write('"{}",\n'.format(n))
-			# data["label_map"][i] = n.replace('\\"', "\"")
 	# print(data)
 	d = {"label_map":data}
 	with open(os.path.join("/onepanel/output/", "label_map.json"), 'w') as outfile:
