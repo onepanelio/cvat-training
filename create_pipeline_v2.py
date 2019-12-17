@@ -12,7 +12,7 @@ def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval
         text_format.Merge(proto_str, pipeline_config) 
     if "ssd" in pipeline_path:
         pipeline_config.model.ssd.num_classes=int(num_classes)
-    elif "faster-rcnn-resnet101" in pipeline_path:
+    else:  #faster-rcnn based models
         pipeline_config.model.faster_rcnn.num_classes=int(num_classes)
     pipeline_config.train_config.fine_tune_checkpoint=model_path
     pipeline_config.train_config.num_steps=int(epochs)
