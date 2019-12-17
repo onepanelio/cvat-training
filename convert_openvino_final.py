@@ -72,6 +72,16 @@ elif "frcnn-nas-low" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 10
 	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/onepanel-demo/frcnn-nas-low/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/onepanel-demo/frcnn-nas-low/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
+elif "frcnn-inc-v2-coco" in params['model']:
+	if 'epochs' not in params:
+		params['epochs'] = 10
+	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/onepanel-demo/frcnn-inc-v2-coco/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/onepanel-demo/frcnn-inc-v2-coco/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
+elif "frcnn-inc-resv2-atr-coco" in params['model']:
+	if 'epochs' not in params:
+		params['epochs'] = 10
+	os.system("python /onepanel/code/create_pipeline_v2.py -in_pipeline /onepanel/input/datasets/onepanel-demo/frcnn-inc-resv2-atr-coco/1/pipeline.config -num_classes {} -epochs {} -model /onepanel/input/datasets/onepanel-demo/frcnn-inc-resv2-atr-coco/1/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /onepanel/output/pipeline.config".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"]))
+
+
 
 
 os.system("python /onepanel/extra_repos/tensorflow_models/research/object_detection/legacy/train.py --train_dir=/onepanel/output/ --pipeline_config_path=/onepanel/output/pipeline.config --num_clones={}".format(params['num_clones']))
