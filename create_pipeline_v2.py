@@ -4,7 +4,7 @@ from google.protobuf import text_format
 from object_detection.protos import pipeline_pb2
 import argparse
 
-def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path,epochs, num_classes):
+def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path,epochs, num_classes,num_clones):
     print((pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path,epochs))
     pipeline_config = pipeline_pb2.TrainEvalPipelineConfig()                                                                                                                                                                                                          
     with tf.gfile.GFile(pipeline_path, "r") as f:                                                                                                                                                                                                                     
@@ -14,6 +14,8 @@ def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval
         pipeline_config.model.ssd.num_classes=int(num_classes)
     else:  #faster-rcnn based models
         pipeline_config.model.faster_rcnn.num_classes=int(num_classes)
+        if int(num_clones) != 1:
+            pipeline_config.train_config.batch_size = int(num_clones)
     pipeline_config.train_config.fine_tune_checkpoint=model_path
     pipeline_config.train_config.num_steps=int(epochs)
     pipeline_config.train_input_reader.label_map_path=label_path
