@@ -40,6 +40,7 @@ if __name__== "__main__":
     parser.add_argument("-num_classes", "--num_classes",dest ="num_classes", help="num_classes")
     parser.add_argument("-train_data", "--train_tfrecord_path",dest = "train_tfrecord_path", help="train_tfrecord_path")
     parser.add_argument("-eval_data", "--eval_tfrecord_path",dest = "eval_tfrecord_path", help="eval_tfrecord_path")
+    parser.add_argument("-num_clones", "--num_clones", dest="num_clones", help="num of gpus")
     parser.add_argument("-out_pipeline", "--output_pipeline_path", dest = "out_pipeline_path", default = "", help="Output Model Pipeline Path")
     args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
-    create_pipeline(args.in_pipeline_path,args.model_path,args.label_path,args.train_tfrecord_path,args.eval_tfrecord_path,args.out_pipeline_path,args.epoch, args.num_classes)
+    create_pipeline(args.in_pipeline_path,args.model_path,args.label_path,args.train_tfrecord_path,args.eval_tfrecord_path,args.out_pipeline_path,args.epoch, args.num_classes, args.num_clones)
