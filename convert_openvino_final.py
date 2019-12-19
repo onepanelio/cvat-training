@@ -15,21 +15,6 @@ if 'num_clones' not in params:
 
 #TODO: add param for decays
 
-# epochs
-# num_classe
-# dataset
-# model
-#print(params)
-# ssd-mobilenet-v2-coco  (Tested)
-#faster-rcnn-resnet50-lowp (tested)
-#faster-rcnn-resnet101-coc (tested)
-#          nas-coco-2018  (tested)
-# frcnn-resneet-atrous (Tested)
-# res50-coco (tested)
-#         mask-rcnn-inception-resne(t) (failed)
-#         mask-rcnn-inception-v2-co (tested)
-#         mask-rcnn-resnet101-atrou (tested)
-#
 os.system("pip install test-generator")
 os.system("wget https://github.com/opencv/dldt/archive/2018_R5.zip")
 os.system("unzip 2018_R5.zip")
