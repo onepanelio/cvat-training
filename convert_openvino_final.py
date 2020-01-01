@@ -129,6 +129,9 @@ elif "faster" in params['model']:
 os.system("mv /onepanel/output/label_map.json /onepanel/code/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 #os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer/{}".format(dataset_name))
 os.system('onepanel datasets push -m "update" --source job')
+print("\n\n")
+print("*******************************************************************************")
+print("Dataset with Trained Model: ", dataset_name)
 #
 
 
