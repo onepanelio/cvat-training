@@ -1,5 +1,6 @@
 import os
 import sys
+import time
 from datetime import datetime
 time = datetime.now()
 stamp = time.strftime("%m%d%Y%H%M%S")
@@ -13,9 +14,13 @@ for item in sys.argv[1].split(","):
 
 if 'num_clones' not in params:
 	params['num_clones'] = 1
+	
+time.sleep(3)
+print("\n\n")
+print(params)
 print("parameters", params)
 #TODO: add param for decays
-
+time.sleep(3)
 os.system("pip install test-generator")
 os.system("wget https://github.com/opencv/dldt/archive/2018_R5.zip")
 os.system("unzip 2018_R5.zip")
