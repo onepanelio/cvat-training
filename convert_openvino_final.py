@@ -13,7 +13,7 @@ for item in sys.argv[1].split(","):
 
 if 'num_clones' not in params:
 	params['num_clones'] = 1
-
+print("parameters", params)
 #TODO: add param for decays
 
 os.system("pip install test-generator")
