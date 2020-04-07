@@ -15,10 +15,7 @@ for item in sys.argv[1].split(","):
 if 'num_clones' not in params:
 	params['num_clones'] = 1
 	
-ttime.sleep(3)
-print("\n\n")
-print(params)
-print("parameters", params)
+
 #TODO: add param for decays
 ttime.sleep(3)
 os.system("pip install test-generator")
@@ -34,6 +31,9 @@ os.chdir("/onepanel/extra_repos/tensorflow_models/research/")
 os.system("/onepanel/bin/protoc/bin/protoc object_detection/protos/*.proto --python_out=.")
 os.chdir(params['dataset'])
 os.system('latest=$(find . -name "*.tfrecord*.zip" -print0 | xargs -r -0 ls -1 -t | head -n1) && unzip -o "$latest"')
+print("***********************************")
+print("parameters")
+print(params)
 if "ssd-mobilenet-v2-coco" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 15000
