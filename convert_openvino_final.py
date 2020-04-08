@@ -1,6 +1,5 @@
 import os
 import sys
-import time as ttime
 from datetime import datetime
 time = datetime.now()
 stamp = time.strftime("%m%d%Y%H%M%S")
@@ -17,7 +16,9 @@ if 'num_clones' not in params:
 	
 
 #TODO: add param for decays
-ttime.sleep(3)
+sys.stdout.write("**********************")
+sys.stdout.write(str(params))
+
 os.system("pip install test-generator")
 os.system("wget https://github.com/opencv/dldt/archive/2018_R5.zip")
 os.system("unzip 2018_R5.zip")
@@ -31,9 +32,7 @@ os.chdir("/onepanel/extra_repos/tensorflow_models/research/")
 os.system("/onepanel/bin/protoc/bin/protoc object_detection/protos/*.proto --python_out=.")
 os.chdir(params['dataset'])
 os.system('latest=$(find . -name "*.tfrecord*.zip" -print0 | xargs -r -0 ls -1 -t | head -n1) && unzip -o "$latest"')
-print("***********************************")
-print("parameters")
-print(params)
+
 if "ssd-mobilenet-v2-coco" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 15000
