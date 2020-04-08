@@ -16,8 +16,7 @@ if 'num_clones' not in params:
 	
 
 #TODO: add param for decays
-sys.stdout.write("**********************")
-sys.stdout.write(str(params))
+
 
 os.system("pip install test-generator")
 os.system("wget https://github.com/opencv/dldt/archive/2018_R5.zip")
