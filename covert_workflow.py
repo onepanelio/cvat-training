@@ -19,8 +19,8 @@ if 'num_clones' not in params:
 
 
 os.system("pip install test-generator")
-os.system("wget https://github.com/opencv/dldt/archive/2018_R5.zip")
-os.system("unzip 2018_R5.zip")
+# os.system("wget https://github.com/opencv/dldt/archive/2018_R5.zip")
+# os.system("unzip 2018_R5.zip")
 #os.system("git clone https://github.com/tensorflow/models.git /onepanel/extra_repos/tensorflow_models")
 os.system("mkdir -p /mnt/src/protoc")
 os.system("wget -P /mnt/src/protoc https://github.com/protocolbuffers/protobuf/releases/download/v3.10.1/protoc-3.10.1-linux-x86_64.zip")
@@ -104,11 +104,11 @@ os.system("python /mnt/src/tf/research/object_detection/export_inference_graph.p
 # TODO: change script path dynamically
 
 # Check if dataset already exists
-os.chdir("/mnt/src/train/dldt-2018_R5/model-optimizer/")
-if "ssd" in params['model'] or "ssdlite" in params["model"]:
-	os.system("python mo_tf.py --input_model=/mnt/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=/mnt/src/train/ssd_support_api_v1.14.json --tensorflow_object_detection_api_pipeline_config=/mnt/output/pipeline.config")
-elif "frcnn" in params['model'] or "faster-rcnn" in params["model"]:
-	os.system("python mo_tf.py --input_model=/mnt/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=extensions/front/tf/faster_rcnn_support.json --tensorflow_object_detection_api_pipeline_config=/mnt/output/pipeline.config")
+# os.chdir("/mnt/src/train/dldt-2018_R5/model-optimizer/")
+# if "ssd" in params['model'] or "ssdlite" in params["model"]:
+# 	os.system("python mo_tf.py --input_model=/mnt/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=/mnt/src/train/ssd_support_api_v1.14.json --tensorflow_object_detection_api_pipeline_config=/mnt/output/pipeline.config")
+# elif "frcnn" in params['model'] or "faster-rcnn" in params["model"]:
+# 	os.system("python mo_tf.py --input_model=/mnt/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=extensions/front/tf/faster_rcnn_support.json --tensorflow_object_detection_api_pipeline_config=/mnt/output/pipeline.config")
 
 
 
@@ -117,23 +117,23 @@ elif "frcnn" in params['model'] or "faster-rcnn" in params["model"]:
 os.system("python /mnt/src/train/convert_json_2.py {}/".format(params['dataset']))
 dataset_name = "{}-model-output-{}".format(params['model'], stamp)
 os.system("onepanel datasets create {}".format(dataset_name))
-os.chdir("/mnt/src/dldt-2018_R5/model-optimizer/{}".format(dataset_name))
-os.mkdir("tf_annotation_model")
-os.system("mv /mnt/output/frozen_inference_graph.pb /mnt/src/dldt-2018_R5/model-optimizer/{}/tf_annotation_model/".format(dataset_name))
-os.system("mv /mnt/output/classes.csv /mnt/src/dldt-2018_R5/model-optimizer/{}/tf_annotation_model/".format(dataset_name))
-os.system("mv /mnt/src/dldt-2018_R5/model-optimizer/{}/tf_annotation_model/frozen_inference_graph.pb /mnt/src/dldt-2018_R5/model-optimizer/{}/tf_annotation_model/{}_frozen_inference_graph.pb".format(dataset_name, dataset_name, params['model']))
-os.system("mv /mnt/src/dldt-2018_R5/model-optimizer/frozen_inference_graph.bin /mnt/src/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
-os.system("mv /mnt/src/dldt-2018_R5/model-optimizer/frozen_inference_graph.xml /mnt/src/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
-if "ssd" in params['model']:
-	os.system("mv /mnt/src/train/interp_scripts/ssd_interp.py /mnt/src/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
-	os.system("mv /mnt/src/dldt-2018_R5/model-optimizer/{}/ssd_interp.py /mnt/src/dldt-2018_R5/model-optimizer/{}/interp.py".format(dataset_name, dataset_name))
+os.chdir("{}".format(dataset_name))
+# os.mkdir("tf_annotation_model")
+os.system("mv /mnt/output/frozen_inference_graph.pb {}/tf_annotation_model/".format(dataset_name))
+os.system("mv /mnt/output/classes.csv {}/tf_annotation_model/".format(dataset_name))
+# os.system("mv /mnt/src/dldt-2018_R5/model-optimizer/{}/tf_annotation_model/frozen_inference_graph.pb /mnt/src/dldt-2018_R5/model-optimizer/{}/tf_annotation_model/{}_frozen_inference_graph.pb".format(dataset_name, dataset_name, params['model']))
+# os.system("mv /mnt/src/dldt-2018_R5/model-optimizer/frozen_inference_graph.bin /mnt/src/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
+# os.system("mv /mnt/src/dldt-2018_R5/model-optimizer/frozen_inference_graph.xml /mnt/src/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
+# if "ssd" in params['model']:
+# 	os.system("mv /mnt/src/train/interp_scripts/ssd_interp.py /mnt/src/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
+# 	os.system("mv /mnt/src/dldt-2018_R5/model-optimizer/{}/ssd_interp.py /mnt/src/dldt-2018_R5/model-optimizer/{}/interp.py".format(dataset_name, dataset_name))
 
-elif "faster" in params['model'] or "frcnn" in params['model']:
-	os.system("mv /mnt/src/train/interp_scripts/faster_interp.py /mnt/src/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
-	os.system("mv /mnt/src/dldt-2018_R5/model-optimizer/{}/faster_interp.py /mnt/src/dldt-2018_R5/model-optimizer/{}/interp.py".format(dataset_name, dataset_name))
+# elif "faster" in params['model'] or "frcnn" in params['model']:
+# 	os.system("mv /mnt/src/train/interp_scripts/faster_interp.py /mnt/src/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
+# 	os.system("mv /mnt/src/dldt-2018_R5/model-optimizer/{}/faster_interp.py /mnt/src/dldt-2018_R5/model-optimizer/{}/interp.py".format(dataset_name, dataset_name))
 
-os.system("mv /mnt/output/label_map.json /mnt/src/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
-#os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer/{}".format(dataset_name))
+# os.system("mv /mnt/output/label_map.json /mnt/src/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
+# os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer{}".format(dataset_name))
 os.system('onepanel datasets push -m "update" --source job')
 print("\n\n")
 print("*******************************************************************************")
