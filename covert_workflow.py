@@ -54,7 +54,7 @@ elif "frcnn-res50-low" in params['model']:
 elif "frcnn-res50-coco" in params['model'] or "faster-rcnn-res50" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 10000
-	os.system("python /mnt/src/train/code/create_pipeline_v2.py -in_pipeline /mnt/data/models/savan/faster-rcnn-res50/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/savan/faster-rcnn-res50/frcnn-res50-coco/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {}".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"]))
+	os.system("python /mnt/src/train/create_pipeline_v2.py -in_pipeline /mnt/data/models/savan/faster-rcnn-res50/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/savan/faster-rcnn-res50/frcnn-res50-coco/model.ckpt -label {}/label_map.pbtxt -train_data {}/training.tfrecord -eval_data {}/training.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {}".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"]))
 
 elif "frcnn-res101-low" in params['model']:
 	if 'epochs' not in params:
