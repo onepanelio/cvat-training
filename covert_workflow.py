@@ -102,7 +102,7 @@ os.system("python /mnt/src/tf/research/object_detection/export_inference_graph.p
 # TODO: change script path dynamically
 
 # Check if dataset already exists
-os.chdir("/mnt/src/dldt-2018_R5/model-optimizer/")
+os.chdir("/mnt/src/train/dldt-2018_R5/model-optimizer/")
 if "ssd" in params['model'] or "ssdlite" in params["model"]:
 	os.system("python mo_tf.py --input_model=/mnt/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=/mnt/src/train/ssd_support_api_v1.14.json --tensorflow_object_detection_api_pipeline_config=/mnt/output/pipeline.config")
 elif "frcnn" in params['model'] or "faster-rcnn" in params["model"]:
