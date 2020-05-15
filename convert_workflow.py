@@ -128,9 +128,9 @@ if os.getenv("AWS_BUCKET_NAME", None) is None:
 	msg = "AWS_BUCKET_NAME environment var does not exist. Please add ENV var with bucket name."
 	raise
 try:  # models dir exists
-	s3_client.head_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key=os.getenv('AWS_MODEL_OUTPUT)+'/')
+	s3_client.head_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key=os.getenv('AWS_MODEL_OUTPUT')+'/')
 except ClientError:
-	s3_client.put_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key=(os.getenv('AWS_MODEL_OUTPUT)+'/'))
+	s3_client.put_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key=(os.getenv('AWS_MODEL_OUTPUT')+'/'))
 try:
 	dir_name = os.getenv('AWS_BUCKET_NAME')+'/'+params['task_name']+'_'+params['model']+'_output'+'/'
 	s3_client.put_object(Bucket=bucket, Key=(dir_name))
