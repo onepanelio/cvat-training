@@ -103,23 +103,8 @@ os.system("python /mnt/src/tf/research/object_detection/legacy/train.py --train_
 os.system("python /mnt/src/tf/research/object_detection/export_inference_graph.py --input-type=image_tensor --pipeline_config_path=/mnt/output/pipeline.config --trained_checkpoint_prefix=/mnt/output/model.ckpt-{} --output_directory=/mnt/output".format(params["epochs"]))
 
 
-### python convert_openvino.py /onepanel/input/datasets/aleksandr-cluster0-01/test3-4-car4-f3f6ab924c074a4c89e55957d7dc51ab196e3307e4924f98a3ec7d9f1363a7cd/4 ssd-mobilenet-v2-coco-201
-
-# TODO: mv to model_optimizer in bash
-# TODO: change script path dynamically
-
-# Check if dataset already exists
-# os.chdir("/mnt/src/train/dldt-2018_R5/model-optimizer/")
-# if "ssd" in params['model'] or "ssdlite" in params["model"]:
-# 	os.system("python mo_tf.py --input_model=/mnt/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=/mnt/src/train/ssd_support_api_v1.14.json --tensorflow_object_detection_api_pipeline_config=/mnt/output/pipeline.config")
-# elif "frcnn" in params['model'] or "faster-rcnn" in params["model"]:
-# 	os.system("python mo_tf.py --input_model=/mnt/output/frozen_inference_graph.pb --tensorflow_use_custom_operations_config=extensions/front/tf/faster_rcnn_support.json --tensorflow_object_detection_api_pipeline_config=/mnt/output/pipeline.config")
-
-
-
-
 #generate lable map
-os.system("python /mnt/src/train/convert_json_2.py {}/".format(params['dataset']))
+os.system("python /mnt/src/train/convert_json_workflow.py {}/".format(params['dataset']))
 dataset_name = "{}-model-output-{}".format(params['model'], stamp)
 os.system("onepanel datasets create {}".format(dataset_name))
 os.chdir("{}".format(dataset_name))
