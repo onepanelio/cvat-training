@@ -100,7 +100,7 @@ os.chdir(temp)
 
 
 os.system("python /mnt/src/tf/research/object_detection/legacy/train.py --train_dir=/mnt/output/ --pipeline_config_path=/mnt/output/pipeline.config --num_clones={}".format(params['num_clones']))
-os.system("python /mnt/src/tf/research/object_detection/export_inference_graph.py --input-type=image_tensor --pipeline_config_path=/mnt/data/models/pipeline.config --trained_checkpoint_prefix=/mnt/output/model.ckpt-{} --output_directory=/mnt/output".format(params["epochs"]))
+os.system("python /mnt/src/tf/research/object_detection/export_inference_graph.py --input-type=image_tensor --pipeline_config_path=/mnt/output/pipeline.config --trained_checkpoint_prefix=/mnt/output/model.ckpt-{} --output_directory=/mnt/output".format(params["epochs"]))
 
 
 ### python convert_openvino.py /onepanel/input/datasets/aleksandr-cluster0-01/test3-4-car4-f3f6ab924c074a4c89e55957d7dc51ab196e3307e4924f98a3ec7d9f1363a7cd/4 ssd-mobilenet-v2-coco-201
@@ -124,8 +124,9 @@ dataset_name = "{}-model-output-{}".format(params['model'], stamp)
 os.system("onepanel datasets create {}".format(dataset_name))
 os.chdir("{}".format(dataset_name))
 # os.mkdir("tf_annotation_model")
-os.system("mv /mnt/output/frozen_inference_graph.pb {}/tf_annotation_model/".format(dataset_name))
-os.system("mv /mnt/output/classes.csv {}/tf_annotation_model/".format(dataset_name))
+os.system("mv /mnt/output/frozen_inference_graph.pb {}/".format(dataset_name))
+os.system("mv /mnt/output/classes.csv {}/".format(dataset_name))
+os.system("ls")
 # os.system("mv /mnt/src/dldt-2018_R5/model-optimizer/{}/tf_annotation_model/frozen_inference_graph.pb /mnt/src/dldt-2018_R5/model-optimizer/{}/tf_annotation_model/{}_frozen_inference_graph.pb".format(dataset_name, dataset_name, params['model']))
 # os.system("mv /mnt/src/dldt-2018_R5/model-optimizer/frozen_inference_graph.bin /mnt/src/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
 # os.system("mv /mnt/src/dldt-2018_R5/model-optimizer/frozen_inference_graph.xml /mnt/src/dldt-2018_R5/model-optimizer/{}/".format(dataset_name))
