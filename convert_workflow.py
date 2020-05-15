@@ -32,6 +32,7 @@ os.system("ls")
 #os.system("export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim")
 os.system("/mnt/src/protoc/bin/protoc object_detection/protos/*.proto --python_out=.")
 os.chdir(params['dataset'])
+os.system("ls")
 os.system('latest=$(find . -name "*.tfrecord*.zip" -print0 | xargs -r -0 ls -1 -t | head -n1) && unzip -o "$latest"')
 
 if "ssd-mobilenet-v2-coco" in params['model']:
