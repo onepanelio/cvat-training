@@ -127,12 +127,13 @@ s3_client = boto3.client('s3')
 if os.getenv("AWS_BUCKET_NAME", None) is None:
 	msg = "AWS_BUCKET_NAME environment var does not exist. Please add ENV var with bucket name."
 	raise
+aws_s3_path = os.getenv('AWS_S3_PREFIX')+'/'+os.getenv('ONEPANEL_NAMESPACE')+'/'+os.getenv('ONEPANEL_RESOURCE_UID')+'/models/'
 try:  # models dir exists
-	s3_client.head_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key=os.getenv('AWS_MODEL_OUTPUT')+'/')
+	s3_client.head_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key=aws_s3_path)
 except ClientError:
-	s3_client.put_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key=(os.getenv('AWS_MODEL_OUTPUT')+'/'))
+	s3_client.put_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key=(aws_s3_path))
 try:
-	dir_name = os.getenv('AWS_MODEL_OUTPUT')+'/'+params['task_name']+'_'+params['model']+'_output_'+stamp+'/'
+	dir_name = aws_s3_path+'/'+params['task_name']+'_'+params['model']+'_output_'+stamp+'/'
 	s3_client.put_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key=(dir_name))
 	response = s3_client.upload_file("/mnt/output/frozen_inference_graph.pb", os.getenv('AWS_BUCKET_NAME'),dir_name+"frozen_inference_graph.pb")
 	response = s3_client.upload_file("/mnt/output/classes.csv", os.getenv('AWS_BUCKET_NAME'), dir_name+"classes.csv")
