@@ -127,7 +127,7 @@ s3_client = boto3.client('s3')
 if os.getenv("AWS_BUCKET_NAME", None) is None:
 	msg = "AWS_BUCKET_NAME environment var does not exist. Please add ENV var with bucket name."
 	raise
-aws_s3_path = os.getenv('AWS_S3_PREFIX')+'/'+os.getenv('ONEPANEL_NAMESPACE')+'/'+os.getenv('ONEPANEL_RESOURCE_UID')+'/models/'
+aws_s3_path = os.getenv('AWS_S3_PREFIX')+'/'+os.getenv('ONEPANEL_RESOURCE_NAMESPACE')+'/'+os.getenv('ONEPANEL_RESOURCE_UID')+'/models/'
 try:  # models dir exists
 	s3_client.head_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key=aws_s3_path)
 except ClientError:
