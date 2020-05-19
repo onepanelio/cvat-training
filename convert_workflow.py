@@ -133,7 +133,7 @@ try:  # models dir exists
 except ClientError:
 	s3_client.put_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key=(aws_s3_path))
 try:
-	dir_name = aws_s3_path+'/'+params['task_name']+'_'+params['model']+'_output_'+stamp+'/'
+	dir_name = aws_s3_path+params['task_name']+'_'+params['model']+'_output_'+stamp+'/'
 	s3_client.put_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key=(dir_name))
 	response = s3_client.upload_file("/mnt/output/frozen_inference_graph.pb", os.getenv('AWS_BUCKET_NAME'),dir_name+"frozen_inference_graph.pb")
 	response = s3_client.upload_file("/mnt/output/classes.csv", os.getenv('AWS_BUCKET_NAME'), dir_name+"classes.csv")
