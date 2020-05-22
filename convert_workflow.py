@@ -111,38 +111,3 @@ os.system("python /mnt/src/tf/research/object_detection/export_inference_graph.p
 os.system("python /mnt/src/train/convert_json_workflow.py {}/".format(params['dataset']))
 
 print("*** Uploading Trained Model To Bucket Name: ***", os.getenv('AWS_BUCKET_NAME'))
-# dataset_name = "{}-model-output-{}".format(params['model'], stamp)
-
-# os.system("onepanel datasets create {}".format(dataset_name))
-# os.chdir("{}".format(dataset_name))
-# # os.mkdir("tf_annotation_model")
-# os.system("mv /mnt/output/frozen_inference_graph.pb {}/".format(dataset_name))
-# os.system("mv /mnt/output/classes.csv {}/".format(dataset_name))
-# os.system("ls")
-
-# os.system('onepanel datasets push -m "update" --source job')
-
-s3_client = boto3.client('s3')
-# print(os.getenv('AWS_BUCKET_NAME'))
-if os.getenv("AWS_BUCKET_NAME", None) is None:
-	msg = "AWS_BUCKET_NAME environment var does not exist. Please add ENV var with bucket name."
-	raise
-aws_s3_path = os.getenv('AWS_S3_PREFIX')+'/'+os.getenv('ONEPANEL_RESOURCE_NAMESPACE')+'/'+os.getenv('ONEPANEL_RESOURCE_UID')+'/models/'
-try:  # models dir exists
-	s3_client.head_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key=aws_s3_path)
-except ClientError:
-	s3_client.put_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key=(aws_s3_path))
-try:
-	dir_name = aws_s3_path+params['task_name']+'_'+params['model']+'_output_'+stamp+'/'
-	s3_client.put_object(Bucket=os.getenv('AWS_BUCKET_NAME'), Key=(dir_name))
-	response = s3_client.upload_file("/mnt/output/frozen_inference_graph.pb", os.getenv('AWS_BUCKET_NAME'),dir_name+"frozen_inference_graph.pb")
-	response = s3_client.upload_file("/mnt/output/classes.csv", os.getenv('AWS_BUCKET_NAME'), dir_name+"classes.csv")
-	print("\n\n")
-	print("*******************************************************************************")
-	print("Dataset with Trained Model: ", dir_name)
-except ClientError as e:
-	print("**** One or more file failed to upload to S3 ***")
-	raise
-										 
-
-#
