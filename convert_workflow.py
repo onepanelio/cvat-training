@@ -9,6 +9,7 @@ time = datetime.now()
 stamp = time.strftime("%m%d%Y%H%M%S")
 # parse parameters
 # sample: epochs=100;num_classes=1
+print("Arguments: ", sys.argv[1])
 params = {}
 for item in sys.argv[1].split(","):
 	temp = item.split("=")
@@ -17,7 +18,7 @@ for item in sys.argv[1].split(","):
 
 if 'num_clones' not in params:
 	params['num_clones'] = 1
-	
+print("params: ", params)
 
 #TODO: add param for decays
 
