@@ -29,9 +29,9 @@ model_dir = "/mnt/data/models/"+params['model']
 files = os.listdir(model_dir)
 for f in files:
 	shutil.move(model_dir+"/"+f,"/mnt/data/models")
-os.chdir("mnt/data/models")
+os.chdir("/mnt/data/models")
 os.listdir()
-
+os.system("ls")
 os.system("pip install test-generator")
 # os.system("wget https://github.com/opencv/dldt/archive/2018_R5.zip")
 # os.system("unzip 2018_R5.zip")
