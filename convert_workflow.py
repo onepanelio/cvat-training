@@ -20,7 +20,7 @@ if 'num_clones' not in params:
 print("params: ", params)
 
 if not os.path.exists("/mnt/data/models"):
-	os.makdirs("/mnt/data/models")
+	os.makedirs("/mnt/data/models")
 urllib.request.urlretrieve("https://github.com/onepanelio/templates/releases/download/v0.2.0/{}.tar".format(params['model']), "/mnt/data/models/model.tar")
 model_files = tarfile.open("/mnt/data/models/model.tar")
 model_files.extractall("/mnt/data/models")
