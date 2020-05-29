@@ -1,9 +1,8 @@
 import os
 import sys
-
-import boto3
-from botocore.exceptions import ClientError
-
+import shutil
+import urllib.request
+import tarfile
 from datetime import datetime
 time = datetime.now()
 stamp = time.strftime("%m%d%Y%H%M%S")
@@ -20,11 +19,18 @@ if 'num_clones' not in params:
 	params['num_clones'] = 1
 print("params: ", params)
 
-#TODO: add param for decays
-os.chdir("/mnt/data/models/")
+if not os.path.exists("/mnt/data/models"):
+	os.makdirs("/mnt/data/models")
+urllib.request.urlretrieve("https://github.com/onepanelio/templates/releases/download/v0.2.0/{}.tar".format(params['model'], "/mnt/data/models/model.tar")
+model_files = tarfile.open("/mnt/data/models/model.tar")
+model_files.extractall("/mnt/data/models")
+model_files.close()
+model_dir = "/mnt/data/models/"+params['model']
+files = os.listdir(model_dir)
+for f in files:
+	shutil.move(model_dir+"\\"+f,"/mnt/data/models")
+os.chdir("mnt/data/models")
 os.listdir()
-os.chdir("/mnt/src")
-
 
 os.system("pip install test-generator")
 # os.system("wget https://github.com/opencv/dldt/archive/2018_R5.zip")
