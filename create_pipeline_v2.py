@@ -4,13 +4,13 @@ from google.protobuf import text_format
 from object_detection.protos import pipeline_pb2
 import argparse
 
-def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path,epochs, num_classes,num_clones):
-    print((pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path,epochs))
+def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path,epochs, num_classes,num_clones,format):
+    print((pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path,epochs,format))
     pipeline_config = pipeline_pb2.TrainEvalPipelineConfig()                                                                                                                                                                                                          
     with tf.gfile.GFile(pipeline_path, "r") as f:                                                                                                                                                                                                                     
         proto_str = f.read()                                                                                                                                                                                                                                          
         text_format.Merge(proto_str, pipeline_config) 
-    if "ssd" in pipeline_path:
+    if format == "ssd":
         pipeline_config.model.ssd.num_classes=int(num_classes)
     else:  #faster-rcnn based models
         pipeline_config.model.faster_rcnn.num_classes=int(num_classes)
@@ -41,6 +41,7 @@ if __name__== "__main__":
     parser.add_argument("-train_data", "--train_tfrecord_path",dest = "train_tfrecord_path", help="train_tfrecord_path")
     parser.add_argument("-eval_data", "--eval_tfrecord_path",dest = "eval_tfrecord_path", help="eval_tfrecord_path")
     parser.add_argument("-num_clones", "--num_clones", dest="num_clones", help="num of gpus")
+    parser.add_argument("-format","--format",dest="format",help="model format")
     parser.add_argument("-out_pipeline", "--output_pipeline_path", dest = "out_pipeline_path", default = "", help="Output Model Pipeline Path")
     args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
-    create_pipeline(args.in_pipeline_path,args.model_path,args.label_path,args.train_tfrecord_path,args.eval_tfrecord_path,args.out_pipeline_path,args.epoch, args.num_classes, args.num_clones)
+    create_pipeline(args.in_pipeline_path,args.model_path,args.label_path,args.train_tfrecord_path,args.eval_tfrecord_path,args.out_pipeline_path,args.epoch, args.num_classes, args.num_clones, args.format)
