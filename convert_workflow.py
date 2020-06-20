@@ -21,16 +21,16 @@ print("params: ", params)
 
 if not os.path.exists("/mnt/data/models"):
 	os.makedirs("/mnt/data/models")
-urllib.request.urlretrieve("https://github.com/onepanelio/templates/releases/download/v0.2.0/{}.tar".format(params['model']), "/mnt/data/models/model.tar")
-model_files = tarfile.open("/mnt/data/models/model.tar")
-model_files.extractall("/mnt/data/models")
-model_files.close()
-model_dir = "/mnt/data/models/"+params['model']
-files = os.listdir(model_dir)
-for f in files:
-	shutil.move(model_dir+"/"+f,"/mnt/data/models")
-os.chdir("/mnt/data/models")
-os.listdir()
+# urllib.request.urlretrieve("https://github.com/onepanelio/templates/releases/download/v0.2.0/{}.tar".format(params['model']), "/mnt/data/models/model.tar")
+# model_files = tarfile.open("/mnt/data/models/model.tar")
+# model_files.extractall("/mnt/data/models")
+# model_files.close()
+# model_dir = "/mnt/data/models/"+params['model']
+# files = os.listdir(model_dir)
+# for f in files:
+	# shutil.move(model_dir+"/"+f,"/mnt/data/models")
+# os.chdir("/mnt/data/models")
+# os.listdir()
 os.system("ls")
 os.system("pip install test-generator")
 # os.system("wget https://github.com/opencv/dldt/archive/2018_R5.zip")
@@ -54,11 +54,11 @@ os.system("ls")
 if "ssd-mobilenet-v2-coco" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 15000
-	os.system("python /mnt/src/train/create_pipeline_v2.py -in_pipeline /mnt/data/models/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/model.ckpt -label {}/label_map.pbtxt -train_data {}/default.tfrecord -eval_data {}/default.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {}".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"]))
+	os.system("python /mnt/src/train/create_pipeline_v2.py -in_pipeline /mnt/data/models/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/model.ckpt -label {}/label_map.pbtxt -train_data {}/default.tfrecord -eval_data {}/default.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {} -format ssd ".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"]))
 elif "ssd-mobilenet-v1-coco2" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 15000
-	os.system("python /mnt/src/train/create_pipeline_v2.py -in_pipeline /mnt/data/models/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/model.ckpt -label {}/label_map.pbtxt -train_data {}/default.tfrecord -eval_data {}/default.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {}".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"]))
+	os.system("python /mnt/src/train/create_pipeline_v2.py -in_pipeline /mnt/data/models/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/model.ckpt -label {}/label_map.pbtxt -train_data {}/default.tfrecord -eval_data {}/default.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {} -format ssd".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"]))
 
 elif "frcnn-res101-coco" in params['model']:
 	if 'epochs' not in params:
@@ -84,7 +84,7 @@ elif "frcnn-nas-coco" in params['model']:
 elif "ssdlite-mobilenet-coco" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 10
-	os.system("python /mnt/src/train/create_pipeline_v2.py -in_pipeline /mnt/data/models/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/model.ckpt -label {}/label_map.pbtxt -train_data {}/default.tfrecord -eval_data {}/default.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {}".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"]))
+	os.system("python /mnt/src/train/create_pipeline_v2.py -in_pipeline /mnt/data/models/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/model.ckpt -label {}/label_map.pbtxt -train_data {}/default.tfrecord -eval_data {}/default.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {} -format ssd".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"]))
 
 temp = os.getcwd()
 os.chdir("/mnt/output")
