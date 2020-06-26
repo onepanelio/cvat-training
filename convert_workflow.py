@@ -77,9 +77,8 @@ elif "ssdlite-mobilenet-coco" in params['model']:
 		params['epochs'] = 10
 	os.system("python /mnt/src/train/create_pipeline_v2.py -in_pipeline /mnt/data/models/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/model.ckpt -label {}/label_map.pbtxt -train_data {}/default.tfrecord -eval_data {}/default.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {} -format ssd".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"]))
 
-temp = os.getcwd()
 os.chdir("/mnt/output")
-os.chdir(temp)
+os.mkdir("eval/")
 
 
 
@@ -91,3 +90,6 @@ os.system("python /mnt/src/tf/research/object_detection/export_inference_graph.p
 os.system("python /mnt/src/train/convert_json_workflow.py {}/".format(params['dataset']))
 
 print("*** Uploading Trained Model To Bucket Name: ***", os.getenv('AWS_BUCKET_NAME'))
+
+#evaluate model in the end
+os.system("python /mnt/src/tf/research/object_detection/legacy/eval.py --train_dir=/mnt/output/ --pipeline_config_path=/mnt/output/pipeline.config --eval_dir=/mnt/output/eval/")
