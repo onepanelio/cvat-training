@@ -21,6 +21,7 @@ print("params: ", params)
 
 if not os.path.exists("/mnt/data/models"):
 	os.makedirs("/mnt/data/models")
+# uncomment following lines if you want to grab data from release
 # urllib.request.urlretrieve("https://github.com/onepanelio/templates/releases/download/v0.2.0/{}.tar".format(params['model']), "/mnt/data/models/model.tar")
 # model_files = tarfile.open("/mnt/data/models/model.tar")
 # model_files.extractall("/mnt/data/models")
@@ -31,25 +32,15 @@ if not os.path.exists("/mnt/data/models"):
 	# shutil.move(model_dir+"/"+f,"/mnt/data/models")
 # os.chdir("/mnt/data/models")
 # os.listdir()
-os.system("ls")
 os.system("pip install test-generator")
-# os.system("wget https://github.com/opencv/dldt/archive/2018_R5.zip")
-# os.system("unzip 2018_R5.zip")
-#os.system("git clone https://github.com/tensorflow/models.git /onepanel/extra_repos/tensorflow_models")
 os.system("mkdir -p /mnt/src/protoc")
 os.system("wget -P /mnt/src/protoc https://github.com/protocolbuffers/protobuf/releases/download/v3.10.1/protoc-3.10.1-linux-x86_64.zip")
 os.chdir("/mnt/src/protoc/")
-os.system("ls")
 os.system("unzip protoc-3.10.1-linux-x86_64.zip")
 os.chdir("/mnt/src/tf/research/")
-os.system("ls")
-#os.system("export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim")
 os.system("/mnt/src/protoc/bin/protoc object_detection/protos/*.proto --python_out=.")
 os.chdir("/mnt/data/models")
-os.system("ls")
 os.chdir(params['dataset'])
-os.system("ls")
-#os.system('latest=$(find . -name "*.tfrecord" -print0 | xargs -r -0 ls -1 -t | head -n1) && unzip -o "$latest"')
 
 if "ssd-mobilenet-v2-coco" in params['model']:
 	if 'epochs' not in params:
@@ -88,7 +79,6 @@ elif "ssdlite-mobilenet-coco" in params['model']:
 
 temp = os.getcwd()
 os.chdir("/mnt/output")
-os.system("ls")
 os.chdir(temp)
 
 
