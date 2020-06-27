@@ -3,30 +3,33 @@ import tensorflow as tf
 from google.protobuf import text_format
 from object_detection.protos import pipeline_pb2
 import argparse
-import ast
 
 def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path,epochs, num_classes,num_clones,format, params):
     print((pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path,epochs,format))
-    params = ast.literal_eval(params)
-    print(params)
+    params_n = {}
+    for item in params.split(","):
+        temp = item.split("=")
+        if len(temp) == 2:
+            params_n[temp[0].strip()] = temp[1].strip()
+    print(params_n)
     pipeline_config = pipeline_pb2.TrainEvalPipelineConfig()                                                                                                                                                                                                          
     with tf.gfile.GFile(pipeline_path, "r") as f:                                                                                                                                                                                                                     
         proto_str = f.read()                                                                                                                                                                                                                                          
         text_format.Merge(proto_str, pipeline_config) 
     if format == "ssd":
         pipeline_config.model.ssd.num_classes=int(num_classes)
-        if 'image_height' in params:
-            pipeline_config.model.ssd.image_resizer.fixed_shape_resizer.height = int(image_height)
-        if 'image_width' in params:
-            pipeline_config.model.ssd.image_resizer.fixed_shape_resizer.width = int(image_width)
+        if 'image_height' in params_n:
+            pipeline_config.model.ssd.image_resizer.fixed_shape_resizer.height = int(params_n['image_height'])
+        if 'image_width' in params_n:
+            pipeline_config.model.ssd.image_resizer.fixed_shape_resizer.width = int(params_n['image_width'])
     else:  #faster-rcnn based models
         pipeline_config.model.faster_rcnn.num_classes=int(num_classes)
         if int(num_clones) != 1:
             pipeline_config.train_config.batch_size = int(num_clones)
-        if 'min_dimension' in params:
-            pipeline_config.model.faster_rcnn.image_resizer.keep_aspect_ratio_resizer.min_dimension = int(params['min_dimension'])
-        if 'max_dimension' in params:
-            pipeline_config.model.faster_rcnn.image_resizer.keep_aspect_ratio_resizer.max_dimension = int(params['max_dimension'])
+        if 'min_dimension' in params_n:
+            pipeline_config.model.faster_rcnn.image_resizer.keep_aspect_ratio_resizer.min_dimension = int(params_n['min_dimension'])
+        if 'max_dimension' in params_n:
+            pipeline_config.model.faster_rcnn.image_resizer.keep_aspect_ratio_resizer.max_dimension = int(params_n['max_dimension'])
     pipeline_config.train_config.fine_tune_checkpoint=model_path
     pipeline_config.train_config.num_steps=int(epochs)
     pipeline_config.train_input_reader.label_map_path=label_path
