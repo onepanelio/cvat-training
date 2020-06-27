@@ -41,8 +41,6 @@ os.chdir("/mnt/src/protoc/")
 os.system("unzip protoc-3.10.1-linux-x86_64.zip")
 os.chdir("/mnt/src/tf/research/")
 os.system("/mnt/src/protoc/bin/protoc object_detection/protos/*.proto --python_out=.")
-os.chdir("/mnt/data/models")
-os.chdir(params['dataset'])
 
 if "ssd-mobilenet-v2-coco" in params['model']:
 	if 'epochs' not in params:
