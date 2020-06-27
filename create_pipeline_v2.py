@@ -3,19 +3,30 @@ import tensorflow as tf
 from google.protobuf import text_format
 from object_detection.protos import pipeline_pb2
 import argparse
+import ast
 
-def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path,epochs, num_classes,num_clones,format):
+def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path,epochs, num_classes,num_clones,format, params):
     print((pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path,epochs,format))
+    params = ast.literal_eval(params)
+    print(params)
     pipeline_config = pipeline_pb2.TrainEvalPipelineConfig()                                                                                                                                                                                                          
     with tf.gfile.GFile(pipeline_path, "r") as f:                                                                                                                                                                                                                     
         proto_str = f.read()                                                                                                                                                                                                                                          
         text_format.Merge(proto_str, pipeline_config) 
     if format == "ssd":
         pipeline_config.model.ssd.num_classes=int(num_classes)
+        if 'image_height' in params:
+            pipeline_config.model.ssd.image_resizer.fixed_shape_resizer.height = int(image_height)
+        if 'image_width' in params:
+            pipeline_config.model.ssd.image_resizer.fixed_shape_resizer.width = int(image_width)
     else:  #faster-rcnn based models
         pipeline_config.model.faster_rcnn.num_classes=int(num_classes)
         if int(num_clones) != 1:
             pipeline_config.train_config.batch_size = int(num_clones)
+        if 'min_dimension' in params:
+            pipeline_config.model.faster_rcnn.image_resizer.keep_aspect_ratio_resizer.min_dimension = int(params['min_dimension'])
+        if 'max_dimension' in params:
+            pipeline_config.model.faster_rcnn.image_resizer.keep_aspect_ratio_resizer.max_dimension = int(params['max_dimension'])
     pipeline_config.train_config.fine_tune_checkpoint=model_path
     pipeline_config.train_config.num_steps=int(epochs)
     pipeline_config.train_input_reader.label_map_path=label_path
@@ -43,5 +54,6 @@ if __name__== "__main__":
     parser.add_argument("-num_clones", "--num_clones", dest="num_clones", help="num of gpus")
     parser.add_argument("-format","--format",dest="format",help="model format")
     parser.add_argument("-out_pipeline", "--output_pipeline_path", dest = "out_pipeline_path", default = "", help="Output Model Pipeline Path")
+    parser.add_argument("-extra","--extra",dest="extra",help="extra params")
     args = parser.parse_args(args=None if sys.argv[1:] else ['--help'])
-    create_pipeline(args.in_pipeline_path,args.model_path,args.label_path,args.train_tfrecord_path,args.eval_tfrecord_path,args.out_pipeline_path,args.epoch, args.num_classes, args.num_clones, args.format)
+    create_pipeline(args.in_pipeline_path,args.model_path,args.label_path,args.train_tfrecord_path,args.eval_tfrecord_path,args.out_pipeline_path,args.epoch, args.num_classes, args.num_clones, args.format, args.extra)
