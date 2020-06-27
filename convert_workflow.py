@@ -1,4 +1,5 @@
 import os
+from create_pipeline_v2 import create_pipeline
 import sys
 import shutil
 import urllib.request
@@ -46,37 +47,45 @@ os.chdir(params['dataset'])
 if "ssd-mobilenet-v2-coco" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 15000
-	os.system("python /mnt/src/train/create_pipeline_v2.py -in_pipeline /mnt/data/models/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/model.ckpt -label {}/label_map.pbtxt -train_data {}/default.tfrecord -eval_data {}/default.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {} -extra {} -format ssd ".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"], extra))
+    create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/default.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num_classes'], params['num_clones'],"ssd", params)
+
+
 elif "ssd-mobilenet-v1-coco2" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 15000
-	os.system("python /mnt/src/train/create_pipeline_v2.py -in_pipeline /mnt/data/models/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/model.ckpt -label {}/label_map.pbtxt -train_data {}/default.tfrecord -eval_data {}/default.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {} -extra {} -format ssd".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"], extra))
+    create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/default.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num_classes'], params['num_clones'],"ssd", params)
+
 
 elif "frcnn-res101-coco" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 10000
-	os.system("python /mnt/src/train/create_pipeline_v2.py -in_pipeline /mnt/data/models/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/model.ckpt -label {}/label_map.pbtxt -train_data {}/default.tfrecord -eval_data {}/default.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {} -extra {}".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"], extra))
+    create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/default.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num_classes'], params['num_clones'],"frcnn", params)
+
+
 elif "frcnn-res50-low" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 10000
-	os.system("python /mnt/src/train/create_pipeline_v2.py -in_pipeline /mnt/data/models/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/model.ckpt -label {}/label_map.pbtxt -train_data {}/default.tfrecord -eval_data {}/default.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {} -extra {}".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"], extra))
+    create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/default.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num_classes'], params['num_clones'],"frcnn", params)
 elif "frcnn-res50-coco" in params['model'] or "faster-rcnn-res50" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 10000
-	os.system("python /mnt/src/train/create_pipeline_v2.py -in_pipeline /mnt/data/models/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/model.ckpt -label {}/label_map.pbtxt -train_data {}/default.tfrecord -eval_data {}/default.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {} -extra {}".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"], extra))
+    create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/default.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num_classes'], params['num_clones'],"frcnn", params)
 
 elif "frcnn-res101-low" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 10
-	os.system("python /mnt/src/train/create_pipeline_v2.py -in_pipeline /mnt/data/models/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/model.ckpt -label {}/label_map.pbtxt -train_data {}/default.tfrecord -eval_data {}/default.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {} -extra {}".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"], extra))
+    create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/default.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num_classes'], params['num_clones'],"frcnn", params)
+
+
 elif "frcnn-nas-coco" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 10
-	os.system("python /mnt/src/train/create_pipeline_v2.py -in_pipeline /mnt/data/models/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/model.ckpt -label {}/label_map.pbtxt -train_data {}/default.tfrecord -eval_data {}/default.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {} -extra {}".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"], extra))
+    create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/default.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num_classes'], params['num_clones'],"frcnn", params)
+
 elif "ssdlite-mobilenet-coco" in params['model']:
 	if 'epochs' not in params:
 		params['epochs'] = 10
-	os.system("python /mnt/src/train/create_pipeline_v2.py -in_pipeline /mnt/data/models/pipeline.config -num_classes {} -epochs {} -model /mnt/data/models/model.ckpt -label {}/label_map.pbtxt -train_data {}/default.tfrecord -eval_data {}/default.tfrecord -out_pipeline /mnt/output/pipeline.config -num_clones {} -extra {} -format ssd".format(params["num_classes"], params["epochs"], params["dataset"], params["dataset"], params["dataset"], params["num_clones"], extra))
+    create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/default.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num_classes'], params['num_clones'],"ssd", params)
 
 os.chdir("/mnt/output")
 os.mkdir("eval/")
