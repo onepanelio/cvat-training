@@ -1,5 +1,4 @@
 import os
-from create_pipeline_v2 import create_pipeline
 import sys
 import shutil
 import urllib.request
@@ -41,6 +40,7 @@ os.chdir("/mnt/src/protoc/")
 os.system("unzip protoc-3.10.1-linux-x86_64.zip")
 os.chdir("/mnt/src/tf/research/")
 os.system("/mnt/src/protoc/bin/protoc object_detection/protos/*.proto --python_out=.")
+from create_pipeline_v2 import create_pipeline
 
 if "ssd-mobilenet-v2-coco" in params['model']:
 	if 'epochs' not in params:
