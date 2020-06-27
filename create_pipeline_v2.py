@@ -6,11 +6,7 @@ import argparse
 
 def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path,epochs, num_classes,num_clones,format, params):
     print((pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path,epochs,format))
-    params_n = {}
-    for item in params.split(","):
-        temp = item.split("=")
-        if len(temp) == 2:
-            params_n[temp[0].strip()] = temp[1].strip()
+    params_n = params
     print(params_n)
     pipeline_config = pipeline_pb2.TrainEvalPipelineConfig()                                                                                                                                                                                                          
     with tf.gfile.GFile(pipeline_path, "r") as f:                                                                                                                                                                                                                     
