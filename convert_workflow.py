@@ -49,6 +49,8 @@ else:
 
 
 os.chdir("/mnt/data/models")
+print("print files")
+os.system("ls")
 os.listdir()
 
 os.system("pip install test-generator")
