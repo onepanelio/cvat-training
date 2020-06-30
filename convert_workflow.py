@@ -4,6 +4,8 @@ import shutil
 import urllib.request
 import tarfile
 from datetime import datetime
+import boto3
+
 time = datetime.now()
 stamp = time.strftime("%m%d%Y%H%M%S")
 
@@ -26,7 +28,7 @@ if not os.path.exists("/mnt/data/models"):
 	os.makedirs("/mnt/data/models")
 
 #check if base model exists, if not then download
-if not os.listdir("/mnt/data/models/"):
+if params['ref-model-path'] == "":
     print("base model does not exist, downloading...")
 
 	urllib.request.urlretrieve("https://github.com/onepanelio/templates/releases/download/v0.2.0/{}.tar".format(params['model']), "/mnt/data/models/model.tar")
@@ -38,9 +40,17 @@ if not os.listdir("/mnt/data/models/"):
 	for f in files:
 		shutil.move(model_dir+"/"+f,"/mnt/data/models")
 
-	os.chdir("/mnt/data/models")
-	os.listdir()
-	
+else:
+    s3_resource = boto3.resource('s3')
+    bucket = s3_resource.Bucket(os.getenv('AWS_BUCKET_NAME')) 
+    for object in bucket.objects.filter(Prefix = params['ref-model-path']):
+
+        bucket.download_file(object.key,'/mnt/data/models/'+os.path.basename(object.key))
+
+
+os.chdir("/mnt/data/models")
+os.listdir()
+
 os.system("pip install test-generator")
 os.system("mkdir -p /mnt/src/protoc")
 os.system("wget -P /mnt/src/protoc https://github.com/protocolbuffers/protobuf/releases/download/v3.10.1/protoc-3.10.1-linux-x86_64.zip")
