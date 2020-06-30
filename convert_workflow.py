@@ -6,6 +6,8 @@ import tarfile
 from datetime import datetime
 time = datetime.now()
 stamp = time.strftime("%m%d%Y%H%M%S")
+
+
 # parse parameters
 # sample: epochs=100;num_classes=1
 print("Arguments: ", sys.argv[1])
@@ -22,17 +24,23 @@ print("params: ", params)
 
 if not os.path.exists("/mnt/data/models"):
 	os.makedirs("/mnt/data/models")
-# uncomment following lines if you want to grab data from release
-# urllib.request.urlretrieve("https://github.com/onepanelio/templates/releases/download/v0.2.0/{}.tar".format(params['model']), "/mnt/data/models/model.tar")
-# model_files = tarfile.open("/mnt/data/models/model.tar")
-# model_files.extractall("/mnt/data/models")
-# model_files.close()
-# model_dir = "/mnt/data/models/"+params['model']
-# files = os.listdir(model_dir)
-# for f in files:
-	# shutil.move(model_dir+"/"+f,"/mnt/data/models")
-# os.chdir("/mnt/data/models")
-# os.listdir()
+
+#check if base model exists, if not then download
+if not os.listdir("/mnt/data/models/"):
+    print("base model does not exist, downloading...")
+
+	urllib.request.urlretrieve("https://github.com/onepanelio/templates/releases/download/v0.2.0/{}.tar".format(params['model']), "/mnt/data/models/model.tar")
+	model_files = tarfile.open("/mnt/data/models/model.tar")
+	model_files.extractall("/mnt/data/models")
+	model_files.close()
+	model_dir = "/mnt/data/models/"+params['model']
+	files = os.listdir(model_dir)
+	for f in files:
+		shutil.move(model_dir+"/"+f,"/mnt/data/models")
+
+	os.chdir("/mnt/data/models")
+	os.listdir()
+	
 os.system("pip install test-generator")
 os.system("mkdir -p /mnt/src/protoc")
 os.system("wget -P /mnt/src/protoc https://github.com/protocolbuffers/protobuf/releases/download/v3.10.1/protoc-3.10.1-linux-x86_64.zip")
