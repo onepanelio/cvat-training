@@ -112,7 +112,7 @@ elif "frcnn" in params['model'] or "faster-rcnn" in params["model"]:
 
 
 #generate lable map
-os.system("python /onepanel/code/convert_json_2.py {}/".format(params['dataset']))
+os.system("python /onepanel/code/convert_json.py {}/".format(params['dataset']))
 dataset_name = "{}-model-output-{}".format(params['model'], stamp)
 os.system("onepanel datasets create {}".format(dataset_name))
 os.chdir("/onepanel/code/dldt-2018_R5/model-optimizer/{}".format(dataset_name))
