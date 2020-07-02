@@ -46,6 +46,7 @@ if __name__ == "__main__":
     print("Working dir: {}".format(os.getcwd()))
     videos = args.input_video.split(",")
     for video in videos:
+        print("Processing video..", video)
         v = VideoEditor(video)
         basename = os.path.basename(video)
         extension = basename[-4:]
