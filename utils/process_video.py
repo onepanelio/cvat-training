@@ -24,9 +24,11 @@ class VideoEditor:
         out = cv2.VideoWriter(output_path, fourcc, self.fps, (self.width,self.height))
         frame_no = 0
         while True:
+            print("frame no", frame_no)
             ret, frame = self.cap.read()
             if ret:
                 if frame_no % skip_no==0:
+                    print("writing frame", frame_no)
                     out.write(frame)
                 frame_no += 1
             else:
@@ -51,4 +53,6 @@ if __name__ == "__main__":
         
         v.skip_frame_write(args.skip, os.path.join("/mnt/output/", basename[:-4]+'_processed'+extension))
         os.chdir("/mnt/output/")
-        os.listdir()
+        print(os.getcwd())
+        print(os.listdir())
+        # os.listdir()
