@@ -46,6 +46,7 @@ if __name__ == "__main__":
     print("Working dir: {}".format(os.getcwd()))
     videos = args.input_video.split(",")
     for video in videos:
+        video = "/mnt/data/datasets/"+video[11:]
         print("Processing video..", video)
         v = VideoEditor(video)
         basename = os.path.basename(video)
