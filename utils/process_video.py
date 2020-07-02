@@ -48,4 +48,4 @@ if __name__ == "__main__":
         basename = os.path.basename(video)
         print("Storing {} in /mnt/output...".format(basename))
         extension = basename[-4:]
-        v.skip_frame_write(args.skip, os.path.join("./", basename[:-4]+'_processed'+'.mp4'))
+        v.skip_frame_write(args.skip, os.path.join("/mnt/output/", basename[:-4]+'_processed'+'.mp4'))
