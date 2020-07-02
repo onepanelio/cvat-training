@@ -46,6 +46,7 @@ if __name__ == "__main__":
     for video in videos:
         v = VideoEditor(video)
         basename = os.path.basename(video)
-        print("Storing {} in /mnt/output...".format(basename))
         extension = basename[-4:]
-        v.skip_frame_write(args.skip, os.path.join("/mnt/output/", basename[:-4]+'_processed'+'.mp4'))
+        print("Storing {} in /mnt/output...".format(basename[:-4]+'_processed'+extension))
+        
+        v.skip_frame_write(args.skip, os.path.join("/mnt/output/", basename[:-4]+'_processed'+extension))
