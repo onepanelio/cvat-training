@@ -41,8 +41,11 @@ if __name__ == "__main__":
     parser.add_argument("--skip", default=7, type=int, help="label_path")
  
     args = parser.parse_args()
-    print(f"Working dir: {os.getcwd()}")
-    file_name = os.path.basename(args.input_video)
-    print(f"Storing {file_name} in /mnt/output...")
-    v = VideoEditor(args.input_video)
-    v.skip_frame_write(args.skip, os.path.join("/mnt/output/", file_name))
+    print("Working dir: {}".format(os.getcwd()))
+    videos = args.input_video.split(",")
+    for video in videos:
+        v = VideoEditor(video)
+        basename = os.path.basename(video)
+        print("Storing {} in /mnt/output...".format(basename))
+        extension = basename[-4:]
+        v.skip_frame_write(args.skip, os.path.join("./", basename[:-4]+'_processed'+'.mp4'))
