@@ -50,3 +50,5 @@ if __name__ == "__main__":
         print("Storing {} in /mnt/output...".format(basename[:-4]+'_processed'+extension))
         
         v.skip_frame_write(args.skip, os.path.join("/mnt/output/", basename[:-4]+'_processed'+extension))
+        os.chdir("/mnt/output/")
+        os.system("ls")
