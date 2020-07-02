@@ -1,5 +1,7 @@
 import cv2
 import math
+import argparse
+import os
 
 class VideoEditor:
     def __init__(self, path):
@@ -22,16 +24,25 @@ class VideoEditor:
         out = cv2.VideoWriter(output_path, fourcc, self.fps, (self.width,self.height))
         frame_no = 0
         while True:
-            print(frame_no)
             ret, frame = self.cap.read()
             if ret:
                 if frame_no % skip_no==0:
-                    print("writing frame ", frame_no)
                     out.write(frame)
                 frame_no += 1
             else:
                 break
 
-v = VideoEditor("20200627_135552.mp4")
-print(v)
-v.skip_frame_write(7, "20200627_135552_processed.mp4")
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("--input_video", help="Model Pipeline Path")
+    parser.add_argument("--output_path", help="Input Model Path")
+    parser.add_argument("--skip", default=7, type=int, help="label_path")
+ 
+    args = parser.parse_args()
+    print(f"Working dir: {os.getcwd()}")
+    file_name = os.path.basename(args.input_video)
+    print(f"Storing {file_name} in /mnt/output...")
+    v = VideoEditor(args.input_video)
+    v.skip_frame_write(args.skip, os.path.join("/mnt/output/", file_name))
