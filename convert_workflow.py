@@ -50,8 +50,9 @@ else:
 
 os.chdir("/mnt/data/models")
 print("print files")
-os.system("ls")
-os.listdir()
+print(os.system("ls"))
+print("os listdir")
+print(os.listdir())
 
 os.system("pip install test-generator")
 os.system("mkdir -p /mnt/src/protoc")
