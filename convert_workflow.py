@@ -44,7 +44,7 @@ else:
 	s3_resource = boto3.resource('s3')
 	bucket = s3_resource.Bucket(os.getenv('AWS_BUCKET_NAME')) 
 	for object in bucket.objects.filter(Prefix = params['ref-model-path']):
-
+		print("object key", object.key)
 		bucket.download_file(object.key,'/mnt/data/models/'+os.path.basename(object.key))
 
 
