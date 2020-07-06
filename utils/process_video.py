@@ -24,11 +24,11 @@ class VideoEditor:
         out = cv2.VideoWriter(output_path, fourcc, self.fps, (self.width,self.height))
         frame_no = 0
         while True:
-            print("frame no", frame_no)
+            # print("frame no", frame_no)
             ret, frame = self.cap.read()
             if ret:
                 if frame_no % skip_no==0:
-                    print("writing frame", frame_no)
+                    # print("writing frame", frame_no)
                     out.write(frame)
                 frame_no += 1
             else:
@@ -46,15 +46,12 @@ if __name__ == "__main__":
     print("Working dir: {}".format(os.getcwd()))
     videos = args.input_video.split(",")
     for video in videos:
-        video = "/mnt/data/datasets/"+video[11:]
+        # video = "/mnt/data/datasets/"+video[11:]
         print("Processing video..", video)
         v = VideoEditor(video)
         basename = os.path.basename(video)
         extension = basename[-4:]
         print("Storing {} in /mnt/output...".format(basename[:-4]+'_processed'+extension))
         
-        v.skip_frame_write(args.skip, os.path.join("/mnt/output/", basename[:-4]+'_processed'+extension))
-        os.chdir("/mnt/output/")
-        print(os.getcwd())
-        print(os.listdir())
-        # os.listdir()
+        v.skip_frame_write(args.skip, os.path.join("./output/", basename[:-4]+'_processed'+extension))
+    

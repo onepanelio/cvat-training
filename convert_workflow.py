@@ -44,14 +44,7 @@ else:
 	s3_resource = boto3.resource('s3')
 	bucket = s3_resource.Bucket(os.getenv('AWS_BUCKET_NAME')) 
 	for object in bucket.objects.filter(Prefix = params['ref-model-path']):
-
 		bucket.download_file(object.key,'/mnt/data/models/'+os.path.basename(object.key))
-
-
-os.chdir("/mnt/data/models")
-print("print files")
-os.system("ls")
-os.listdir()
 
 os.system("pip install test-generator")
 os.system("mkdir -p /mnt/src/protoc")
