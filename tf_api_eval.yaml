@@ -124,7 +124,7 @@ templates:
       path: /mnt/src/tf
     - git:
         repo: '{{workflow.parameters.trainingsource}}'
-        revision: onepanel
+        revision: debug
       name: tsrc
       path: /mnt/src/train
   name: tensorflow

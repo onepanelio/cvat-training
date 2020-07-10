@@ -1,0 +1,84 @@
+entrypoint: main
+arguments:
+    parameters:
+    - name: source
+      value: https://github.com/onepanelio/cvat-training.git
+    - name: input-video
+      value: raw-input/2020-06-17/20200617_160011.mp4
+    - name: output-path
+      value: "raw-input/raw_input_processed"
+    - name: input-folder
+      value: "raw-input"
+    # - name: output-path
+    #   value: raw-input/raw_input_processed/20200617_16001_processed.mp4
+    - name: skip
+      value: 7
+volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 2Gi
+  - metadata:
+      name: output
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 2Gi
+templates:
+  - name: main
+    dag:
+      tasks:
+      - name: process-video
+        template: video
+
+  - name: video
+    inputs:
+      artifacts:
+      - name: src
+        path: /mnt/src
+        git:
+          repo: "{{workflow.parameters.source}}"
+      - name: data
+        path: /mnt/data/datasets
+        s3:
+          key: "{{workflow.parameters.input-folder}}"
+    outputs:
+      artifacts:
+      - name: output
+        path: /mnt/output
+        optional: true
+        s3:
+            key: "{{workflow.parameters.output-path}}"
+    container:
+      image: tensorflow/tensorflow:1.13.1-py3
+      command: [sh,-c]
+      args:
+        - |
+          apt-get update && \
+          apt-get install -y python3-pip libglib2.0-0 libsm6 libxext6 libxrender-dev && \
+          pip install opencv-python && \
+          python /mnt/src/utils/process_video.py --input_video={{workflow.parameters.input-video}} --skip={{workflow.parameters.skip}}
+          
+      
+      workingDir: /mnt/src
+      volumeMounts:
+      - name: data
+        mountPath: /mnt/data
+      - name: output
+        mountPath: /mnt/output
+  - name: slack-notify-success
+    container:
+      image: technosophos/slack-notify
+      command: [sh,-c]
+      args: ['SLACK_USERNAME=Worker SLACK_TITLE="{{workflow.name}} {{inputs.parameters.status}}" SLACK_ICON=https://www.gravatar.com/avatar/5c4478592fe00878f62f0027be59c1bd SLACK_MESSAGE=$(cat /tmp/metrics.json)} ./slack-notify']
+    inputs:
+      parameters:
+      - name: status
+      artifacts:
+      - name: metrics
+        path: /tmp/metrics.json
+        optional: true
