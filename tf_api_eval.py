@@ -39,7 +39,7 @@ if params['metrics_type'] == "tf-od-api":
 
 	from create_pipeline_v2 import create_pipeline_eval
 	count_examples = count_ex("/mnt/data/datasets")
-	if params['num_visualizations'] > count_examples:
+	if int(params['num_visualizations']) > count_examples:
     	#num visualizations should not be greater than num examples
 		params['num_visualizations'] = count_examples
 	create_pipeline_eval(count_examples, "/mnt/data/datasets/"+params['record_path'], params['tf_metrics_type'],params['num_visualizations'])
