@@ -26,6 +26,11 @@ def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval
             pipeline_config.model.faster_rcnn.image_resizer.keep_aspect_ratio_resizer.min_dimension = int(params_n['min_dimension'])
         if 'max_dimension' in params_n:
             pipeline_config.model.faster_rcnn.image_resizer.keep_aspect_ratio_resizer.max_dimension = int(params_n['max_dimension'])
+        if 'schedule_step_1' in params_n:
+            pipeline_config.train_config.optimizer.momentum_optimizer.learning_rate.manual_step_learning_rate.schedule[0].step = int(params_n['schedule_step_1'])
+        if 'schedule_step_2' in params_n:
+            pipeline_config.train_config.optimizer.momentum_optimizer.learning_rate.manual_step_learning_rate.schedule[1].step = int(params_n['schedule_step_2'])
+    
     pipeline_config.train_config.fine_tune_checkpoint=model_path
     pipeline_config.train_config.num_steps=int(epochs)
     pipeline_config.train_input_reader.label_map_path=label_path
