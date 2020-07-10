@@ -4,6 +4,25 @@ from google.protobuf import text_format
 from object_detection.protos import pipeline_pb2
 import argparse
 
+
+def create_pipeline_eval(num_examples, eval_record, metrics_type, num_visualizations):
+    print("Updating config for evaluation...")
+    print(num_examples, eval_record, metrics_type, num_visualizations)
+    pipeline_config = pipeline_pb2.TrainEvalPipelineConfig()                                                                                                                                                                                                          
+    with tf.gfile.GFile(eval_record, "r") as f:                                                                                                                                                                                                                     
+        proto_str = f.read()                                                                                                                                                                                                                                          
+        text_format.Merge(proto_str, pipeline_config) 
+    pipeline_config.eval_config.num_examples = num_examples
+    pipeline_config.eval_config.num_visualizations = num_visualizations
+    pipeline_config.eval_config.metrics_set = metrics_type
+    #some defaults
+    pipeline_config.eval_config.include_metrics_per_category = "true"
+    pipeline_config.max_evals = 1
+
+    config_text = text_format.MessageToString(pipeline_config)                                                                                                                                                                                                        
+    with tf.gfile.Open("/mnt/data/models/pipeline_updated.config", "wb") as f:                                                                                                                                                                                                                       
+        f.write(config_text) 
+
 def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path,epochs, num_classes,num_clones,format, params):
     print((pipeline_path,model_path,label_path,train_tfrecord_path,eval_tfrecord_path,out_pipeline_path,epochs,format))
     params_n = params
