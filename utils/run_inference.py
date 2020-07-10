@@ -30,7 +30,7 @@ def generate_labels(csv_file):
     return mapping
 
 
-def run_tensorflow_annotation(video, model_path, threshold, labels_mapping, stop_frame):
+def run_tensorflow_annotation(video, model_path, threshold, labels_mapping, start_frame, stop_frame):
     def _normalize_box(box, w, h):
         xmin = int(box[1] * w)
         ymin = int(box[0] * h)
@@ -57,6 +57,11 @@ def run_tensorflow_annotation(video, model_path, threshold, labels_mapping, stop
                 ret, frame = cap.read()
                 if ret:
                     print("Processing frame: ", count_frames)
+                    if count_frames < start_frame:
+                        count_frames += 1
+                        continue
+                    if count_frames > stop_frame:
+                        break
                     img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                     image = Image.fromarray(img)
                     width, height = image.size
@@ -83,14 +88,13 @@ def run_tensorflow_annotation(video, model_path, threshold, labels_mapping, stop
                                 
                                 result[count_frames] = temp
                     count_frames += 1
-                    if count_frames == stop_frame:
-                        break
+                    
                 else:
                     print("Finished processing...")
         finally:
             sess.close()
             del sess
-    print("Result: ", result)
+    # print("Result: ", result)
     return result
 
 def compute_iou(groundtruth_box, detection_box):
@@ -109,15 +113,16 @@ def compute_iou(groundtruth_box, detection_box):
 
     return intersection / float(boxAArea + boxBArea - intersection)
 
-def compute_confusion_matrix(result, target, categories, stop_frame, IOU_THRESHOLD):
+def compute_confusion_matrix(result, target, categories, start_frame, stop_frame, IOU_THRESHOLD):
     # record_iterator = tf.python_io.tf_record_iterator(path=detections_record)
     # data_parser = tf_example_parser.TfExampleDetectionAndGTParser()
 
     confusion_matrix = np.zeros(shape=(len(categories) + 1, len(categories) + 1))
-
+    # print(target[687])
+    # print(result[687])
     image_index = 0
-    for example_no in range(len(target)):
-        if example_no == stop_frame:
+    for example_no in list(target.keys()):
+        if example_no < start_frame or example_no > stop_frame:
             break
         image_index += 1
         if example_no in target:
@@ -135,16 +140,12 @@ def compute_confusion_matrix(result, target, categories, stop_frame, IOU_THRESHO
         
         matches = []
 
-        print("G", groundtruth_boxes)
-        print("D", detection_boxes)
-        
         if image_index % 100 == 0:
             print("Processed %d images" %(image_index))
         
         for i in range(len(groundtruth_boxes)):
             for j in range(len(detection_boxes)):
                 iou = compute_iou(groundtruth_boxes[i], detection_boxes[j])
-                
                 if iou > IOU_THRESHOLD:
                     matches.append([i, j, iou])
                 
@@ -180,7 +181,7 @@ def compute_confusion_matrix(result, target, categories, stop_frame, IOU_THRESHO
     return confusion_matrix
 
 def print_cm(confusion_matrix, categories, IOU_THRESHOLD):
-    print("\nConfusion Matrix:")
+    print("Confusion Matrix:")
     print(confusion_matrix, "\n")
     results = []
 
@@ -198,9 +199,6 @@ def print_cm(confusion_matrix, categories, IOU_THRESHOLD):
             recall = 0
         else:
             recall = float(confusion_matrix[id, id] / total_target)
-        
-        #print('precision_{}@{}IOU: {:.2f}'.format(name, IOU_THRESHOLD, precision))
-        #print('recall_{}@{}IOU: {:.2f}'.format(name, IOU_THRESHOLD, recall))
         
         results.append({'category' : name, 'precision_@{}IOU'.format(IOU_THRESHOLD) : precision, 'recall_@{}IOU'.format(IOU_THRESHOLD) : recall})
     print("Output: ")
@@ -228,6 +226,8 @@ if __name__ == "__main__":
     parser.add_argument("--model",help="path to trained model")
     parser.add_argument("--threshold",type=float, default=0.5, help="threshold for IoU")
     parser.add_argument("--eval", type=bool, default=True, help="should evaluate model or not")
+    parser.add_argument("--start_frame", type=int, default=0, help="when to start inference")
+
     parser.add_argument("--stop_frame", type=int, default=10, help="when to stop inference")
     parser.add_argument("--target", help="path to json file containing groundtruth data")
     parser.add_argument("--f",type=bool, default=False, help="run inference even though json file is present")
@@ -235,10 +235,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
     #generate class mapping
     labels_mapping = generate_labels(args.label_map)
-    output_path = os.path.basename(args.input_video)[:-4]+"_"+str(args.stop_frame)+"_result.json"
+    output_path = os.path.basename(args.input_video)[:-4]+"_"+str(args.start_frame)+"_"+str(args.stop_frame)+"_result.json"
     if not os.path.exists(output_path) or args.f:
         print("Running inference...")
-        result = run_tensorflow_annotation(args.input_video, args.model, args.threshold, labels_mapping, args.stop_frame)
+        result = run_tensorflow_annotation(args.input_video, args.model, args.threshold, labels_mapping, args.start_frame, args.stop_frame)
         with open(output_path, "w") as file:
             file.write(str(result))
     else:
@@ -246,10 +246,9 @@ if __name__ == "__main__":
         #read result from file
         with open(output_path, "r") as file:
             result = ast.literal_eval(file.read())
-    print("Result: ", result)
-    print("result 0:", result[0])
+    # print("Result: ", result)
     if args.eval:
         groundtruth = parse_gt(args.target)
-        print("groundtruth 0", groundtruth[0], groundtruth[1], groundtruth[9])
-        cm = compute_confusion_matrix(result, groundtruth, labels_mapping, args.stop_frame, args.iou_threshold)
+        # print("groundtruth 0", groundtruth[0], groundtruth[1], groundtruth[9])
+        cm = compute_confusion_matrix(result, groundtruth, labels_mapping, args.start_frame, args.stop_frame, args.iou_threshold)
         print_cm(cm, labels_mapping, args.iou_threshold)
