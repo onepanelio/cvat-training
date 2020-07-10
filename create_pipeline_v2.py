@@ -16,7 +16,7 @@ def create_pipeline_eval(num_examples, eval_record, metrics_type, num_visualizat
     pipeline_config.eval_config.num_visualizations = num_visualizations
     pipeline_config.eval_config.metrics_set = metrics_type
     #some defaults
-    pipeline_config.eval_config.include_metrics_per_category = "true"
+    pipeline_config.eval_config.include_metrics_per_category = True
     pipeline_config.max_evals = 1
 
     pipeline_config.eval_input_reader.label_map_path = "/mnt/data/datasets/label_map.pbtxt"
