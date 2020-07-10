@@ -46,12 +46,12 @@ if __name__ == "__main__":
     print("Working dir: {}".format(os.getcwd()))
     videos = args.input_video.split(",")
     for video in videos:
-        # video = "/mnt/data/datasets/"+video[11:]
+        video = "/mnt/data/datasets/"+video[11:]
         print("Processing video..", video)
         v = VideoEditor(video)
         basename = os.path.basename(video)
         extension = basename[-4:]
         print("Storing {} in /mnt/output...".format(basename[:-4]+'_processed'+extension))
         
-        v.skip_frame_write(args.skip, os.path.join("./output/", basename[:-4]+'_processed'+extension))
+        v.skip_frame_write(args.skip, os.path.join("/mnt/output/", basename[:-4]+'_processed'+extension))
     
