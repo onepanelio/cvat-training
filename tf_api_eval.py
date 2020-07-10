@@ -42,7 +42,7 @@ if params['metrics_type'] == "tf-od-api":
 	if int(params['num_visualizations']) > count_examples:
     	#num visualizations should not be greater than num examples
 		params['num_visualizations'] = count_examples
-	create_pipeline_eval(count_examples, "/mnt/data/datasets/"+params['record_path'], params['tf_metrics_type'],params['num_visualizations'])
+	create_pipeline_eval(count_examples, "/mnt/data/datasets/"+params['record_name'], params['tf_metrics_type'],params['num_visualizations'])
 
 
 	os.system("python /mnt/src/tf/research/object_detection/legacy/eval.py --checkpoint_dir=/mnt/data/models/ --pipeline_config_path=/mnt/data/models/pipeline_updated.config --eval_dir=/mnt/output/")
