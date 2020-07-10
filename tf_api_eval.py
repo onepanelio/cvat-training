@@ -22,12 +22,13 @@ print("Eval Params: ", params)
 
 if params['metrics_type'] == "tf-od-api":
 	os.system("pip install test-generator")
-	os.system("mkdir -p /mnt/src/protoc")
-	os.system("wget -P /mnt/src/protoc https://github.com/protocolbuffers/protobuf/releases/download/v3.10.1/protoc-3.10.1-linux-x86_64.zip")
-	os.chdir("/mnt/src/protoc/")
-	os.system("unzip protoc-3.10.1-linux-x86_64.zip")
-	os.chdir("/mnt/src/tf/research/")
-	os.system("/mnt/src/protoc/bin/protoc object_detection/protos/*.proto --python_out=.")
+	# protos are already there in onepanel repo
+	# os.system("mkdir -p /mnt/src/protoc")
+	# os.system("wget -P /mnt/src/protoc https://github.com/protocolbuffers/protobuf/releases/download/v3.10.1/protoc-3.10.1-linux-x86_64.zip")
+	# os.chdir("/mnt/src/protoc/")
+	# os.system("unzip protoc-3.10.1-linux-x86_64.zip")
+	# os.chdir("/mnt/src/tf/research/")
+	# os.system("/mnt/src/protoc/bin/protoc object_detection/protos/*.proto --python_out=.")
 
 
 	def count_ex(path):
