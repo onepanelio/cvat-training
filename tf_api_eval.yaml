@@ -8,6 +8,7 @@ arguments:
     value: tf-od-api
     displayName: Type of Evaluation
     required: false
+    options:
     - name: 'TF OD API Evaluation'
       value: tf-od-api
     - name: 'Confusion Matrix'
@@ -26,7 +27,7 @@ arguments:
   - name: eval-model-path
     value: datasets/crb/CVAT-BOX/models/cvat-box_tfod_frcnn-res101-coco_07042020221848
   - name: tf-image
-    value: tensorflow/tensorflow:1.13.1-py3
+    value: tensorflow/tensorflow:1.13.1-gpu-py3
   #currently, cvat dumps data with default.tfrecord name, it may change
   #so take it from user
   - name: record-name
