@@ -33,16 +33,16 @@ if params['metrics_type'] == "tf-od-api":
 	def count_ex(path):
 		count = 0
 		#there might be a better way to find length/num of examples
-		for example in tf.python_io.tf_record_iterator(path+"/default.tfrecord"):
+		for example in tf.python_io.tf_record_iterator(path):
 			count += 1
 		return count
 
 	from create_pipeline_v2 import create_pipeline_eval
-	count_examples = count_ex("/mnt/data/datasets")
+	count_examples = count_ex("/mnt/data/datasets/"+params['record_name'])
 	if int(params['num_visualizations']) > count_examples:
     	#num visualizations should not be greater than num examples
 		params['num_visualizations'] = count_examples
-	create_pipeline_eval(count_examples, "/mnt/data/datasets/"+params['record_name'], params['tf_metrics_type'],params['num_visualizations'])
+	create_pipeline_eval(count_examples, "/mnt/data/datasets/"+params['record_name'], params['tf_metrics_type'],params['num_visualizations'],"/mnt/data/models/pipeline.config")
 
 
 	os.system("python /mnt/src/tf/research/object_detection/legacy/eval.py --checkpoint_dir=/mnt/data/models/ --pipeline_config_path=/mnt/data/models/pipeline_updated.config --eval_dir=/mnt/output/")

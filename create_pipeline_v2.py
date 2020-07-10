@@ -5,11 +5,11 @@ from object_detection.protos import pipeline_pb2
 import argparse
 
 
-def create_pipeline_eval(num_examples, eval_record, metrics_type, num_visualizations):
+def create_pipeline_eval(num_examples, eval_record, metrics_type, num_visualizations, pipeline_path):
     print("Updating config for evaluation...")
-    print(num_examples, eval_record, metrics_type, num_visualizations)
+    print(num_examples, eval_record, metrics_type, num_visualizations, pipeline_path)
     pipeline_config = pipeline_pb2.TrainEvalPipelineConfig()                                                                                                                                                                                                          
-    with tf.gfile.GFile(eval_record, "r") as f:                                                                                                                                                                                                                     
+    with tf.gfile.GFile(pipeline_path, "r") as f:                                                                                                                                                                                                                     
         proto_str = f.read()                                                                                                                                                                                                                                          
         text_format.Merge(proto_str, pipeline_config) 
     pipeline_config.eval_config.num_examples = num_examples
@@ -18,6 +18,9 @@ def create_pipeline_eval(num_examples, eval_record, metrics_type, num_visualizat
     #some defaults
     pipeline_config.eval_config.include_metrics_per_category = "true"
     pipeline_config.max_evals = 1
+
+    pipeline_config.eval_input_reader.label_map_path = "/mnt/data/datasets/label_map.pbtxt"
+    pipeline_config.eval_input_reader.tf_record_input_reader.input_path[0] = eval_record
 
     config_text = text_format.MessageToString(pipeline_config)                                                                                                                                                                                                        
     with tf.gfile.Open("/mnt/data/models/pipeline_updated.config", "wb") as f:                                                                                                                                                                                                                       
