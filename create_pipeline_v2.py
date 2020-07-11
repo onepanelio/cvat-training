@@ -14,7 +14,7 @@ def create_pipeline_eval(num_examples, eval_record, metrics_type, num_visualizat
         text_format.Merge(proto_str, pipeline_config) 
     pipeline_config.eval_config.num_examples = num_examples
     pipeline_config.eval_config.num_visualizations = num_visualizations
-    pipeline_config.eval_config.metrics_set = [metrics_type]
+    pipeline_config.eval_config.metrics_set = metrics_type
     #some defaults
     pipeline_config.eval_config.include_metrics_per_category = True
     pipeline_config.eval_config.max_evals = 1

@@ -4,6 +4,12 @@ arguments:
     value: https://github.com/onepanelio/models-1.git
   - name: trainingsource
     value: https://github.com/onepanelio/cvat-training.git
+  #video is required if you want to compute confusion matrix
+  - name: video-path
+    value: raw-input/sample.mp4
+  #various parameters for computation of confusion matrix
+  - name: confusion-params
+    value: "iou_threshold=0.5;conf_threshold=0.5"
   - name: metrics-type
     value: tf-od-api
     displayName: Type of Evaluation
