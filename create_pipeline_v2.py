@@ -17,10 +17,10 @@ def create_pipeline_eval(num_examples, eval_record, metrics_type, num_visualizat
     pipeline_config.eval_config.metrics_set = metrics_type
     #some defaults
     pipeline_config.eval_config.include_metrics_per_category = True
-    pipeline_config.max_evals = 1
+    pipeline_config.eval_config.max_evals = 1
 
-    pipeline_config.eval_input_reader.label_map_path = "/mnt/data/datasets/label_map.pbtxt"
-    pipeline_config.eval_input_reader.tf_record_input_reader.input_path[0] = eval_record
+    pipeline_config.eval_input_reader[0].label_map_path = "/mnt/data/datasets/label_map.pbtxt"
+    pipeline_config.eval_input_reader[0].tf_record_input_reader.input_path[0] = eval_record
 
     config_text = text_format.MessageToString(pipeline_config)                                                                                                                                                                                                        
     with tf.gfile.Open("/mnt/data/models/pipeline_updated.config", "wb") as f:                                                                                                                                                                                                                       
