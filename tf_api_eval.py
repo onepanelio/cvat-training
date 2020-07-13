@@ -20,15 +20,16 @@ for item in sys.argv[1].split(","):
 
 print("Eval Params: ", params)
 
-if params['metrics_type'] == "tf-od-api":
-	os.system("pip install test-generator")
-	os.system("mkdir -p /mnt/src/protoc")
-	os.system("wget -P /mnt/src/protoc https://github.com/protocolbuffers/protobuf/releases/download/v3.10.1/protoc-3.10.1-linux-x86_64.zip")
-	os.chdir("/mnt/src/protoc/")
-	os.system("unzip protoc-3.10.1-linux-x86_64.zip")
-	os.chdir("/mnt/src/tf/research/")
-	os.system("/mnt/src/protoc/bin/protoc object_detection/protos/*.proto --python_out=.")
+os.system("pip install test-generator")
+os.system("mkdir -p /mnt/src/protoc")
+os.system("wget -P /mnt/src/protoc https://github.com/protocolbuffers/protobuf/releases/download/v3.10.1/protoc-3.10.1-linux-x86_64.zip")
+os.chdir("/mnt/src/protoc/")
+os.system("unzip protoc-3.10.1-linux-x86_64.zip")
+os.chdir("/mnt/src/tf/research/")
+os.system("/mnt/src/protoc/bin/protoc object_detection/protos/*.proto --python_out=.")
 
+
+if params['metrics_type'] == "tf-od-api":
 
 	def count_ex(path):
 		count = 0
@@ -49,4 +50,5 @@ if params['metrics_type'] == "tf-od-api":
 
 elif params['metrics_type'] == "confusion-matrix":
 	# calculate confusion matrix
-	pass
+	os.system("python /mnt/src/tf/research/object_detection/inference/infer_detections.py --input_tfrecord_paths={} --output_tfrecord_path=/mnt/data/datasets/output.tfrecord --inference_graph=/mnt/data/models/frozen_inference_graph.pb".format("/mnt/data/datasets/"+params['record_name']))
+	os.ststem("python /mnt/src/train/confusion_matrix.py --detections_record=/mnt/data/datasets/output.tfrecord --label_map=/mnt/data/datasets/label_map.pbtxt --output_path=/mnt/output/confusion_matrix.csv --iou_threshold={} --confidence_threshold={}".format(float(params['iou_threshold']), float(params['conf_threshold'])))

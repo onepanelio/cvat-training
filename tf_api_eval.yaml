@@ -2,14 +2,18 @@ arguments:
   parameters:
   - name: source
     value: https://github.com/onepanelio/models-1.git
+ 
   - name: trainingsource
     value: https://github.com/onepanelio/cvat-training.git
-  #video is required if you want to compute confusion matrix
-  - name: video-path
-    value: raw-input/sample.mp4
-  #various parameters for computation of confusion matrix
+ 
+    #path to directory that contains (tfrecord and labelmap) for evaluation
+  - name: eval-dataset-path
+    value: datasets/crb/CVAT-BOX/datasets/06-23-2020-box_tfrecords_07032020221847
+
+    #various parameters for computation of confusion matrix
   - name: confusion-params
     value: "iou_threshold=0.5;conf_threshold=0.5"
+ 
   - name: metrics-type
     value: tf-od-api
     displayName: Type of Evaluation
@@ -17,28 +21,32 @@ arguments:
     options:
     - name: 'TF OD API Evaluation'
       value: tf-od-api
-    - name: 'Confusion Matrix'
+    - name: 'Confusion Matrix (TFRecord)'
       value: confusion-matrix
-  #how many images to visualize during evaluation
+ 
+    #how many images to visualize during evaluation
   - name: num-visualizations
     value: 0
+ 
   - name: revision
     value: onepanel
-  #path to directory that contains tfrecord and labelmap for evaluation
-  - name: eval-dataset-path
-    value: datasets/crb/CVAT-BOX/datasets/06-23-2020-box_tfrecords_07032020221847
-  #where to store evaluation result
+ 
+    #where to store evaluation result
   - name: eval-result-path
     value: datasets/crb/CVAT-BOX/evals/eval-06-23-2020-box_tfrecords_07032020221847
+ 
   - name: eval-model-path
     value: datasets/crb/CVAT-BOX/models/cvat-box_tfod_frcnn-res101-coco_07042020221848
+ 
   - name: tf-image
     value: tensorflow/tensorflow:1.13.1-gpu-py3
-  #currently, cvat dumps data with default.tfrecord name, it may change
-  #so take it from user
+ 
+    #currently, cvat dumps data with default.tfrecord name, it may change
+    #so take it from user
   - name: record-name
     value: default.tfrecord
-  # metrics to use for TF OD API
+ 
+    # metrics to use for TF OD API
   - displayName: TF Metric Type 
     hint: Which metric to use for evaluation
     type: select.select
@@ -56,6 +64,7 @@ arguments:
       value: oid_V2_detection_metrics
     - name: 'OID Challenge Detection Metrics'
       value: oid_challenge_detection_metrics
+ 
   - displayName: Node pool
     hint: Name of node pool or group
     type: select.select
@@ -69,6 +78,7 @@ arguments:
       value: Standard_D4s_v3
     - name: 'GPU: 1xK80, CPU: 6, RAM: 56GB'
       value: Standard_NC6
+
 entrypoint: main
 templates:
 - dag:
@@ -102,7 +112,7 @@ templates:
       cd /mnt/src/tf/research && \
       export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim && \
       cd /mnt/src/train && \
-      python tf_api_eval.py record_name={{workflow.parameters.record-name}},metrics_type={{workflow.parameters.metrics-type}},tf_metrics_type={{workflow.parameters.tf-metrics-type}},num_visualizations={{workflow.parameters.num-visualizations}}
+      python tf_api_eval.py record_name={{workflow.parameters.record-name}},metrics_type={{workflow.parameters.metrics-type}},tf_metrics_type={{workflow.parameters.tf-metrics-type}},num_visualizations={{workflow.parameters.num-visualizations}},{{workflow.parameters.confusion-params}}
     command:
     - sh
     - -c
