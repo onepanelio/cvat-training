@@ -51,4 +51,4 @@ if params['metrics_type'] == "tf-od-api":
 elif params['metrics_type'] == "confusion-matrix":
 	# calculate confusion matrix
 	os.system("python /mnt/src/tf/research/object_detection/inference/infer_detections.py --input_tfrecord_paths={} --output_tfrecord_path=/mnt/data/datasets/output.tfrecord --inference_graph=/mnt/data/models/frozen_inference_graph.pb".format("/mnt/data/datasets/"+params['record_name']))
-	os.ststem("python /mnt/src/train/confusion_matrix.py --detections_record=/mnt/data/datasets/output.tfrecord --label_map=/mnt/data/datasets/label_map.pbtxt --output_path=/mnt/output/confusion_matrix.csv --iou_threshold={} --confidence_threshold={}".format(float(params['iou_threshold']), float(params['conf_threshold'])))
+	os.system("python /mnt/src/train/confusion_matrix.py --detections_record=/mnt/data/datasets/output.tfrecord --label_map=/mnt/data/datasets/label_map.pbtxt --output_path=/mnt/output/confusion_matrix.csv --iou_threshold={} --confidence_threshold={}".format(float(params['iou_threshold']), float(params['conf_threshold'])))

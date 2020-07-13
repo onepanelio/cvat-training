@@ -17,6 +17,7 @@ arguments:
   - name: metrics-type
     value: tf-od-api
     displayName: Type of Evaluation
+    type: select.select
     required: false
     options:
     - name: 'TF OD API Evaluation'
