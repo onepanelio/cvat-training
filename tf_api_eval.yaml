@@ -12,7 +12,7 @@ arguments:
 
     #various parameters for computation of confusion matrix
   - name: confusion-params
-    value: "iou_threshold=0.5;conf_threshold=0.5"
+    value: "iou_threshold=0.5,conf_threshold=0.5"
  
   - name: metrics-type
     value: tf-od-api
@@ -109,7 +109,7 @@ templates:
     - |
       apt-get update && \
       apt-get install -y python3-pip git wget unzip libglib2.0-0 libsm6 libxext6 libxrender-dev && \
-      pip install pillow lxml Cython contextlib2 jupyter matplotlib numpy scipy boto3 pycocotools && \
+      pip install pillow lxml Cython contextlib2 jupyter matplotlib numpy scipy boto3 pycocotools pandas && \
       cd /mnt/src/tf/research && \
       export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim && \
       cd /mnt/src/train && \
