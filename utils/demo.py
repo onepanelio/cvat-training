@@ -1,7 +1,7 @@
 
 
 import os
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import numpy as np
 import json
 import ast
@@ -12,7 +12,7 @@ import sys
 sys.path.append(os.environ.get('AUTO_SEGMENTATION_PATH')) 
 from mrcnn.config import Config
 import mrcnn.model as modellib
-from visualize import display_instances
+#from visualize import display_instances
 import skimage.io
 from skimage.measure import find_contours, approximate_polygon
 
@@ -38,7 +38,7 @@ class ObjectDetection:
                 tf.import_graph_def(od_graph_def, name='')
                 config = tf.ConfigProto()
                 config.gpu_options.allow_growth=True
-                self.sess = tf.Session(graph=detection_graph, config=config)
+                self.sess = tf.Session(graph=self.detection_graph, config=config)
 
     def get_detections(self, image_np_expanded):
         image_tensor = self.detection_graph.get_tensor_by_name('image_tensor:0')
@@ -49,13 +49,10 @@ class ObjectDetection:
         (boxes, scores, classes, num_detections) = self.sess.run([boxes, scores, classes, num_detections], feed_dict={image_tensor: image_np_expanded})
         return boxes, scores, classes, num_detections
 
-    def __del__(self):
-        self.sess.close()
-
 class Segmentation:
     def __init__(self, model_path, num_c=2):
         
-        class InferenceConfig(CocoConfig):
+        class InferenceConfig(Config):
             # Set batch size to 1 since we'll be running inference on
             # one image at a time. Batch size = GPU_COUNT * IMAGES_PER_GPU
             NAME = "cvat"
@@ -64,10 +61,10 @@ class Segmentation:
             NUM_CLASSES = num_c
 
         config = InferenceConfig()
-        config.display()
+        #config.display()
 
         # Create model object in inference mode.
-        self.model = modellib.MaskRCNN(mode="inference", model_dir=MODEL_DIR, config=config)
+        self.model = modellib.MaskRCNN(mode="inference", model_dir="./output", config=config)
         # Load weights trained on MS-COCO
         self.model.load_weights(model_path, by_name=True)
         self.labels_mapping = {0:'BG', 1:'cut'}
@@ -87,8 +84,8 @@ class Segmentation:
                             [image_num, segmentation])
 
 def main(args):
-    od_model = ObjectDetection("path")
-    seg_model = Segmentation("path")
+    od_model = ObjectDetection("/data/frozen_inference_graph.pb")
+    seg_model = Segmentation("/data/mask_rcnn_cvat_0160.h5")
     cap = cv2.VideoCapture(video)
     while True:
         ret, frame = cap.read()
@@ -122,21 +119,4 @@ if __name__ == "__main__":
     parser.add_argument("--iou_threshold", type=float, default=0.5)
     args = parser.parse_args()
     #generate class mapping
-    labels_mapping = generate_labels(args.label_map)
-    output_path = os.path.basename(args.input_video)[:-4]+"_"+str(args.start_frame)+"_"+str(args.stop_frame)+"_result.json"
-    if not os.path.exists(output_path) or args.f:
-        print("Running inference...")
-        result = run_tensorflow_annotation(args.input_video, args.model, args.threshold, labels_mapping, args.start_frame, args.stop_frame)
-        with open(output_path, "w") as file:
-            file.write(str(result))
-    else:
-        print("Loading annotation from file...")
-        #read result from file
-        with open(output_path, "r") as file:
-            result = ast.literal_eval(file.read())
-    # print("Result: ", result)
-    if args.eval:
-        groundtruth = parse_gt(args.target)
-        # print("groundtruth 0", groundtruth[0], groundtruth[1], groundtruth[9])
-        cm = compute_confusion_matrix(result, groundtruth, labels_mapping, args.start_frame, args.stop_frame, args.iou_threshold)
-        print_cm(cm, labels_mapping, args.iou_threshold)
+    main(args)
