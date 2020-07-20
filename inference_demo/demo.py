@@ -8,6 +8,7 @@ import ast
 import cv2
 import argparse
 from PIL import Image
+import math
 import sys
 sys.path.append(os.environ.get('AUTO_SEGMENTATION_PATH')) 
 from mrcnn.config import Config
@@ -49,6 +50,22 @@ class ObjectDetection:
         (boxes, scores, classes, num_detections) = self.sess.run([boxes, scores, classes, num_detections], feed_dict={image_tensor: image_np_expanded})
         return boxes, scores, classes, num_detections
 
+    @staticmethod
+    def process_boxes(boxes, scores, classes, labels_mapping, threshold, width, height):
+        result = {}
+        for i in range(len(classes[0])):
+            if classes[0][i] in labels_mapping.keys():
+                if scores[0][i] >= threshold:
+                    xmin = int(boxes[0][i][1] * width)
+                    ymin = int(boxes[0][i][0] * height)
+                    xmax = int(boxes[0][i][3] * width)
+                    ymax = int(boxes[0][i][2] * height)
+                    label = labels_mapping[classes[0][i]]
+                    if label not in result:
+                        result[label] = []
+                    result[label].append([xmin,ymin,xmax,ymax])
+        return result
+
 class Segmentation:
     def __init__(self, model_path, num_c=2):
         
@@ -69,27 +86,98 @@ class Segmentation:
         self.model.load_weights(model_path, by_name=True)
         self.labels_mapping = {0:'BG', 1:'cut'}
     
-    def get_polygons(self, images):
-        res = model.detect(images)
+    def get_polygons(self, images, threshold):
+        res = self.model.detect(images)
+        result = {}
         for r in res:
             for index, c_id in enumerate(r['class_ids']):
                 if c_id in self.labels_mapping.keys():
-                    if r['scores'][index] >= treshold:
-                        mask = _convert_to_int(r['masks'][:,:,index])
-                        segmentation = _convert_to_segmentation(mask)
+                    if r['scores'][index] >= threshold:
+                        mask = r['masks'][:,:,index].astype(np.uint8)
+                        contours = find_contours(mask, 0.5)
+                        contour = contours[0]
+                        contour = np.flip(contour, axis=1)
+                        contour = approximate_polygon(contour, tolerance=2.5)
+                        segmentation = contour.ravel().tolist()
                         label = self.labels_mapping[c_id]
                         if label not in result:
                             result[label] = []
-                        result[label].append(
-                            [image_num, segmentation])
+                        result[label].append(segmentation)
+        return result
+    
 
+
+    
+    @staticmethod
+    def process_polygons(polygons, boxes):
+        def _check_inside_boxes(polygon, boxes):
+            for point in polygon:
+                for label, bxes in boxes.items():
+                    for box in bxes:
+                        if point[0] > box[0] and point[0] < box[2] and point[1] > box[1] and point[1] < box[3] and label not in ['dead','non_recoverable']:
+                            # point is inside rectangle
+                            return True
+            return False
+    
+        result = {}
+        for label_m, polys in polygons.items():
+            for polygon in polys:
+                p = [polygon[i:i+2] for i in range(0, len(polygon),2)]
+                if _check_inside_boxes(p, boxes):
+                    if label_m not in result:
+                        result[label_m] = []
+                    result[label_m].append(polygon)
+                
+        return result
+
+
+def load_image_into_numpy(image):
+    (im_width, im_height) = image.size
+    return np.array(image.getdata()).reshape((im_height, im_width, 3)).astype(np.uint8)
+
+def process_boxes(boxes, scores, classes, labels_mapping, threshold, width, height):
+    result = {}
+    for i in range(len(classes[0])):
+        if classes[0][i] in labels_mapping.keys():
+            if scores[0][i] >= threshold:
+                xmin = int(boxes[0][i][1] * width)
+                ymin = int(boxes[0][i][0] * height)
+                xmax = int(boxes[0][i][3] * width)
+                ymax = int(boxes[0][i][2] * height)
+                label = labels_mapping[classes[0][i]]
+                if label not in result:
+                    result[label] = []
+                result[label].append([xmin,ymin,xmax,ymax])
+    return result
+
+
+def draw_instances(frame, boxes, masks):
+    colors = {'zero':(0,255,0), 'light':(0,0,255),'medium':(255,0,0),'high':(120,120,0),'non_recoverable':(0,120,120),'cut':(0,0,0)}
+    for label, bxes in boxes.items():
+        for box in bxes:
+            cv2.rectangle(frame, (box[0],box[1]), (box[2],box[3]), colors[label], 5)
+    for label, polygons in masks.items():
+        for polygon in polygons:
+            p = [polygon[i:i+2] for i in range(0, len(polygon),2)]
+            pts = np.array(p, np.int32)
+            pts = pts.reshape((-1,1,2))
+            cv2.polylines(frame, [pts], True, (0,255,255),5)
+    return frame
+    
 def main(args):
-    od_model = ObjectDetection("/data/frozen_inference_graph.pb")
-    seg_model = Segmentation("/data/mask_rcnn_cvat_0160.h5")
+    od_model = ObjectDetection("./frozen_inference_graph.pb")
+    seg_model = Segmentation("./mask_rcnn_cvat_0160.h5")
     cap = cv2.VideoCapture(args.video)
+    #would be better to take csv files as an input
+    labels_mapping_od = {1:'zero',2:'light',3:'medium',4:'high',5:'non_recoverable'}
+    frame_no = 0 
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter('./output_video.mp4', fourcc, math.ceil(cap.get(cv2.CAP_PROP_FPS)), (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
     while True:
         ret, frame = cap.read()
         if ret:
+            frame_no += 1
+            print(frame_no)
             # get image ready for inference
             img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             image = Image.fromarray(img)
@@ -101,16 +189,33 @@ def main(args):
 
             # run detection
             boxes, scores, classes, num_detections = od_model.get_detections(image_np_expanded)
+            #normalize bounding boxes, also apply threshold
+            od_result = ObjectDetection.process_boxes(boxes, scores, classes, labels_mapping_od, args.od_threshold, width, height)
+            print(boxes)
 
+            print("od", od_result)
             # run segmentation
+            result = seg_model.get_polygons([image_np], args.mask_threshold)
+            print("result", result)
+            result = Segmentation.process_polygons(result, od_result)
+            frame = draw_instances(frame, od_result, result)
+
+            #write video
+            out.write(frame)
+            if frame_no == 15:
+                cap.release()
+                out.release()
+                break
+        else:
+            break
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--video", help="path to video")
     parser.add_argument("--label_map",help="path to classes.csv")
     parser.add_argument("--model",help="path to trained model")
-    parser.add_argument("--threshold",type=float, default=0.5, help="threshold for IoU")
-    parser.add_argument("--eval", type=bool, default=True, help="should evaluate model or not")
+    parser.add_argument("--od_threshold",type=float, default=0.5, help="threshold for IoU")
+    parser.add_argument("--mask_threshold",type=float, default=0.5, help="threshold for maskrcnn")
     parser.add_argument("--start_frame", type=int, default=0, help="when to start inference")
 
     parser.add_argument("--stop_frame", type=int, default=10, help="when to stop inference")
