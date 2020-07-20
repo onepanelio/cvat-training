@@ -86,7 +86,7 @@ class Segmentation:
 def main(args):
     od_model = ObjectDetection("/data/frozen_inference_graph.pb")
     seg_model = Segmentation("/data/mask_rcnn_cvat_0160.h5")
-    cap = cv2.VideoCapture(video)
+    cap = cv2.VideoCapture(args.video)
     while True:
         ret, frame = cap.read()
         if ret:
@@ -106,7 +106,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input_video", help="path to video")
+    parser.add_argument("--video", help="path to video")
     parser.add_argument("--label_map",help="path to classes.csv")
     parser.add_argument("--model",help="path to trained model")
     parser.add_argument("--threshold",type=float, default=0.5, help="threshold for IoU")
