@@ -16,17 +16,6 @@ import mrcnn.model as modellib
 #from visualize import display_instances
 import skimage.io
 from skimage.measure import find_contours, approximate_polygon
-
-# read video
-# load all models
-# for each frame
-#   run object detection(s)
-#   run semantic segmentation
-#   perform post processing
-#   write to video
-
-
-
    
 class ObjectDetection:
     def __init__(self, model_path):
@@ -68,7 +57,6 @@ class ObjectDetection:
 
 class Segmentation:
     def __init__(self, model_path, num_c=2):
-        
         class InferenceConfig(Config):
             # Set batch size to 1 since we'll be running inference on
             # one image at a time. Batch size = GPU_COUNT * IMAGES_PER_GPU
@@ -105,8 +93,6 @@ class Segmentation:
                         result[label].append(segmentation)
         return result
     
-
-
     
     @staticmethod
     def process_polygons(polygons, boxes):
@@ -177,7 +163,6 @@ def main(args):
         ret, frame = cap.read()
         if ret:
             frame_no += 1
-            print(frame_no)
             # get image ready for inference
             img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             image = Image.fromarray(img)
@@ -191,12 +176,9 @@ def main(args):
             boxes, scores, classes, num_detections = od_model.get_detections(image_np_expanded)
             #normalize bounding boxes, also apply threshold
             od_result = ObjectDetection.process_boxes(boxes, scores, classes, labels_mapping_od, args.od_threshold, width, height)
-            print(boxes)
 
-            print("od", od_result)
             # run segmentation
             result = seg_model.get_polygons([image_np], args.mask_threshold)
-            print("result", result)
             result = Segmentation.process_polygons(result, od_result)
             frame = draw_instances(frame, od_result, result)
 
