@@ -1,5 +1,3 @@
-
-
 import os
 import tensorflow.compat.v1 as tf
 import numpy as np
@@ -8,12 +6,12 @@ import ast
 import cv2
 import argparse
 from PIL import Image
+from gpslogger import GPSLogger
 import math
 import sys
 sys.path.append(os.environ.get('AUTO_SEGMENTATION_PATH')) 
 from mrcnn.config import Config
 import mrcnn.model as modellib
-#from visualize import display_instances
 import skimage.io
 from skimage.measure import find_contours, approximate_polygon
    
@@ -96,6 +94,9 @@ class Segmentation:
     
     @staticmethod
     def process_polygons(polygons, boxes):
+        """
+           Check if any point of the polygon falls into any of coconot palms except for dead/non_recoverable.
+        """
         def _check_inside_boxes(polygon, boxes):
             for point in polygon:
                 for label, bxes in boxes.items():
@@ -121,27 +122,13 @@ def load_image_into_numpy(image):
     (im_width, im_height) = image.size
     return np.array(image.getdata()).reshape((im_height, im_width, 3)).astype(np.uint8)
 
-def process_boxes(boxes, scores, classes, labels_mapping, threshold, width, height):
-    result = {}
-    for i in range(len(classes[0])):
-        if classes[0][i] in labels_mapping.keys():
-            if scores[0][i] >= threshold:
-                xmin = int(boxes[0][i][1] * width)
-                ymin = int(boxes[0][i][0] * height)
-                xmax = int(boxes[0][i][3] * width)
-                ymax = int(boxes[0][i][2] * height)
-                label = labels_mapping[classes[0][i]]
-                if label not in result:
-                    result[label] = []
-                result[label].append([xmin,ymin,xmax,ymax])
-    return result
-
-
 def draw_instances(frame, boxes, masks):
     colors = {'zero':(0,255,0), 'light':(0,0,255),'medium':(255,0,0),'high':(120,120,0),'non_recoverable':(0,120,120),'cut':(0,0,0)}
+    #draw boxes
     for label, bxes in boxes.items():
         for box in bxes:
             cv2.rectangle(frame, (box[0],box[1]), (box[2],box[3]), colors[label], 5)
+    #draw polygons
     for label, polygons in masks.items():
         for polygon in polygons:
             p = [polygon[i:i+2] for i in range(0, len(polygon),2)]
@@ -151,14 +138,25 @@ def draw_instances(frame, boxes, masks):
     return frame
     
 def main(args):
-    od_model = ObjectDetection("./frozen_inference_graph.pb")
-    seg_model = Segmentation("./mask_rcnn_cvat_0160.h5")
+    if args.type == "both":
+        od_model = ObjectDetection(args.od_model)
+        seg_model = Segmentation(args.mask_model)
+    elif args.type == "classes":
+        od_model = ObjectDetection(args.od_model)
+    elif args.type == "v_shape":
+        seg_model = Segmentation(args.mask_model)
+       
     cap = cv2.VideoCapture(args.video)
     #would be better to take csv files as an input
+    #labels_mapping_od = {1:'dead', 2:'damaged',3:'healthy'}
     labels_mapping_od = {1:'zero',2:'light',3:'medium',4:'high',5:'non_recoverable'}
     frame_no = 0 
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out = cv2.VideoWriter('./output_video.mp4', fourcc, math.ceil(cap.get(cv2.CAP_PROP_FPS)), (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
+    out = cv2.VideoWriter(args.output_video, fourcc, math.ceil(cap.get(cv2.CAP_PROP_FPS)), (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
+    
+    #prepare GPS logger
+    gpsl = GPSLogger(args.video, args.gps_csv)
+    
     while True:
         ret, frame = cap.read()
         if ret:
@@ -171,39 +169,46 @@ def main(args):
                 image = image.resize((width // 2, height // 2), Image.ANTIALIAS)
             image_np = load_image_into_numpy(image)
             image_np_expanded = np.expand_dims(image_np, axis=0)
+            od_result = {}
+            result = {}
+            if args.type == "both" or args.type == "classes":
+                # run detection
+                boxes, scores, classes, num_detections = od_model.get_detections(image_np_expanded)
+                #normalize bounding boxes, also apply threshold
+                od_result = ObjectDetection.process_boxes(boxes, scores, classes, labels_mapping_od, args.od_threshold, width, height)
 
-            # run detection
-            boxes, scores, classes, num_detections = od_model.get_detections(image_np_expanded)
-            #normalize bounding boxes, also apply threshold
-            od_result = ObjectDetection.process_boxes(boxes, scores, classes, labels_mapping_od, args.od_threshold, width, height)
+            if args.type == "both" or args.type == "v_shape":
+                # run segmentation
+                result = seg_model.get_polygons([image_np], args.mask_threshold)
+                if args.type == "both" or args.type == "classes":
+                    # filter out false positives if boxes are available
+                    result = Segmentation.process_polygons(result, od_result)
 
-            # run segmentation
-            result = seg_model.get_polygons([image_np], args.mask_threshold)
-            result = Segmentation.process_polygons(result, od_result)
             frame = draw_instances(frame, od_result, result)
 
             #write video
             out.write(frame)
-            if frame_no == 15:
-                cap.release()
-                out.release()
-                break
+
+            # update features for geojson
+            # gpsl.update_features(od_result, result, args.survey_type)
+           
         else:
+            cap.release()
+            out.release()
             break
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("--type",default="both",help="what type of models to use [both,classes,v_shape]")
     parser.add_argument("--video", help="path to video")
-    parser.add_argument("--label_map",help="path to classes.csv")
-    parser.add_argument("--model",help="path to trained model")
+    parser.add_argument("--gps_csv", help="path to csv containing gps data")
+    parser.add_argument("--od_model",help="path to trained detection model")
+    parser.add_argument("--mask_model",help="path to trained maskrcnn model")
     parser.add_argument("--od_threshold",type=float, default=0.5, help="threshold for IoU")
     parser.add_argument("--mask_threshold",type=float, default=0.5, help="threshold for maskrcnn")
-    parser.add_argument("--start_frame", type=int, default=0, help="when to start inference")
-
-    parser.add_argument("--stop_frame", type=int, default=10, help="when to stop inference")
-    parser.add_argument("--target", help="path to json file containing groundtruth data")
-    parser.add_argument("--f",type=bool, default=False, help="run inference even though json file is present")
-    parser.add_argument("--iou_threshold", type=float, default=0.5)
+    parser.add_argument("--output_video", default="output_video.mp4", help="where to store output video")
+    parser.add_argument("--survey_type", default="v_shape",help="what to write in geojson [v_shape,classes")
     args = parser.parse_args()
-    #generate class mapping
+    if args.type not in ['both','classes','v_shape']:
+        raise ValueError('Invalid type: {}. Valid options are "both","classes","v_shape".'.format(args.type))
     main(args)
