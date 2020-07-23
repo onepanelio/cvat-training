@@ -156,6 +156,8 @@ def main(args):
     
     #prepare GPS logger
     gpsl = GPSLogger(args.video, args.gps_csv)
+
+    final_result = {'boxes':{}, 'polygons':{}}
     
     while True:
         ret, frame = cap.read()
@@ -193,6 +195,12 @@ def main(args):
             # gpsl.update_features(od_result, result, args.survey_type)
            
         else:
+            if args.type == "both" or args.type == "classes":
+                final_result['boxes'][frame_no] = od_result
+            if args.type == "both" or args.type == "v_shape":
+                final_result['polygons'][frame_no] = result
+            with open("model_output.json", "w") as fl:
+                json.dump(final_result, fl)
             cap.release()
             out.release()
             break
