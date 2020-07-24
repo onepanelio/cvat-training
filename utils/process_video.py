@@ -39,13 +39,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--skip", default=7, type=int, help="label_path")
+    parser.add_argument("--video", help="name of video file")
  
     args = parser.parse_args()
     print("Working dir: {}".format(os.getcwd()))
     video = "/mnt/data/datasets/temp.mp4"
     print("Processing video..", video)
     v = VideoEditor(video)
-    basename = os.path.basename(video)
+    basename = os.path.basename(args.video)
     extension = basename[-4:]
     print("Storing {} in /mnt/output...".format(basename[:-4]+'_processed'+extension))
     
