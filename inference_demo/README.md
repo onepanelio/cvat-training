@@ -16,3 +16,5 @@ python3 demo.py --type=both \
     --output_video=output.mp4  \               #path to output video
     --survey_type=v_shape                      #what should be included in the outputted geojson file
 ```
+
+If you are planning to dumpt the XML file into CVAT, then don't use `both` type.

@@ -159,7 +159,7 @@ def main(args):
     if args.gps_csv != None:
         gpsl = GPSLogger(args.video, args.gps_csv)
 
-    final_result = {'boxes':{}, 'polygons':{}}
+    final_result = {'boxes':{}, 'polygon':{}}
     
     while True:
         ret, frame = cap.read()
@@ -181,13 +181,15 @@ def main(args):
                 boxes, scores, classes, num_detections = od_model.get_detections(image_np_expanded)
                 #normalize bounding boxes, also apply threshold
                 od_result = ObjectDetection.process_boxes(boxes, scores, classes, labels_mapping_od, args.od_threshold, width, height)
-
+                final_result['boxes'][frame_no] = od_result
             if args.type == "both" or args.type == "v_shape":
                 # run segmentation
                 result = seg_model.get_polygons([image_np], args.mask_threshold)
                 if args.type == "both" or args.type == "classes":
                     # filter out false positives if boxes are available
                     result = Segmentation.process_polygons(result, od_result)
+                final_result['polygon'][frame_no] = result
+            
 
             frame = draw_instances(frame, od_result, result)
 
@@ -196,13 +198,17 @@ def main(args):
 
             # update features for geojson
             # gpsl.update_features(od_result, result, args.survey_type)
+
+            if frame_no == 25:
+                print(final_result)
+                break
            
         else:
             try:
                 if args.type == "both" or args.type == "classes":
                     final_result['boxes'][frame_no] = od_result
                 if args.type == "both" or args.type == "v_shape":
-                    final_result['polygons'][frame_no] = result
+                    final_result['polygon'][frame_no] = result
                 with open(args.video.replace(".mp4","_model_output.json", "w")) as fl:
                     json.dump(final_result, fl)
                 cap.release()
