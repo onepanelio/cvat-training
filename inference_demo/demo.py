@@ -199,7 +199,11 @@ def main(args):
                 final_result['boxes'][frame_no] = od_result
             if args.type == "both" or args.type == "v_shape":
                 final_result['polygons'][frame_no] = result
+<<<<<<< HEAD
             with open("model_output.json", "w") as fl:
+=======
+            with open(args.video.replace(".mp4","_model_output.json", "w")) as fl:
+>>>>>>> cf5ed0eb11939d4236a2cd73826c506db439c1bc
                 json.dump(final_result, fl)
             cap.release()
             out.release()

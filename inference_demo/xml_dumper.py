@@ -161,7 +161,7 @@ def dump_as_cvat_annotation(file_object, annotations):
         frame_id = frame_annotation['frame']
         dumper.open_image(OrderedDict([
             ("id", str(frame_id)),
-            ("name", str(frame_id)),
+            ("name", 'frame_'+str(frame_id).zfill(6)),
             ("width", str(frame_annotation['width'])),
             ("height", str(frame_annotation['height']))
         ]))
