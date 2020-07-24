@@ -38,15 +38,11 @@ class VideoEditor:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--input_video", help="Model Pipeline Path")
-    parser.add_argument("--output_path", help="Input Model Path")
     parser.add_argument("--skip", default=7, type=int, help="label_path")
  
     args = parser.parse_args()
     print("Working dir: {}".format(os.getcwd()))
-    os.chdir("/mnt/data/datasets/")
-    print(os.listdir())
-    video = "/mnt/data/datasets/"+os.path.basename(video)
+    video = "/mnt/data/datasets/temp.mp4"
     print("Processing video..", video)
     v = VideoEditor(video)
     basename = os.path.basename(video)
