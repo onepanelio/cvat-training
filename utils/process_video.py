@@ -44,7 +44,7 @@ if __name__ == "__main__":
  
     args = parser.parse_args()
     print("Working dir: {}".format(os.getcwd()))
-    os.chdir("/mnt/data/datasets")
+    os.chdir("/mnt/data/datasets/")
     print(os.listdir())
     video = "/mnt/data/datasets/"+os.path.basename(video)
     print("Processing video..", video)
