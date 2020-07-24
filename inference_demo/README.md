@@ -2,6 +2,11 @@
 
 `demo.py` runs inference on given input video and outputs video with bounding boxes/polygons drawn.
 
+Install prerequisites.
+```python
+pip3 install -r requirements.txt
+```
+
 ```python
 python3 demo.py --type=both \ 
     --video=demo.mp4 \                         #path to input video

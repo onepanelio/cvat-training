@@ -208,5 +208,5 @@ def dump_as_cvat_annotation(file_object, annotations):
 
 
 if __name__ =="__main__":
-    annotations = {'meta':{'task': OrderedDict([('id','48'),('name','test'),('size','44'),('mode','interpolation'),('z_order',False)])},'frames':[{'frame':0,'width':2280,'height':1920, 'shapes':[{'type':'polygon','label':'cut','occluded':0,'points':[10,5,11,6]}]}]}
+    annotations = {'meta':{'task': OrderedDict([('id','48'),('name','test'),('size','44'),('mode','interpolation'),('z_order',False),('labels', OrderedDict([('label', OrderedDict([('name', 'cut'), ('attributes', ' ')]))]))])},'frames':[{'frame':0,'width':2280,'height':1920, 'shapes':[{'type':'polygon','label':'cut','occluded':0,'points':[10,5,11,6]}]}]}
     dump_as_cvat_annotation(open("cvat_anno_test.xml","w"), annotations)

@@ -1,5 +1,6 @@
 import os
 import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior() 
 import numpy as np
 import json
 import ast
@@ -155,7 +156,8 @@ def main(args):
     out = cv2.VideoWriter(args.output_video, fourcc, math.ceil(cap.get(cv2.CAP_PROP_FPS)), (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)),int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
     
     #prepare GPS logger
-    gpsl = GPSLogger(args.video, args.gps_csv)
+    if args.gps_csv != None:
+        gpsl = GPSLogger(args.video, args.gps_csv)
 
     final_result = {'boxes':{}, 'polygons':{}}
     
@@ -163,6 +165,7 @@ def main(args):
         ret, frame = cap.read()
         if ret:
             frame_no += 1
+            print("Processing frame: ", frame_no)
             # get image ready for inference
             img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             image = Image.fromarray(img)
@@ -195,15 +198,18 @@ def main(args):
             # gpsl.update_features(od_result, result, args.survey_type)
            
         else:
-            if args.type == "both" or args.type == "classes":
-                final_result['boxes'][frame_no] = od_result
-            if args.type == "both" or args.type == "v_shape":
-                final_result['polygons'][frame_no] = result
-            with open(args.video.replace(".mp4","_model_output.json", "w")) as fl:
-                json.dump(final_result, fl)
-            cap.release()
-            out.release()
-            break
+            try:
+                if args.type == "both" or args.type == "classes":
+                    final_result['boxes'][frame_no] = od_result
+                if args.type == "both" or args.type == "v_shape":
+                    final_result['polygons'][frame_no] = result
+                with open(args.video.replace(".mp4","_model_output.json", "w")) as fl:
+                    json.dump(final_result, fl)
+                cap.release()
+                out.release()
+                break
+            except:  #handle case when video is corrupted or does not exists
+                break
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -219,4 +225,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.type not in ['both','classes','v_shape']:
         raise ValueError('Invalid type: {}. Valid options are "both","classes","v_shape".'.format(args.type))
+
+    if not os.path.exists(args.video):
+        raise FileExistsError("Video does not exist!")
     main(args)
