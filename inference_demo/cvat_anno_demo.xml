@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotations>
+  <version>1.1</version>
+  <meta>
+    <task>
+      <id>1</id>
+      <name>demo</name>
+      <size>44</size>
+      <mode>interpolation</mode>
+      <z_order></z_order>
+      <labels>
+        <label>
+          <name>non_recoverable</name>
+        </label>
+      </labels>
+    </task>
+  </meta>
+  <image id="1" name="frame_000001" width="3840" height="2160">
+  </image>
+  <image id="2" name="frame_000002" width="3840" height="2160">
+  </image>
+  <image id="3" name="frame_000003" width="3840" height="2160">
+  </image>
+  <image id="4" name="frame_000004" width="3840" height="2160">
+  </image>
+  <image id="5" name="frame_000005" width="3840" height="2160">
+  </image>
+  <image id="6" name="frame_000006" width="3840" height="2160">
+  </image>
+  <image id="7" name="frame_000007" width="3840" height="2160">
+  </image>
+  <image id="8" name="frame_000008" width="3840" height="2160">
+  </image>
+  <image id="9" name="frame_000009" width="3840" height="2160">
+  </image>
+  <image id="10" name="frame_000010" width="3840" height="2160">
+  </image>
+  <image id="11" name="frame_000011" width="3840" height="2160">
+  </image>
+  <image id="12" name="frame_000012" width="3840" height="2160">
+  </image>
+  <image id="13" name="frame_000013" width="3840" height="2160">
+  </image>
+  <image id="14" name="frame_000014" width="3840" height="2160">
+  </image>
+  <image id="15" name="frame_000015" width="3840" height="2160">
+  </image>
+  <image id="16" name="frame_000016" width="3840" height="2160">
+  </image>
+  <image id="16" name="frame_000016" width="3840" height="2160">
+    <polygon label="cut" occluded="0" points="1005.00,63.50;985.00,60.50;978.50,44.00;978.50,33.00;984.50,22.00;999.00,14.50;1006.00,16.50;1014.50,28.00;1012.50,49.00;1005.00,63.50">
+    </polygon>
+  </image>
+  <image id="17" name="frame_000017" width="3840" height="2160">
+  </image>
+  <image id="18" name="frame_000018" width="3840" height="2160">
+  </image>
+  <image id="19" name="frame_000019" width="3840" height="2160">
+  </image>
+  <image id="20" name="frame_000020" width="3840" height="2160">
+  </image>
+  <image id="21" name="frame_000021" width="3840" height="2160">
+  </image>
+  <image id="22" name="frame_000022" width="3840" height="2160">
+  </image>
+  <image id="23" name="frame_000023" width="3840" height="2160">
+  </image>
+  <image id="24" name="frame_000024" width="3840" height="2160">
+  </image>
+  <image id="25" name="frame_000025" width="3840" height="2160">
+  </image>
+</annotations>
