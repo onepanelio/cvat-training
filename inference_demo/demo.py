@@ -1,8 +1,8 @@
 import os
-# import tensorflow as tf
+import tensorflow as tf
 # uncomment following lines if you are using TF2
-import tensorflow.compat.v1 as tf
-tf.disable_v2_behavior() 
+# import tensorflow.compat.v1 as tf
+# tf.disable_v2_behavior() 
 import numpy as np
 import json
 import ast
