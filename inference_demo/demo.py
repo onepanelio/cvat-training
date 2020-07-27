@@ -9,7 +9,7 @@ import ast
 import cv2
 import argparse
 from PIL import Image
-from gpslogger import GPSLogger
+# from gpslogger import GPSLogger
 import math
 import sys
 sys.path.append(os.environ.get('AUTO_SEGMENTATION_PATH')) 

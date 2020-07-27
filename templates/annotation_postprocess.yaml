@@ -121,12 +121,12 @@ templates:
           apt-get install -y python3-pip libglib2.0-0 libsm6 libxext6 libxrender-dev && \
           pip install pillow pandas numpy opencv-python && \
           python /mnt/src/inference_demo/demo.py --video={{workflow.parameters.input-video}} && \
-                            --type={{workflow.parameters.type}}
-                            --classes_type={{workflow.parameters.classes-csv-type}}
-                            --od_threshold={{workflow.parameters.object-detection-confidence-threshold}}
-                            --mask_threshold={{workflow.parameters.v-shape-detection-model-confidence-threshold}}
-                            --task_id={{workflow.parameters.cvat-task-id}}
-                            --task_name={{workflow.parameters.cvat-task-name}}
+                            --type={{workflow.parameters.type}} && \
+                            --classes_type={{workflow.parameters.classes-csv-type}} && \
+                            --od_threshold={{workflow.parameters.object-detection-confidence-threshold}} && \
+                            --mask_threshold={{workflow.parameters.v-shape-detection-model-confidence-threshold}} && \
+                            --task_id={{workflow.parameters.cvat-task-id}} && \
+                            --task_name={{workflow.parameters.cvat-task-name}} \
           
       
       workingDir: /mnt/src
