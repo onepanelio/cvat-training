@@ -1,8 +1,8 @@
 import os
-import tensorflow as tf
+# import tensorflow as tf
 # uncomment following lines if you are using TF2
-# import tensorflow.compat.v1 as tf
-# tf.disable_v2_behavior() 
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior() 
 import numpy as np
 import json
 import ast
@@ -254,7 +254,7 @@ def main(args):
             try:
              
                 print("Final result: ", final_result)
-                dump_as_cvat_annotation(open("/mnt/output/cvat_annotation_"+os.path.basename(args.video)[:-4]+".xml", "w"), final_result)
+                dump_as_cvat_annotation(open("cvat_annotation_"+os.path.basename(args.video)[:-4]+".xml", "w"), final_result)
                 cap.release()
                 out.release()
                 break
@@ -264,15 +264,15 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--type",default="both",help="what type of models to use [both,classes,v_shape]")
-    parser.add_argument("--video", default="/mnt/data/datasets/temp.mp4", help="path to video")
+    parser.add_argument("--video", default="/home/savan/Downloads/20200627_133255_processed.mp4", help="path to video")
     parser.add_argument("--gps_csv", help="path to csv containing gps data")
-    parser.add_argument("--od_model", default="/mnt/data/od-models/frozen_inference_graph.pb" , help="path to trained detection model")
-    parser.add_argument("--classes_cvat", default="/mnt/data/datasets/classes.csv", help="classes you want to use for cvat, see readme for more details.")
+    parser.add_argument("--od_model", default="/home/savan/Downloads/frozen_inference_graph.pb" , help="path to trained detection model")
+    parser.add_argument("--classes_cvat", default="/home/savan/Downloads/5classes.csv", help="classes you want to use for cvat, see readme for more details.")
     parser.add_argument("--classes_type", default="od", help="type of classes csv file [od, maskrcnn]")
-    parser.add_argument("--mask_model", default="/mnt/data/mask-models/mask_rcnn_cvat.h5", help="path to trained maskrcnn model")
+    parser.add_argument("--mask_model", default="/home/savan/Downloads/mask_rcnn_cvat_0160.h5", help="path to trained maskrcnn model")
     parser.add_argument("--od_threshold",type=float, default=0.5, help="threshold for IoU")
     parser.add_argument("--mask_threshold",type=float, default=0.5, help="threshold for maskrcnn")
-    parser.add_argument("--output_video", default="/mnt/output/output.mp4", help="where to store output video")
+    parser.add_argument("--output_video", default="output.mp4", help="where to store output video")
     parser.add_argument("--survey_type", default="v_shape",help="what to write in geojson [v_shape,classes")
     parser.add_argument("--task_id", default=0, type=int, help="required only if you want to use this in cvat")
     parser.add_argument("--task_name", default="demo", help="requierd only if you want to use this in cvat")
