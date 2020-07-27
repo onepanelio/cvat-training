@@ -8,14 +8,14 @@ arguments:
  
     #path to directory that contains (tfrecord and labelmap) for evaluation
   - name: eval-dataset-path
-    value: datasets/crb/CVAT-BOX/datasets/06-23-2020-box_tfrecords_07032020221847
+    value: datasets/crb/CVAT-5-CLASSES/datasets/06-27-132956-5-classes_tfrecords_07112020005716
 
     #various parameters for computation of confusion matrix
   - name: confusion-params
     value: "iou_threshold=0.5,conf_threshold=0.5"
  
   - name: metrics-type
-    value: tf-od-api
+    value: confusion-matrix
     displayName: Type of Evaluation
     type: select.select
     required: false
@@ -34,10 +34,10 @@ arguments:
  
     #where to store evaluation result
   - name: eval-result-path
-    value: datasets/crb/CVAT-BOX/evals/eval-06-23-2020-box_tfrecords_07032020221847
+    value: datasets/crb/CVAT-5-CLASSES/evals/eval-06-23-2020-box_tfrecords_07032020221847/
  
   - name: eval-model-path
-    value: datasets/crb/CVAT-BOX/models/cvat-box_tfod_frcnn-res101-coco_07042020221848
+    value: datasets/crb/CVAT-5-CLASSES/models/cvat-box_tfod_frcnn-res101-coco_07042020221848
  
   - name: tf-image
     value: tensorflow/tensorflow:1.13.1-gpu-py3
@@ -70,7 +70,7 @@ arguments:
     hint: Name of node pool or group
     type: select.select
     name: sys-node-pool
-    value: Standard_D4s_v3
+    value: Standard_NC6
     required: true
     options:
     - name: 'CPU: 2, RAM: 8GB'

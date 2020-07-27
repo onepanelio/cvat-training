@@ -19,5 +19,6 @@ python3 demo.py --type=both \
 
 Notes:
 
-- If you are planning to dumpt the XML file into CVAT, then don't use `both` type. Also, make sure you pass in correct `--task_id` and `--task_name` so that you can upload this into CVAT.
+- If you are planning to dumpt the XML file into CVAT, then make sure you pass in correct `--task_id` and `--task_name` so that you can upload this into CVAT.
 - You also need to provide a csv file `--classes_cvat`, if you are planning to use this XML file in CVAT. Since object detection and MaskRCNN model can have different classes, make sure you use file which has same classes as your CVAT task (where you are planning to upload this XML file).
+- This will work with tasks that were created for videos only. Since tasks with images will have different names. 

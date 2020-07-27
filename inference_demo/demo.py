@@ -1,4 +1,6 @@
 import os
+# import tensorflow as tf
+# uncomment following lines if you are using TF2
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior() 
 import numpy as np
@@ -129,7 +131,6 @@ def draw_instances(frame, boxes, masks):
     #draw boxes
     for label, bxes in boxes.items():
         for box in bxes:
-            print(box)
             cv2.rectangle(frame, (box[0],box[1]), (box[2],box[3]), colors[label], 5)
     #draw polygons
     for label, polygons in masks.items():
@@ -144,24 +145,18 @@ def get_labels(classes_csv, type="od"):
     labels = []
     with open(classes_csv, "r") as f:
         data = f.readlines()
-        print(data)
         # slogger.glob.info("class file data {}".format(data))
         for line in data[1:]:
-            print(line)
             if type == "maskrcnn":
                 if "," not in line:
                     continue
                 # slogger.glob.info("classes line {}".format(line))
                 label, num = line.strip().split(',')
-                labels.append(('name', label))
+                labels.append(('label', [('name', line.strip())]))
             else:
                 if "label" not in line:
-                    print(labels)
-                    labels.append(('name', line.strip()))
-                    print(labels)
-    print(labels)
-    print(OrderedDict(labels))
-    return OrderedDict(labels)
+                    labels.append(('label', [('name', line.strip())]))
+    return labels
     
 def main(args):
     if args.type == "both":
@@ -189,21 +184,22 @@ def main(args):
         gpsl = GPSLogger(args.video, args.gps_csv)
     
     labels_from_csv = get_labels(args.classes_cvat, args.classes_type)
-    print(labels_from_csv)
-    final_result = {'meta':{'task': OrderedDict([('id',str(args.task_id)),('name',str(args.task_name)),('size',str(num_frames)),('mode','interpolation'),('start_frame', str(0)),('stop_frame', str(num_frames-1)),('z_order',"False"),('labels', OrderedDict([('label', labels_from_csv)]))])}, 'frames':[]}
+    print("Labels: ", labels_from_csv)
+    final_result = {'meta':{'task': OrderedDict([('id',str(args.task_id)),('name',str(args.task_name)),('size',str(num_frames)),('mode','interpolation'),('start_frame', str(0)),('stop_frame', str(num_frames-1)),('z_order',"False"),('labels', labels_from_csv)])}, 'frames':[]}
     
     while True:
         ret, frame = cap.read()
         if ret:
-            frame_no += 1
+            
             print("Processing frame: ", frame_no)
             # get image ready for inference
             img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            image = Image.fromarray(img)
-            width, height = image.size
+            image_org = Image.fromarray(img)
+            width, height = image_org.size
             if width > 1920 or height > 1080:
-                image = image.resize((width // 2, height // 2), Image.ANTIALIAS)
+                image = image_org.resize((width // 2, height // 2), Image.ANTIALIAS)
             image_np = load_image_into_numpy(image)
+            image_mask_rcnn = load_image_into_numpy(image_org)
             image_np_expanded = np.expand_dims(image_np, axis=0)
             od_result = {}
             result = {}
@@ -213,6 +209,7 @@ def main(args):
                 #normalize bounding boxes, also apply threshold
                 od_result = ObjectDetection.process_boxes(boxes, scores, classes, labels_mapping_od, args.od_threshold, width, height)
                 if od_result:
+                    print("od", od_result)
                     shapes = []
                     for label, boxes in od_result.items():
                         for box in boxes:
@@ -220,13 +217,14 @@ def main(args):
                     final_result['frames'].append({'frame':frame_no, 'width':frame_width, 'height':frame_height, 'shapes':shapes})
             if args.type == "both" or args.type == "v_shape":
                 # run segmentation
-                result = seg_model.get_polygons([image_np], args.mask_threshold)
+                result = seg_model.get_polygons([image_mask_rcnn], args.mask_threshold)
+                print("result without processijng: ", result)
                 if args.type == "both" or args.type == "classes":
                     # filter out false positives if boxes are available
                     result = Segmentation.process_polygons(result, od_result)
+                print(result)
                 if result:
                     shapes = []
-                    print(result)
                     for label, polygons in result.items():
                         for polygon in polygons:
                             shapes.append({'type':'polygon','label':label,'occluded':0,'points':polygon})
@@ -246,20 +244,17 @@ def main(args):
 
             # update features for geojson
             # gpsl.update_features(od_result, result, args.survey_type)
-
-            if frame_no == 25:
-                print(final_result)
-                dump_as_cvat_annotation(open("cvat_anno_demo.xml","w"), final_result)
-                break
+            frame_no += 1
+            # if frame_no == 25:
+            #     print(final_result)
+            #     dump_as_cvat_annotation(open("cvat_anno_demo.xml","w"), final_result)
+            #     break
            
         else:
             try:
-                if args.type == "both" or args.type == "classes":
-                    final_result['boxes'][frame_no] = od_result
-                if args.type == "both" or args.type == "v_shape":
-                    final_result['polygon'][frame_no] = result
-                with open(args.video.replace(".mp4","_model_output.json", "w")) as fl:
-                    json.dump(final_result, fl)
+             
+                print("Final result: ", final_result)
+                dump_as_cvat_annotation(open("/mnt/output/cvat_annotation_"+os.path.basename(args.video)[:-4]+".xml", "w"), final_result)
                 cap.release()
                 out.release()
                 break
@@ -269,15 +264,15 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--type",default="both",help="what type of models to use [both,classes,v_shape]")
-    parser.add_argument("--video", help="path to video")
+    parser.add_argument("--video", default="/mnt/data/datasets/temp.mp4", help="path to video")
     parser.add_argument("--gps_csv", help="path to csv containing gps data")
-    parser.add_argument("--od_model",help="path to trained detection model")
-    parser.add_argument("--classes_cvat", help="classes you want to use for cvat, see readme for more details.")
+    parser.add_argument("--od_model", default="/mnt/data/od-models/frozen_inference_graph.pb" , help="path to trained detection model")
+    parser.add_argument("--classes_cvat", default="/mnt/data/datasets/classes.csv", help="classes you want to use for cvat, see readme for more details.")
     parser.add_argument("--classes_type", default="od", help="type of classes csv file [od, maskrcnn]")
-    parser.add_argument("--mask_model",help="path to trained maskrcnn model")
+    parser.add_argument("--mask_model", default="/mnt/data/mask-models/mask_rcnn_cvat.h5", help="path to trained maskrcnn model")
     parser.add_argument("--od_threshold",type=float, default=0.5, help="threshold for IoU")
     parser.add_argument("--mask_threshold",type=float, default=0.5, help="threshold for maskrcnn")
-    parser.add_argument("--output_video", default="output_video.mp4", help="where to store output video")
+    parser.add_argument("--output_video", default="/mnt/output/output.mp4", help="where to store output video")
     parser.add_argument("--survey_type", default="v_shape",help="what to write in geojson [v_shape,classes")
     parser.add_argument("--task_id", default=0, type=int, help="required only if you want to use this in cvat")
     parser.add_argument("--task_name", default="demo", help="requierd only if you want to use this in cvat")

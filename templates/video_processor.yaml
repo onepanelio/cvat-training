@@ -4,13 +4,9 @@ arguments:
     - name: source
       value: https://github.com/onepanelio/cvat-training.git
     - name: input-video
-      value: raw-input/2020-06-17/20200617_160011.mp4
+      value: "raw-input/20200625/20200625_115358.mp4"
     - name: output-path
-      value: "raw-input/raw_input_processed"
-    - name: input-folder
-      value: "raw-input"
-    # - name: output-path
-    #   value: raw-input/raw_input_processed/20200617_16001_processed.mp4
+      value: "raw-input/raw_input_processed_workflow"
     - name: skip
       value: 7
 volumeClaimTemplates:
@@ -43,9 +39,9 @@ templates:
         git:
           repo: "{{workflow.parameters.source}}"
       - name: data
-        path: /mnt/data/datasets
+        path: /mnt/data/datasets/temp.mp4
         s3:
-          key: "{{workflow.parameters.input-folder}}"
+          key: "{{workflow.parameters.input-video}}"
     outputs:
       artifacts:
       - name: output
@@ -61,7 +57,7 @@ templates:
           apt-get update && \
           apt-get install -y python3-pip libglib2.0-0 libsm6 libxext6 libxrender-dev && \
           pip install opencv-python && \
-          python /mnt/src/utils/process_video.py --input_video={{workflow.parameters.input-video}} --skip={{workflow.parameters.skip}}
+          python /mnt/src/utils/process_video.py --video={{workflow.parameters.input-video}} --skip={{workflow.parameters.skip}}
           
       
       workingDir: /mnt/src

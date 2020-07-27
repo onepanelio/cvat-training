@@ -225,10 +225,6 @@
     <box label="high" occluded="0" xtl="2397.00" ytl="528.00" xbr="2484.00" ybr="734.00">
     </box>
   </image>
-  <image id="15" name="frame_000015" width="3840" height="2160">
-    <polygon label="cut" occluded="0" points="1005.00,63.50;985.00,60.50;978.50,44.00;978.50,33.00;984.50,22.00;999.00,14.50;1006.00,16.50;1014.50,28.00;1012.50,49.00;1005.00,63.50">
-    </polygon>
-  </image>
   <image id="16" name="frame_000016" width="3840" height="2160">
     <box label="medium" occluded="0" xtl="700.00" ytl="357.00" xbr="1075.00" ybr="726.00">
     </box>
@@ -349,6 +345,10 @@
     <box label="light" occluded="0" xtl="1307.00" ytl="522.00" xbr="1498.00" ybr="718.00">
     </box>
   </image>
+  <image id="22" name="frame_000022" width="3840" height="2160">
+    <polygon label="cut" occluded="0" points="400.00,310.50;389.00,310.50;381.50,305.00;362.50,271.00;361.50,261.00;369.50,246.00;391.00,232.50;406.00,236.50;419.50,253.00;412.50,298.00;400.00,310.50">
+    </polygon>
+  </image>
   <image id="23" name="frame_000023" width="3840" height="2160">
     <box label="medium" occluded="0" xtl="2536.00" ytl="526.00" xbr="2694.00" ybr="741.00">
     </box>
@@ -386,5 +386,257 @@
     </box>
     <box label="light" occluded="0" xtl="2664.00" ytl="572.00" xbr="2761.00" ybr="754.00">
     </box>
+  </image>
+  <image id="24" name="frame_000024" width="3840" height="2160">
+    <polygon label="cut" occluded="0" points="178.00,358.50;164.00,356.50;132.50,329.00;120.50,310.00;124.00,296.50;137.00,291.50;174.00,291.50;190.00,298.50;201.50,310.00;206.50,326.00;198.50,339.00;178.00,358.50">
+    </polygon>
+  </image>
+  <image id="25" name="frame_000025" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="2350.00" ytl="529.00" xbr="2505.00" ybr="725.00">
+    </box>
+    <box label="medium" occluded="0" xtl="4.00" ytl="458.00" xbr="195.00" ybr="692.00">
+    </box>
+    <box label="medium" occluded="0" xtl="518.00" ytl="0.00" xbr="797.00" ybr="879.00">
+    </box>
+    <box label="high" occluded="0" xtl="1998.00" ytl="417.00" xbr="2263.00" ybr="752.00">
+    </box>
+    <box label="light" occluded="0" xtl="2617.00" ytl="549.00" xbr="2734.00" ybr="742.00">
+    </box>
+    <box label="light" occluded="0" xtl="947.00" ytl="478.00" xbr="1170.00" ybr="710.00">
+    </box>
+  </image>
+  <image id="26" name="frame_000026" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="2250.00" ytl="525.00" xbr="2404.00" ybr="727.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1606.00" ytl="371.00" xbr="1894.00" ybr="761.00">
+    </box>
+    <box label="medium" occluded="0" xtl="773.00" ytl="467.00" xbr="1046.00" ybr="714.00">
+    </box>
+    <box label="high" occluded="0" xtl="1919.00" ytl="423.00" xbr="2170.00" ybr="749.00">
+    </box>
+    <box label="high" occluded="0" xtl="2121.00" ytl="499.00" xbr="2229.00" ybr="745.00">
+    </box>
+    <box label="high" occluded="0" xtl="373.00" ytl="0.00" xbr="622.00" ybr="918.00">
+    </box>
+    <box label="light" occluded="0" xtl="2515.00" ytl="546.00" xbr="2625.00" ybr="746.00">
+    </box>
+    <box label="light" occluded="0" xtl="2454.00" ytl="581.00" xbr="2535.00" ybr="741.00">
+    </box>
+  </image>
+  <image id="27" name="frame_000027" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="2147.00" ytl="518.00" xbr="2298.00" ybr="725.00">
+    </box>
+    <box label="medium" occluded="0" xtl="610.00" ytl="445.00" xbr="872.00" ybr="701.00">
+    </box>
+    <box label="high" occluded="0" xtl="1824.00" ytl="405.00" xbr="2090.00" ybr="751.00">
+    </box>
+    <box label="high" occluded="0" xtl="2044.00" ytl="511.00" xbr="2135.00" ybr="735.00">
+    </box>
+    <box label="high" occluded="0" xtl="142.00" ytl="4.00" xbr="424.00" ybr="928.00">
+    </box>
+    <box label="light" occluded="0" xtl="2413.00" ytl="538.00" xbr="2512.00" ybr="735.00">
+    </box>
+    <box label="light" occluded="0" xtl="2332.00" ytl="566.00" xbr="2433.00" ybr="729.00">
+    </box>
+  </image>
+  <image id="28" name="frame_000028" width="3840" height="2160">
+    <box label="high" occluded="0" xtl="1743.00" ytl="401.00" xbr="2023.00" ybr="746.00">
+    </box>
+    <box label="high" occluded="0" xtl="1930.00" ytl="495.00" xbr="2054.00" ybr="734.00">
+    </box>
+    <box label="light" occluded="0" xtl="2315.00" ytl="546.00" xbr="2427.00" ybr="727.00">
+    </box>
+    <box label="medium" occluded="0" xtl="2066.00" ytl="515.00" xbr="2216.00" ybr="724.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1442.00" ytl="426.00" xbr="1665.00" ybr="760.00">
+    </box>
+    <box label="medium" occluded="0" xtl="428.00" ytl="425.00" xbr="724.00" ybr="700.00">
+    </box>
+  </image>
+  <image id="29" name="frame_000029" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="1977.00" ytl="561.00" xbr="2117.00" ybr="762.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1380.00" ytl="456.00" xbr="1570.00" ybr="793.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1258.00" ytl="507.00" xbr="1386.00" ybr="719.00">
+    </box>
+    <box label="light" occluded="0" xtl="2218.00" ytl="589.00" xbr="2327.00" ybr="769.00">
+    </box>
+    <box label="light" occluded="0" xtl="230.00" ytl="440.00" xbr="606.00" ybr="736.00">
+    </box>
+    <box label="high" occluded="0" xtl="1664.00" ytl="438.00" xbr="1911.00" ybr="792.00">
+    </box>
+  </image>
+  <image id="30" name="frame_000030" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="1901.00" ytl="549.00" xbr="2037.00" ybr="754.00">
+    </box>
+    <box label="medium" occluded="0" xtl="50.00" ytl="427.00" xbr="445.00" ybr="736.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1158.00" ytl="495.00" xbr="1309.00" ybr="720.00">
+    </box>
+    <box label="light" occluded="0" xtl="2140.00" ytl="582.00" xbr="2260.00" ybr="762.00">
+    </box>
+    <box label="high" occluded="0" xtl="1573.00" ytl="423.00" xbr="1855.00" ybr="781.00">
+    </box>
+  </image>
+  <image id="31" name="frame_000031" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="1841.00" ytl="537.00" xbr="1979.00" ybr="733.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1089.00" ytl="492.00" xbr="1233.00" ybr="717.00">
+    </box>
+    <box label="light" occluded="0" xtl="2104.00" ytl="555.00" xbr="2216.00" ybr="748.00">
+    </box>
+    <box label="light" occluded="0" xtl="0.00" ytl="439.00" xbr="309.00" ybr="749.00">
+    </box>
+    <box label="high" occluded="0" xtl="1510.00" ytl="401.00" xbr="1801.00" ybr="768.00">
+    </box>
+    <box label="high" occluded="0" xtl="1740.00" ytl="514.00" xbr="1843.00" ybr="749.00">
+    </box>
+  </image>
+  <image id="32" name="frame_000032" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="1808.00" ytl="540.00" xbr="1944.00" ybr="748.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1136.00" ytl="356.00" xbr="1410.00" ybr="779.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1027.00" ytl="470.00" xbr="1187.00" ybr="722.00">
+    </box>
+    <box label="light" occluded="0" xtl="2069.00" ytl="564.00" xbr="2176.00" ybr="753.00">
+    </box>
+    <box label="high" occluded="0" xtl="1682.00" ytl="514.00" xbr="1818.00" ybr="768.00">
+    </box>
+    <box label="high" occluded="0" xtl="1479.00" ytl="396.00" xbr="1780.00" ybr="776.00">
+    </box>
+  </image>
+  <image id="33" name="frame_000033" width="3840" height="2160">
+    <box label="light" occluded="0" xtl="2035.00" ytl="574.00" xbr="2150.00" ybr="760.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1770.00" ytl="543.00" xbr="1926.00" ybr="752.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1106.00" ytl="340.00" xbr="1394.00" ybr="813.00">
+    </box>
+    <box label="medium" occluded="0" xtl="982.00" ytl="458.00" xbr="1145.00" ybr="721.00">
+    </box>
+    <box label="high" occluded="0" xtl="1460.00" ytl="392.00" xbr="1777.00" ybr="772.00">
+    </box>
+    <box label="high" occluded="0" xtl="1677.00" ytl="525.00" xbr="1779.00" ybr="759.00">
+    </box>
+  </image>
+  <image id="34" name="frame_000034" width="3840" height="2160">
+    <box label="high" occluded="0" xtl="1437.00" ytl="377.00" xbr="1779.00" ybr="764.00">
+    </box>
+    <box label="high" occluded="0" xtl="1665.00" ytl="506.00" xbr="1782.00" ybr="749.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1759.00" ytl="525.00" xbr="1911.00" ybr="741.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1099.00" ytl="333.00" xbr="1408.00" ybr="801.00">
+    </box>
+    <box label="light" occluded="0" xtl="2031.00" ytl="553.00" xbr="2144.00" ybr="744.00">
+    </box>
+  </image>
+  <image id="35" name="frame_000035" width="3840" height="2160">
+    <box label="light" occluded="0" xtl="2052.00" ytl="525.00" xbr="2155.00" ybr="711.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1110.00" ytl="328.00" xbr="1426.00" ybr="787.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1774.00" ytl="495.00" xbr="1921.00" ybr="707.00">
+    </box>
+    <box label="medium" occluded="0" xtl="3572.00" ytl="441.00" xbr="3709.00" ybr="714.00">
+    </box>
+    <box label="high" occluded="0" xtl="1440.00" ytl="337.00" xbr="1776.00" ybr="749.00">
+    </box>
+    <box label="high" occluded="0" xtl="1679.00" ytl="474.00" xbr="1795.00" ybr="733.00">
+    </box>
+  </image>
+  <image id="36" name="frame_000036" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="1141.00" ytl="288.00" xbr="1455.00" ybr="790.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1777.00" ytl="497.00" xbr="1935.00" ybr="714.00">
+    </box>
+    <box label="light" occluded="0" xtl="2054.00" ytl="528.00" xbr="2182.00" ybr="720.00">
+    </box>
+    <box label="high" occluded="0" xtl="1453.00" ytl="329.00" xbr="1821.00" ybr="754.00">
+    </box>
+  </image>
+  <image id="37" name="frame_000037" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="1174.00" ytl="281.00" xbr="1491.00" ybr="810.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1812.00" ytl="514.00" xbr="1958.00" ybr="733.00">
+    </box>
+    <box label="light" occluded="0" xtl="2075.00" ytl="538.00" xbr="2203.00" ybr="752.00">
+    </box>
+    <box label="high" occluded="0" xtl="1486.00" ytl="350.00" xbr="1855.00" ybr="772.00">
+    </box>
+  </image>
+  <image id="38" name="frame_000038" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="1207.00" ytl="271.00" xbr="1525.00" ybr="811.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1834.00" ytl="503.00" xbr="1973.00" ybr="718.00">
+    </box>
+    <box label="light" occluded="0" xtl="2115.00" ytl="525.00" xbr="2232.00" ybr="730.00">
+    </box>
+    <box label="light" occluded="0" xtl="2053.00" ytl="557.00" xbr="2154.00" ybr="723.00">
+    </box>
+  </image>
+  <image id="39" name="frame_000039" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="1238.00" ytl="261.00" xbr="1591.00" ybr="811.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1842.00" ytl="493.00" xbr="1996.00" ybr="719.00">
+    </box>
+    <box label="light" occluded="0" xtl="2128.00" ytl="528.00" xbr="2267.00" ybr="726.00">
+    </box>
+    <box label="high" occluded="0" xtl="1562.00" ytl="308.00" xbr="1955.00" ybr="769.00">
+    </box>
+  </image>
+  <image id="40" name="frame_000040" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="1306.00" ytl="256.00" xbr="1635.00" ybr="829.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1869.00" ytl="514.00" xbr="2022.00" ybr="743.00">
+    </box>
+    <box label="light" occluded="0" xtl="2114.00" ytl="565.00" xbr="2210.00" ybr="738.00">
+    </box>
+    <box label="light" occluded="0" xtl="2186.00" ytl="544.00" xbr="2292.00" ybr="750.00">
+    </box>
+    <box label="high" occluded="0" xtl="1640.00" ytl="304.00" xbr="1996.00" ybr="786.00">
+    </box>
+  </image>
+  <image id="41" name="frame_000041" width="3840" height="2160">
+    <box label="high" occluded="0" xtl="1675.00" ytl="312.00" xbr="2066.00" ybr="797.00">
+    </box>
+    <box label="medium" occluded="0" xtl="999.00" ytl="442.00" xbr="1183.00" ybr="716.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1367.00" ytl="202.00" xbr="1694.00" ybr="878.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1907.00" ytl="519.00" xbr="2053.00" ybr="756.00">
+    </box>
+    <box label="light" occluded="0" xtl="2201.00" ytl="554.00" xbr="2317.00" ybr="762.00">
+    </box>
+  </image>
+  <image id="42" name="frame_000042" width="3840" height="2160">
+    <box label="light" occluded="0" xtl="2241.00" ytl="536.00" xbr="2365.00" ybr="730.00">
+    </box>
+    <box label="light" occluded="0" xtl="2168.00" ytl="552.00" xbr="2283.00" ybr="720.00">
+    </box>
+    <box label="high" occluded="0" xtl="1705.00" ytl="284.00" xbr="2106.00" ybr="756.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1930.00" ytl="488.00" xbr="2098.00" ybr="726.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1009.00" ytl="417.00" xbr="1230.00" ybr="710.00">
+    </box>
+  </image>
+  <image id="43" name="frame_000043" width="3840" height="2160">
+    <box label="light" occluded="0" xtl="2248.00" ytl="518.00" xbr="2377.00" ybr="732.00">
+    </box>
+    <box label="light" occluded="0" xtl="2187.00" ytl="554.00" xbr="2282.00" ybr="726.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1758.00" ytl="290.00" xbr="2134.00" ybr="787.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1022.00" ytl="417.00" xbr="1252.00" ybr="718.00">
+    </box>
+    <box label="zero" occluded="0" xtl="912.00" ytl="518.00" xbr="1089.00" ybr="713.00">
+    </box>
+  </image>
+  <image id="43" name="frame_000043" width="3840" height="2160">
+    <polygon label="cut" occluded="0" points="1954.00,328.50;1909.00,327.50;1888.50,284.00;1887.50,254.00;1919.00,225.50;1952.00,222.50;1989.00,226.50;2002.50,239.00;2002.50,266.00;1990.50,296.00;1954.00,328.50">
+    </polygon>
   </image>
 </annotations>

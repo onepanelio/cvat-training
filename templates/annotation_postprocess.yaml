@@ -1,0 +1,137 @@
+entrypoint: main
+arguments:
+    parameters:
+    - name: "source"
+      value: https://github.com/onepanelio/cvat-training.git
+    
+    - name: "input-video"
+      value: "raw-input/raw_input_processed/20200627_133255_processed.mp4"
+    
+    - name: "output-path"
+      value: "processed_output/20200627_133255/"
+    
+    - name: "object-detection-model-path"
+      value: "datasets/crb/CVAT-5-CLASSES/models/frcnn-res101-coco_e70000_12_17_2_19_20_07142020170567/frozen_inference_graph.pb"
+    
+    - name: "object-detection-confidence-threshold"
+      value: 0.5
+  
+    - name: "v-shape-detection-model-path"
+      value: "datasets/crb/CVAT-SEGMENTATION/models/multi_maskrcnn_07182020212833/logs/cvat20200718T1746/mask_rcnn_cvat_0160.h5"
+    
+    - name: "v-shape-detection-model-confidence-threshold"
+      value: 0.5
+
+    # path to csv file which has classes same as the task in CVAT you want to use (optional)
+    - name: "classes-csv-path"
+      value: "datasets/crb/CVAT-5-CLASSES/models/frcnn-res101-coco_e70000_12_17_2_19_20_07142020170567/classes.csv"
+    
+    - name: "classes-csv-type"
+      value: "od"
+
+    # task id of CVAT task you want to use, required only if you want to upload XML into CVAT
+    # you can always manually change it
+    - name: "cvat-task-id"
+      value: 1
+
+    - name: "cvat-task-name"
+      value: "demo"
+
+    - name: "type"
+      value: "both"
+
+    - displayName: Node pool
+      hint: Name of node pool or group
+      type: select.select
+      name: sys-node-pool
+      value: Standard_NC6
+      required: true
+      options:
+      - name: "CPU: 2, RAM: 8GB"
+        value: Standard_D2s_v3
+      - name: "CPU: 4, RAM: 16GB"
+        value: Standard_D4s_v3
+      - name: "GPU: 1xV100, CPU: 6, RAM: 56GB"
+        value: Standard_NC6
+    
+    - name: tf-image
+      value: tensorflow/tensorflow:1.13.1-gpu-py3
+
+volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 2Gi
+  - metadata:
+      name: output
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 2Gi
+templates:
+  - name: main
+    dag:
+      tasks:
+      - name: process-video
+        template: video
+
+  - name: video
+    inputs:
+      artifacts:
+      - name: src
+        path: /mnt/src
+        git:
+          repo: "{{workflow.parameters.source}}"
+          revision: "debug-onepanel"
+      - name: data
+        path: /mnt/data/datasets/temp.mp4
+        s3:
+          key: "{{workflow.parameters.input-video}}"
+      - name: models
+        path: /mnt/data/od-models/frozen_inference_graph.pb
+        s3: 
+          key: "{{workflow.parameters.object-detection-model-path}}"
+      - name: models-mask
+        path: /mnt/data/mask-models/mask_rcnn_cvat.h5
+        s3:
+          key: "{{workflow.parameters.v-shape-detection-model-path}}"
+      
+      - name: models-csv
+        path: /mnt/data/datasets/classes.csv
+        s3:
+          key: "{{workflow.parameters.classes-csv-path}}"
+
+    outputs:
+      artifacts:
+      - name: output
+        path: /mnt/output
+        optional: true
+        s3:
+            key: "{{workflow.parameters.output-path}}"
+    container:
+      image: "{{workflow.parameters.tf-image}}"
+      command: [sh,-c]
+      args:
+        - |
+          apt-get update && \
+          apt-get install -y python3-pip libglib2.0-0 libsm6 libxext6 libxrender-dev && \
+          pip install pillow pandas numpy opencv-python && \
+          python /mnt/src/inference_demo/demo.py --video={{workflow.parameters.input-video}} && \
+                            --type={{workflow.parameters.type}}
+                            --classes_type={{workflow.parameters.classes-csv-type}}
+                            --od_threshold={{workflow.parameters.object-detection-confidence-threshold}}
+                            --mask_threshold={{workflow.parameters.v-shape-detection-model-confidence-threshold}}
+                            --task_id={{workflow.parameters.cvat-task-id}}
+                            --task_name={{workflow.parameters.cvat-task-name}}
+          
+      
+      workingDir: /mnt/src
+      volumeMounts:
+      - name: data
+        mountPath: /mnt/data
+      - name: output
+        mountPath: /mnt/output
