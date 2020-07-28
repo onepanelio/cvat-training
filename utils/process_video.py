@@ -34,7 +34,7 @@ class VideoEditor:
                 frame_no += 1
             else:
                 break
-        inp = open(csv_path, 'r')
+        inp = open("/mnt/data/datasets/gps.csv", 'r')
         out = open("/mnt/output/"+os.path.basename(csv_path), 'w')
         writer = csv.writer(out)
         for row in csv.reader(inp):
@@ -50,7 +50,7 @@ if __name__ == "__main__":
 
     parser.add_argument("--skip", default=7, type=int, help="label_path")
     parser.add_argument("--video", help="name of video file")
-    parser.add_argument("--csv_file", default="/mnt/data/datasets/gps.csv", help="path to gps-csv file")
+    parser.add_argument("--csv_file", help="path to gps-csv file")
  
     args = parser.parse_args()
     print("Working dir: {}".format(os.getcwd()))
