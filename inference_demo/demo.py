@@ -279,7 +279,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.type not in ['both','classes','v_shape']:
         raise ValueError('Invalid type: {}. Valid options are "both","classes","v_shape".'.format(args.type))
-
+    os.chdir("/mnt/data/datasets/")
+    print(os.listdir())
     if not os.path.exists(args.video):
         raise FileExistsError("Video does not exist!")
     main(args)
