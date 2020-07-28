@@ -1,6 +1,7 @@
 import cv2
 import math
 import argparse
+import csv
 import os
 
 class VideoEditor:
@@ -19,7 +20,7 @@ class VideoEditor:
                 "FPS: "+ str(self.fps) + '\n' +\
                 "Frame Count: "+str(self.frame_count)
     
-    def skip_frame_write(self, skip_no, output_path):
+    def skip_frame_write(self, skip_no, output_path, csv_path):
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         out = cv2.VideoWriter(output_path, fourcc, self.fps, (self.width,self.height))
         frame_no = 0
@@ -33,6 +34,15 @@ class VideoEditor:
                 frame_no += 1
             else:
                 break
+        inp = open(csv_path, 'r')
+        out = open("/mnt/output/"+os.path.basename(csv_path), 'w')
+        writer = csv.writer(out)
+        for row in csv.reader(inp):
+            if row[0] == "frame" or int(row[0]) % skip_no == 0:
+                writer.writerow(row)
+        inp.close()
+        out.close()
+
 
 
 if __name__ == "__main__":
@@ -40,6 +50,7 @@ if __name__ == "__main__":
 
     parser.add_argument("--skip", default=7, type=int, help="label_path")
     parser.add_argument("--video", help="name of video file")
+    parser.add_argument("--csv_file", default="/mnt/data/datasets/gps.csv", help="path to gps-csv file")
  
     args = parser.parse_args()
     print("Working dir: {}".format(os.getcwd()))
@@ -50,5 +61,5 @@ if __name__ == "__main__":
     extension = basename[-4:]
     print("Storing {} in /mnt/output...".format(basename[:-4]+'_processed'+extension))
     
-    v.skip_frame_write(args.skip, os.path.join("/mnt/output/", basename[:-4]+'_processed'+extension))
+    v.skip_frame_write(args.skip, os.path.join("/mnt/output/", basename[:-4]+'_processed'+extension), args.csv_file)
     
