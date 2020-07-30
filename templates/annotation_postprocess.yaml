@@ -5,10 +5,10 @@ arguments:
       value: https://github.com/onepanelio/cvat-training.git
     
     - name: "input-video"
-      value: "raw-input/raw_input_processed/20200627_133255_processed.mp4"
+      value: "raw-input/2020703/20200703_132826.mp4"
     
     - name: "output-path"
-      value: "processed_output/20200627_133255/"
+      value: "processed_output/20200703_132826/"
     
     - name: "object-detection-model-path"
       value: "datasets/crb/CVAT-5-CLASSES/models/frcnn-res101-coco_e70000_12_17_2_19_20_07142020170567/frozen_inference_graph.pb"
@@ -56,6 +56,9 @@ arguments:
     
     - name: tf-image
       value: tensorflow/tensorflow:1.13.1-gpu-py3
+    
+    - name: gps-csv-path
+      value: "raw-input/20200703/20200703_132826_gps.csv"
 
 volumeClaimTemplates:
   - metadata:
@@ -64,14 +67,14 @@ volumeClaimTemplates:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 2Gi
+          storage: 50Gi
   - metadata:
       name: output
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 2Gi
+          storage: 50Gi
 templates:
   - name: main
     dag:
@@ -83,10 +86,15 @@ templates:
     inputs:
       artifacts:
       - name: src
-        path: /mnt/src
+        path: /mnt/src/op
         git:
           repo: "{{workflow.parameters.source}}"
           revision: "debug-onepanel"
+      - git:
+          repo: 'https://github.com/onepanelio/Mask_RCNN.git'
+          revision: "no-boto"
+        name: msrc
+        path: /mnt/src/mask
       - name: data
         path: /mnt/data/datasets/temp.mp4
         s3:
@@ -104,6 +112,13 @@ templates:
         path: /mnt/data/datasets/classes.csv
         s3:
           key: "{{workflow.parameters.classes-csv-path}}"
+      
+      - name: gps-csv
+        path: /mnt/data/datasets/gps.csv
+        s3:
+          key: "{{workflow.parameters.gps-csv-path}}"
+          
+        optional: true
 
     outputs:
       artifacts:
@@ -113,20 +128,27 @@ templates:
         s3:
             key: "{{workflow.parameters.output-path}}"
     container:
+
       image: "{{workflow.parameters.tf-image}}"
       command: [sh,-c]
       args:
         - |
           apt-get update && \
-          apt-get install -y python3-pip libglib2.0-0 libsm6 libxext6 libxrender-dev && \
-          pip install pillow pandas numpy opencv-python && \
-          python /mnt/src/inference_demo/demo.py --video={{workflow.parameters.input-video}} && \
-                            --type={{workflow.parameters.type}} && \
-                            --classes_type={{workflow.parameters.classes-csv-type}} && \
-                            --od_threshold={{workflow.parameters.object-detection-confidence-threshold}} && \
-                            --mask_threshold={{workflow.parameters.v-shape-detection-model-confidence-threshold}} && \
-                            --task_id={{workflow.parameters.cvat-task-id}} && \
-                            --task_name={{workflow.parameters.cvat-task-name}} \
+          apt-get install -y python3-pip libglib2.0-0 libsm6 libxext6 libxrender-dev git&& \
+          pip install -r /mnt/src/mask/requirements.txt && \
+          git clone https://github.com/waleedka/coco && \
+          cd coco/PythonAPI && \
+          python setup.py build_ext install && \
+          rm -rf build && \
+          cd /mnt/src/mask/ && \
+          python setup.py install && \
+          python /mnt/src/op/inference_demo/demo.py  \
+                            --type={{workflow.parameters.type}}  \
+                            --classes_type={{workflow.parameters.classes-csv-type}}  \
+                            --od_threshold={{workflow.parameters.object-detection-confidence-threshold}}  \
+                            --mask_threshold={{workflow.parameters.v-shape-detection-model-confidence-threshold}} \
+                            --task_id={{workflow.parameters.cvat-task-id}}  \
+                            --task_name={{workflow.parameters.cvat-task-name}} 
           
       
       workingDir: /mnt/src
