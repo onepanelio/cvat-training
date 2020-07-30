@@ -245,7 +245,7 @@ def main(args):
             # update features for geojson
             # gpsl.update_features(od_result, result, args.survey_type)
             frame_no += 1
-            if frame_no == 5:
+            if frame_no == 1:
                 print(final_result)
                 dump_as_cvat_annotation(open("cvat_anno_demo_2.xml","w"), final_result)
                 break
