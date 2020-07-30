@@ -37,7 +37,7 @@ class VideoEditor:
             else:
                 break
         inp = open("/mnt/data/datasets/gps.csv", 'r')
-        out = open("/mnt/output/"+os.path.basename(csv_path), 'w')
+        out = open("/mnt/output/"+str(num_frames)+'_'+os.path.basename(csv_path), 'w')
         writer = csv.writer(out)
         for row in csv.reader(inp):
             if row[0] == "frame" or int(row[0]) % skip_no == 0:
@@ -69,5 +69,5 @@ if __name__ == "__main__":
     if args.num_frames = 'None':
         args.num_frames = v.frame_count
     print("Output video will have {} frames".format(args.num_frames))
-    v.skip_frame_write(args.skip, os.path.join("/mnt/output/", basename[:-4]+'_processed'+extension), args.csv_file, int(args.num_frames))
+    v.skip_frame_write(args.skip, os.path.join("/mnt/output/", basename[:-4]+'_processed_'+str(args.num_frames)+extension), args.csv_file, int(args.num_frames))
     
