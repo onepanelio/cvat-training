@@ -66,7 +66,7 @@ if __name__ == "__main__":
     extension = basename[-4:]
     print("Storing {} in /mnt/output...".format(basename[:-4]+'_processed'+extension))
     #set default for num_frames to total frames
-    if args.num_frames is None:
+    if args.num_frames = 'None':
         args.num_frames = v.frame_count
     print("Output video will have {} frames".format(args.num_frames))
     v.skip_frame_write(args.skip, os.path.join("/mnt/output/", basename[:-4]+'_processed'+extension), args.csv_file, int(args.num_frames))
