@@ -62,6 +62,6 @@ def dump_to_sql(xml_file, gps_csv, video_file):
     df.to_sql(table, engine, index=False, if_exists="replace")
     conn.execute('ALTER TABLE {} ADD coords POINT;'.format(table))
     conn.execute('UPDATE {} SET coords=POINT(lon,lat);'.format(table))
-    conn.execute('INSERT INTO objects SELECT * FROM {};'.format(table))
+    conn.execute('INSERT INTO {} SELECT * FROM {};'.format(table, table))
     print("Data inserted successfully!")
     conn.close()
