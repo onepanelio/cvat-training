@@ -47,7 +47,7 @@ def create_csv(xml_file, gps_csv, video_file, out_path, skip_no, drop_extra):
     if mylist:
         # objects are detected
         df = pd.DataFrame(mylist)
-        if drop_extra:
+        if drop_extra or drop_extra == 'True':
             df.drop(['width', 'height', 'occluded', 'name'], axis=1, inplace=True)
         df = df.rename({'id':'frame'}, axis=1)
         df = df[['frame','keyframe','xtl','ytl','xbr','ybr','track_id','label','timestamp','lat','lon','damage','video_file']]
@@ -80,7 +80,7 @@ def dump_to_sql(xml_file, gps_csv, video_file, skip_no, write_into_objects, drop
         df.to_sql(table, engine, index=False, if_exists="replace")
         conn.execute('ALTER TABLE {} ADD coords POINT;'.format(table))
         conn.execute('UPDATE {} SET coords=POINT(lon,lat);'.format(table))
-        if write_into_objects: #write into objects table
+        if write_into_objects or write_into_objects == 'True': #write into objects table
             conn.execute('INSERT INTO objects SELECT * FROM {};'.format(table))
         print("Data inserted successfully!")
         conn.close()
