@@ -19,6 +19,8 @@ import skimage.io
 from collections import OrderedDict
 from skimage.measure import find_contours, approximate_polygon
 from xml_dumper import dump_as_cvat_annotation
+from sql_dumper import dump_to_sql
+
 class ObjectDetection:
     def __init__(self, model_path):
         self.detection_graph = tf.Graph()
@@ -276,6 +278,8 @@ if __name__ == "__main__":
     parser.add_argument("--survey_type", default="v_shape",help="what to write in geojson [v_shape,classes")
     parser.add_argument("--task_id", default=0, type=int, help="required only if you want to use this in cvat")
     parser.add_argument("--task_name", default="demo", help="requierd only if you want to use this in cvat")
+    # have to use string as we cant have condition statements in workflow
+    parser.add_argument('--dump_sql', default='true')
     args = parser.parse_args()
     if args.type not in ['both','classes','v_shape']:
         raise ValueError('Invalid type: {}. Valid options are "both","classes","v_shape".'.format(args.type))
@@ -284,3 +288,5 @@ if __name__ == "__main__":
     if not os.path.exists(args.video):
         raise FileExistsError("Video does not exist!")
     main(args)
+    if args.dump_sql == "true":
+        dump_to_sql("/mnt/output/cvat_annotation_"+os.path.basename(args.video)[:-4]+".xml", "/mnt/data/datasets/gps.csv", os.path.basename(args.video))
