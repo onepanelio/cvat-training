@@ -47,11 +47,9 @@ def create_csv(xml_file, gps_csv, video_file, out_path, skip_no, drop_extra):
     if mylist:
         # objects are detected
         df = pd.DataFrame(mylist)
-        print(drop_extra)
         if drop_extra:
             df.drop(['width', 'height', 'occluded', 'name'], axis=1, inplace=True)
         df = df.rename({'id':'frame'}, axis=1)
-        print(df.columns)
         df = df[['frame','keyframe','xtl','ytl','xbr','ybr','track_id','label','timestamp','lat','lon','damage','video_file']]
         df.xbr = df.xbr.apply(lambda x: str2int(x))
         df.xtl = df.xtl.apply(lambda x: str2int(x))
@@ -63,12 +61,11 @@ def create_csv(xml_file, gps_csv, video_file, out_path, skip_no, drop_extra):
     
     return False
     
-def dump_to_sql(xml_file, gps_csv, video_file, skip_no, write_into_objects, drop_extra):
+def dump_to_sql(xml_file, gps_csv, video_file, skip_no, write_into_objects, drop_extra, num_frames):
     user = os.getenv('CRB_SQL_USERNAME')
     password = os.getenv('CRB_SQL_PASSWORD')
     table = os.getenv('CRB_SQL_TABLE')
-    print(os.path.basename(video_file)[:-4])
-    csv_file = os.path.basename(video_file)[:-4]+'.csv'
+    csv_file = "/mnt/output/"+os.path.basename(video_file)[:-4]+'_skip_{}_numframes_{}.csv'.format(skip_no, num_frames)
     print("Generating CSV file to create SQL database...")
     if not create_csv(xml_file, gps_csv, video_file, csv_file, skip_no, drop_extra):
         sys.exit("Model could not detect any objects. Terminating the SQL dump process...")
