@@ -5,7 +5,10 @@ arguments:
       value: https://github.com/onepanelio/cvat-training.git
     
     - name: "input-video"
-      value: "raw-input/2020703/20200703_132826.mp4"
+      value: "raw-input/20200703/20200703_132826.mp4"
+    
+    - name: gps-csv-path
+      value: "raw-input/20200703/20200703_132826_gps.csv"
     
     - name: "output-path"
       value: "processed_output/20200703_132826/"
@@ -57,8 +60,7 @@ arguments:
     - name: tf-image
       value: tensorflow/tensorflow:1.13.1-gpu-py3
     
-    - name: gps-csv-path
-      value: "raw-input/20200703/20200703_132826_gps.csv"
+
 
 volumeClaimTemplates:
   - metadata:
@@ -136,6 +138,7 @@ templates:
           apt-get update && \
           apt-get install -y python3-pip libglib2.0-0 libsm6 libxext6 libxrender-dev git&& \
           pip install -r /mnt/src/mask/requirements.txt && \
+          pip install -r /mnt/src/op/inference_demo/requirements.txt && \
           git clone https://github.com/waleedka/coco && \
           cd coco/PythonAPI && \
           python setup.py build_ext install && \
