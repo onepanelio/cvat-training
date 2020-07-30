@@ -220,11 +220,11 @@ def main(args):
             if args.type == "both" or args.type == "v_shape":
                 # run segmentation
                 result = seg_model.get_polygons([image_mask_rcnn], args.mask_threshold)
-                print("result without processijng: ", result)
+                print("Result without processing: ", result)
                 if args.type == "both" or args.type == "classes":
                     # filter out false positives if boxes are available
                     result = Segmentation.process_polygons(result, od_result)
-                print(result)
+                print("Result: ", result)
                 if result:
                     shapes = []
                     for label, polygons in result.items():
