@@ -68,5 +68,6 @@ if __name__ == "__main__":
     #set default for num_frames to total frames
     if args.num_frames is None:
         args.num_frames = v.frame_count
+    print("Output video will have {}".format(args.num_frames))
     v.skip_frame_write(args.skip, os.path.join("/mnt/output/", basename[:-4]+'_processed'+extension), args.csv_file, int(args.num_frames))
     
