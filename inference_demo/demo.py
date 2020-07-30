@@ -245,10 +245,10 @@ def main(args):
             # update features for geojson
             # gpsl.update_features(od_result, result, args.survey_type)
             frame_no += 1
-            # if frame_no == 25:
-            #     print(final_result)
-            #     dump_as_cvat_annotation(open("cvat_anno_demo.xml","w"), final_result)
-            #     break
+            if frame_no == 5:
+                print(final_result)
+                dump_as_cvat_annotation(open("cvat_anno_demo_2.xml","w"), final_result)
+                break
            
         else:
             try:
@@ -266,7 +266,7 @@ if __name__ == "__main__":
     parser.add_argument("--type",default="both",help="what type of models to use [both,classes,v_shape]")
     parser.add_argument("--video", default="/home/savan/Downloads/20200627_133255_processed.mp4", help="path to video")
     parser.add_argument("--gps_csv", help="path to csv containing gps data")
-    parser.add_argument("--od_model", default="/home/savan/Downloads/frozen_inference_graph.pb" , help="path to trained detection model")
+    parser.add_argument("--od_model", default="/home/savan/Downloads/frozen_inference_graph_5classes.pb" , help="path to trained detection model")
     parser.add_argument("--classes_cvat", default="/home/savan/Downloads/5classes.csv", help="classes you want to use for cvat, see readme for more details.")
     parser.add_argument("--classes_type", default="od", help="type of classes csv file [od, maskrcnn]")
     parser.add_argument("--mask_model", default="/home/savan/Downloads/mask_rcnn_cvat_0160.h5", help="path to trained maskrcnn model")
@@ -283,3 +283,5 @@ if __name__ == "__main__":
     if not os.path.exists(args.video):
         raise FileExistsError("Video does not exist!")
     main(args)
+    from sql_dumper import dump_to_sql
+    dump_to_sql("cvat_anno_demo_2.xml", "/home/savan/Downloads/20200703_132826_gps.csv", os.path.basename(args.video))

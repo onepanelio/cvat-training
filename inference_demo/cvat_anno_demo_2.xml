@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotations>
+  <version>1.1</version>
+  <meta>
+    <task>
+      <id>0</id>
+      <name>demo</name>
+      <size>44</size>
+      <mode>interpolation</mode>
+      <start_frame>0</start_frame>
+      <stop_frame>43</stop_frame>
+      <z_order>False</z_order>
+      <labels>
+        <label>
+          <name>zero</name>
+        </label>
+        <label>
+          <name>light</name>
+        </label>
+        <label>
+          <name>medium</name>
+        </label>
+        <label>
+          <name>high</name>
+        </label>
+        <label>
+          <name>non_recoverable</name>
+        </label>
+      </labels>
+    </task>
+  </meta>
+  <image id="0" name="frame_000000" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="2167.00" ytl="0.00" xbr="2782.00" ybr="789.00">
+    </box>
+    <box label="light" occluded="0" xtl="66.00" ytl="510.00" xbr="248.00" ybr="694.00">
+    </box>
+  </image>
+  <image id="1" name="frame_000001" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="144.00" ytl="454.00" xbr="332.00" ybr="683.00">
+    </box>
+    <box label="medium" occluded="0" xtl="1879.00" ytl="466.00" xbr="1997.00" ybr="705.00">
+    </box>
+    <box label="medium" occluded="0" xtl="2407.00" ytl="0.00" xbr="3008.00" ybr="813.00">
+    </box>
+    <box label="light" occluded="0" xtl="305.00" ytl="492.00" xbr="466.00" ybr="684.00">
+    </box>
+  </image>
+  <image id="2" name="frame_000002" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="397.00" ytl="466.00" xbr="557.00" ybr="683.00">
+    </box>
+    <box label="medium" occluded="0" xtl="2025.00" ytl="467.00" xbr="2147.00" ybr="704.00">
+    </box>
+    <box label="medium" occluded="0" xtl="2699.00" ytl="31.00" xbr="3309.00" ybr="797.00">
+    </box>
+    <box label="light" occluded="0" xtl="542.00" ytl="501.00" xbr="693.00" ybr="677.00">
+    </box>
+  </image>
+  <image id="3" name="frame_000003" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="642.00" ytl="489.00" xbr="779.00" ybr="691.00">
+    </box>
+    <box label="medium" occluded="0" xtl="2191.00" ytl="459.00" xbr="2314.00" ybr="699.00">
+    </box>
+    <box label="medium" occluded="0" xtl="3085.00" ytl="5.00" xbr="3606.00" ybr="819.00">
+    </box>
+    <box label="light" occluded="0" xtl="765.00" ytl="515.00" xbr="912.00" ybr="705.00">
+    </box>
+  </image>
+  <image id="4" name="frame_000004" width="3840" height="2160">
+    <box label="medium" occluded="0" xtl="891.00" ytl="515.00" xbr="1011.00" ybr="709.00">
+    </box>
+    <box label="medium" occluded="0" xtl="2371.00" ytl="461.00" xbr="2505.00" ybr="715.00">
+    </box>
+    <box label="medium" occluded="0" xtl="3494.00" ytl="44.00" xbr="3840.00" ybr="849.00">
+    </box>
+    <box label="medium" occluded="0" xtl="0.00" ytl="430.00" xbr="293.00" ybr="732.00">
+    </box>
+    <box label="medium" occluded="0" xtl="990.00" ytl="543.00" xbr="1130.00" ybr="707.00">
+    </box>
+  </image>
+</annotations>
