@@ -42,7 +42,7 @@ class VideoEditor:
         for row in csv.reader(inp):
             if row[0] == "frame" or int(row[0]) % skip_no == 0:
                 writer.writerow(row)
-            if row[0] != "frames" and (int(row[0]) // skip_no) + 1 == num_frames:
+            if row[0] != "frame" and (int(row[0]) // skip_no) + 1 == num_frames:
                 break
         inp.close()
         out.close()
