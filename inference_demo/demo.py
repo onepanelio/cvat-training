@@ -169,7 +169,7 @@ def main(args):
     elif args.type == "v_shape":
         seg_model = Segmentation(args.mask_model)
        
-    cap = cv2.VideoCapture(args.video)
+    cap = cv2.VideoCapture("/mnt/data/datasets/temp.mp4")
     #would be better to take csv files as an input
     #labels_mapping_od = {1:'dead', 2:'damaged',3:'healthy'}
     labels_mapping_od = {1:'zero',2:'light',3:'medium',4:'high',5:'non_recoverable'}
@@ -289,8 +289,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.type not in ['both','classes','v_shape']:
         raise ValueError('Invalid type: {}. Valid options are "both","classes","v_shape".'.format(args.type))
-    if not os.path.exists(args.video):
-        raise FileExistsError("Video does not exist!")
+    # if not os.path.exists(args.video):
+    #     raise FileExistsError("Video does not exist!")
     output_xml_path, num_frames_ = main(args)
     if args.dump_sql == "true":
         dump_to_sql(output_xml_path, "/mnt/data/datasets/gps.csv", os.path.basename(args.video), args.skip_no, args.write_into_objects, args.drop_extra_clm, num_frames_)
