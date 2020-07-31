@@ -4,3 +4,4 @@ geojson
 pandas
 sqlalchemy
 pandas
+pymysql
