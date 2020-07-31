@@ -268,14 +268,14 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--type",default="both",help="what type of models to use [both,classes,v_shape]")
-    parser.add_argument("--video", default="/home/savan/Downloads/20200703_124043.mp4", help="path to video")
+    parser.add_argument("--video", default="/mnt/data/datasets/temp.mp4", help="path to video")
     parser.add_argument("--gps_csv", default="/home/savan/Downloads/20200703_124043_gps.csv", help="path to csv containing gps data")
     parser.add_argument("--skip_no", default=7, type=int, help="num of frames to skip")
     parser.add_argument("--num_frames", default=None, help="how many frames to consider?")
-    parser.add_argument("--od_model", default="/home/savan/Downloads/frozen_inference_graph_5classes.pb" , help="path to trained detection model")
-    parser.add_argument("--classes_cvat", default="/home/savan/Downloads/5classes.csv", help="classes you want to use for cvat, see readme for more details.")
+    parser.add_argument("--od_model", default="/mnt/data/od-models/frozen_inference_graph.pb" , help="path to trained detection model")
+    parser.add_argument("--classes_cvat", default="/mnt/data/datasets/classes.csv", help="classes you want to use for cvat, see readme for more details.")
     parser.add_argument("--classes_type", default="od", help="type of classes csv file [od, maskrcnn]")
-    parser.add_argument("--mask_model", default="/home/savan/Downloads/mask_rcnn_cvat_0160.h5", help="path to trained maskrcnn model")
+    parser.add_argument("--mask_model", default="/mnt/data/mask-models/mask_rcnn_cvat.h5", help="path to trained maskrcnn model")
     parser.add_argument("--od_threshold",type=float, default=0.5, help="threshold for IoU")
     parser.add_argument("--mask_threshold",type=float, default=0.5, help="threshold for maskrcnn")
     parser.add_argument("--output_video", default="/mnt/output/output.mp4", help="where to store output video")
@@ -289,8 +289,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.type not in ['both','classes','v_shape']:
         raise ValueError('Invalid type: {}. Valid options are "both","classes","v_shape".'.format(args.type))
-    # if not os.path.exists(args.video):
-    #     raise FileExistsError("Video does not exist!")
+    if not os.path.exists(args.video):
+        raise FileExistsError("Video does not exist!")
     output_xml_path, num_frames_ = main(args)
     if args.dump_sql == "true":
         dump_to_sql(output_xml_path, "/mnt/data/datasets/gps.csv", os.path.basename(args.video), args.skip_no, args.write_into_objects, args.drop_extra_clm, num_frames_)
