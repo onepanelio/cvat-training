@@ -5,6 +5,7 @@ import urllib.request
 import tarfile
 from datetime import datetime
 import boto3
+import yaml
 
 time = datetime.now()
 stamp = time.strftime("%m%d%Y%H%M%S")
@@ -41,10 +42,35 @@ if params['ref-model-path'] == "":
 		shutil.move(model_dir+"/"+f,"/mnt/data/models")
 
 else:
-	s3_resource = boto3.resource('s3')
-	bucket = s3_resource.Bucket(os.getenv('AWS_BUCKET_NAME')) 
-	for object in bucket.objects.filter(Prefix = params['ref-model-path']):
-		bucket.download_file(object.key,'/mnt/data/models/'+os.path.basename(object.key))
+	with open("/etc/onepanel/artifactRepository") as file:
+		data = yaml.load(file, Loader=yaml.FullLoader)
+	cloud_provider = list(data.keys())[1]
+	bucket_name = data[cloud_provider]['bucket']
+	if cloud_provider == "s3":
+		with open(os.path.join("/etc/onepanel", data[cloud_provider]['accessKeySecret']['key'])) as file:
+            access_key = yaml.load(file, Loader=yaml.FullLoader)
+            
+        with open(os.path.join("/etc/onepanel", data[cloud_provider]['secretKeySecret']['key'])) as file:
+            secret_key = yaml.load(file, Loader=yaml.FullLoader)
+
+        #set env vars
+        os.environ['AWS_ACCESS_KEY_ID'] = access_key
+        os.environ['AWS_SECRET_ACCESS_KEY'] = secret_key
+		s3_resource = boto3.resource('s3')
+		bucket = s3_resource.Bucket(bucket_name) 
+		for object in bucket.objects.filter(Prefix = params['ref-model-path']):
+			bucket.download_file(object.key,'/mnt/data/models/'+os.path.basename(object.key))
+
+	elif cloud_provider == "gcs":
+		os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = os.path.join("/etc/onepanel", data[cloud_provider]['serviceAccountKeySecret']['key'])
+		storage_client = storage.Client()
+		print("Using GCS...")
+		bucket = storage_client.bucket(bucket_name)
+		blobs = bucket.list_blobs(prefix=params['ref-model-path'])
+		for blob in blobs:
+			print("GCS blob name: ", blob, blob.name)
+			blob.download_to_filename("/mnt/data/models/"+os.path.basename(blob.name))
+
 
 os.system("pip install test-generator")
 os.system("mkdir -p /mnt/src/protoc")
