@@ -48,14 +48,13 @@ else:
 	bucket_name = data[cloud_provider]['bucket']
 	if cloud_provider == "s3":
 		with open(os.path.join("/etc/onepanel", data[cloud_provider]['accessKeySecret']['key'])) as file:
-            access_key = yaml.load(file, Loader=yaml.FullLoader)
-            
-        with open(os.path.join("/etc/onepanel", data[cloud_provider]['secretKeySecret']['key'])) as file:
-            secret_key = yaml.load(file, Loader=yaml.FullLoader)
+			access_key = yaml.load(file, Loader=yaml.FullLoader)
+		with open(os.path.join("/etc/onepanel", data[cloud_provider]['secretKeySecret']['key'])) as file:
+			secret_key = yaml.load(file, Loader=yaml.FullLoader)
 
-        #set env vars
-        os.environ['AWS_ACCESS_KEY_ID'] = access_key
-        os.environ['AWS_SECRET_ACCESS_KEY'] = secret_key
+		#set env vars
+		os.environ['AWS_ACCESS_KEY_ID'] = access_key
+		os.environ['AWS_SECRET_ACCESS_KEY'] = secret_key
 		s3_resource = boto3.resource('s3')
 		bucket = s3_resource.Bucket(bucket_name) 
 		for object in bucket.objects.filter(Prefix = params['sys-finetune-checkpoint']):
