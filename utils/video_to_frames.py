@@ -18,6 +18,6 @@ def convert_to_frames(video_path, out_path, skip_no=7):
             break
 
 if __name__ == "__main__":
-    # sameple: python3 video_to_frames.py samepl.mp4 output_folder/ 7
+    # sample: python3 video_to_frames.py sample.mp4 output_folder/ 7
     print(sys.argv[1], sys.argv[2])
     convert_to_frames(sys.argv[1], sys.argv[2], sys.argv[3])
