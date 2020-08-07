@@ -31,7 +31,8 @@ if not os.path.exists("/mnt/data/models"):
 #check if base model exists, if not then download
 if params['sys-finetune-checkpoint'] == "":
 	print("base model does not exist, downloading...")
-
+	print(os.path.isdir("/mnt/data/models/"))
+	print(os.listdir("/mnt/data/models/"))
 	urllib.request.urlretrieve("https://github.com/onepanelio/templates/releases/download/v0.2.0/{}.tar".format(params['model']), "/mnt/data/models/model.tar")
 	model_files = tarfile.open("/mnt/data/models/model.tar")
 	model_files.extractall("/mnt/data/models")
