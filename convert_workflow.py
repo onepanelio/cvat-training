@@ -29,17 +29,17 @@ if not os.path.exists("/mnt/data/models"):
 	os.makedirs("/mnt/data/models")
 
 #check if base model exists, if not then download
-# if params['sys-finetune-checkpoint'] == "":
-# 	print("base model does not exist, downloading...")
+if params['sys-finetune-checkpoint'] == "":
+	print("base model does not exist, downloading...")
 
-# 	urllib.request.urlretrieve("https://github.com/onepanelio/templates/releases/download/v0.2.0/{}.tar".format(params['model']), "/mnt/data/models/model.tar")
-# 	model_files = tarfile.open("/mnt/data/models/model.tar")
-# 	model_files.extractall("/mnt/data/models")
-# 	model_files.close()
-# 	model_dir = "/mnt/data/models/"+params['model']
-# 	files = os.listdir(model_dir)
-# 	for f in files:
-# 		shutil.move(model_dir+"/"+f,"/mnt/data/models")
+	urllib.request.urlretrieve("https://github.com/onepanelio/templates/releases/download/v0.2.0/{}.tar".format(params['model']), "/mnt/data/models/model.tar")
+	model_files = tarfile.open("/mnt/data/models/model.tar")
+	model_files.extractall("/mnt/data/models")
+	model_files.close()
+	model_dir = "/mnt/data/models/"+params['model']
+	files = os.listdir(model_dir)
+	for f in files:
+		shutil.move(model_dir+"/"+f,"/mnt/data/models")
 
 # else:
 # 	with open("/etc/onepanel/artifactRepository") as file:
