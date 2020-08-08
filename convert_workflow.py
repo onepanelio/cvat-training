@@ -25,17 +25,14 @@ if 'num_clones' not in params:
 	params['num_clones'] = 1
 print("params: ", params)
 
-if not os.path.exists("/mnt/data/models") or not os.path.isdir("/mnt/data/models"):
+if not os.path.isdir("/mnt/data/models"):
+	os.remove("/mnt/data/models")
 	print("Creating models dir")
 	os.makedirs("/mnt/data/models/")
 
 #check if base model exists, if not then download
 if params['sys-finetune-checkpoint'] == "":
 	print("base model does not exist, downloading...")
-	print(os.path.isdir("/mnt/data/models/"))
-	print("is data", os.path.isdir("/mnt/data/"))
-	print("list data", os.listdir("/mnt/data/"))
-	print("exists", os.path.exists("/mnt/data/models/"))
 	urllib.request.urlretrieve("https://github.com/onepanelio/templates/releases/download/v0.2.0/{}.tar".format(params['model']), "/mnt/data/models/model.tar")
 	model_files = tarfile.open("/mnt/data/models/model.tar")
 	model_files.extractall("/mnt/data/models")
