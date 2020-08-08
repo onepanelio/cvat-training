@@ -25,7 +25,7 @@ if 'num_clones' not in params:
 	params['num_clones'] = 1
 print("params: ", params)
 
-if not os.path.exists("/mnt/data/models"):
+if not os.path.exists("/mnt/data/models") or not os.path.isdir("/mnt/data/models"):
 	print("Creating models dir")
 	os.makedirs("/mnt/data/models/")
 
