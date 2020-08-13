@@ -14,6 +14,7 @@ stamp = time.strftime("%m%d%Y%H%M%S")
 # parse parameters
 # sample: epochs=100;num_classes=1
 print("Arguments: ", sys.argv[1])
+print("All Arguments: ", sys.argv)
 extra = sys.argv[1]
 params = {}
 for item in sys.argv[1].split(","):
