@@ -37,45 +37,45 @@ def start_training(params):
 	if "ssd-mobilenet-v2-coco" in params['model']:
 		if 'epochs' not in params:
 			params['epochs'] = 15000
-		create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/*.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num-classes'], params['num-clones'],"ssd", params)
+		create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/*.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num_classes'], params['num-clones'],"ssd", params)
 
 
 	elif "ssd-mobilenet-v1-coco2" in params['model']:
 		if 'epochs' not in params:
 			params['epochs'] = 15000
-		create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/*.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num-classes'], params['num-clones'],"ssd", params)
+		create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/*.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num_classes'], params['num-clones'],"ssd", params)
 
 
 	elif "frcnn-res101-coco" in params['model']:
 		if 'epochs' not in params:
 			params['epochs'] = 10000
-		create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/*.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num-classes'], params['num-clones'],"frcnn", params)
+		create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/*.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num_classes'], params['num-clones'],"frcnn", params)
 
 
 	elif "frcnn-res50-low" in params['model']:
 		if 'epochs' not in params:
 			params['epochs'] = 10000
-		create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/*.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num-classes'], params['num-clones'],"frcnn", params)
+		create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/*.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num_classes'], params['num-clones'],"frcnn", params)
 	elif "frcnn-res50-coco" in params['model'] or "faster-rcnn-res50" in params['model']:
 		if 'epochs' not in params:
 			params['epochs'] = 10000
-		create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/*.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num-classes'], params['num-clones'],"frcnn", params)
+		create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/*.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num_classes'], params['num-clones'],"frcnn", params)
 
 	elif "frcnn-res101-low" in params['model']:
 		if 'epochs' not in params:
 			params['epochs'] = 10
-		create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/*.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num-classes'], params['num-clones'],"frcnn", params)
+		create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/*.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num_classes'], params['num-clones'],"frcnn", params)
 
 
 	elif "frcnn-nas-coco" in params['model']:
 		if 'epochs' not in params:
 			params['epochs'] = 10
-		create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/*.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num-classes'], params['num-clones'],"frcnn", params)
+		create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/*.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num_classes'], params['num-clones'],"frcnn", params)
 
 	elif "ssdlite-mobilenet-coco" in params['model']:
 		if 'epochs' not in params:
 			params['epochs'] = 10
-		create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/*.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num-classes'], params['num-clones'],"ssd", params)
+		create_pipeline("/mnt/data/models/pipeline.config","/mnt/data/models/model.ckpt", params['dataset']+'/label_map.pbtxt', params['dataset']+'/*.tfrecord', params['dataset']+'/default.tfrecord', "/mnt/output/pipeline.config", params['epochs'],params['num_classes'], params['num-clones'],"ssd", params)
 
 	os.chdir("/mnt/output")
 	os.mkdir("eval/")
@@ -102,6 +102,7 @@ if __name__ == '__main__':
 	parser.add_argument('--extras', help="hyperparameters or other configs")
 	parser.add_argument('--sys_finetune_checkpoint', default=" ", help="path to checkpoint")
 	parser.add_argument('--model', default="frcnn-res50-coco", help="which model to train")
+	parser.add_argument('--num_classes', default=81, type=int, help="number of classes")
 	args = parser.parse_args()
 	# parse parameters
 	# sample: epochs=100;num_classes=1
