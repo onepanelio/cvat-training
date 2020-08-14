@@ -14,22 +14,22 @@ def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval
         text_format.Merge(proto_str, pipeline_config) 
     if format == "ssd":
         pipeline_config.model.ssd.num_classes=int(num_classes)
-        if 'image_height' in params_n:
-            pipeline_config.model.ssd.image_resizer.fixed_shape_resizer.height = int(params_n['image_height'])
-        if 'image_width' in params_n:
-            pipeline_config.model.ssd.image_resizer.fixed_shape_resizer.width = int(params_n['image_width'])
+        if 'image-height' in params_n:
+            pipeline_config.model.ssd.image_resizer.fixed_shape_resizer.height = int(params_n['image-height'])
+        if 'image-width' in params_n:
+            pipeline_config.model.ssd.image_resizer.fixed_shape_resizer.width = int(params_n['image-width'])
     else:  #faster-rcnn based models
         pipeline_config.model.faster_rcnn.num_classes=int(num_classes)
         if int(num_clones) != 1:
             pipeline_config.train_config.batch_size = int(num_clones)
-        if 'min_dimension' in params_n:
-            pipeline_config.model.faster_rcnn.image_resizer.keep_aspect_ratio_resizer.min_dimension = int(params_n['min_dimension'])
-        if 'max_dimension' in params_n:
-            pipeline_config.model.faster_rcnn.image_resizer.keep_aspect_ratio_resizer.max_dimension = int(params_n['max_dimension'])
-        if 'schedule_step_1' in params_n:
-            pipeline_config.train_config.optimizer.momentum_optimizer.learning_rate.manual_step_learning_rate.schedule[0].step = int(params_n['schedule_step_1'])
-        if 'schedule_step_2' in params_n:
-            pipeline_config.train_config.optimizer.momentum_optimizer.learning_rate.manual_step_learning_rate.schedule[1].step = int(params_n['schedule_step_2'])
+        if 'min-dimension' in params_n:
+            pipeline_config.model.faster_rcnn.image_resizer.keep_aspect_ratio_resizer.min_dimension = int(params_n['min-dimension'])
+        if 'max-dimension' in params_n:
+            pipeline_config.model.faster_rcnn.image_resizer.keep_aspect_ratio_resizer.max_dimension = int(params_n['max-dimension'])
+        if 'schedule-step-1' in params_n:
+            pipeline_config.train_config.optimizer.momentum_optimizer.learning_rate.manual_step_learning_rate.schedule[0].step = int(params_n['schedule-step-1'])
+        if 'schedule-step-2' in params_n:
+            pipeline_config.train_config.optimizer.momentum_optimizer.learning_rate.manual_step_learning_rate.schedule[1].step = int(params_n['schedule-step-2'])
     
     pipeline_config.train_config.fine_tune_checkpoint=model_path
     pipeline_config.train_config.num_steps=int(epochs)
