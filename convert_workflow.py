@@ -110,11 +110,11 @@ if __name__ == '__main__':
 	extras = args.extras.split("\n")
 	extras_processed = [i.split("#")[0].replace(" ","") for i in extras if i]
 	params = {i.split('=')[0]:i.split('=')[1] for i in extras_processed}
-	print("Parameters: ", params)
 	if 'num-clones' not in params:
 		params['num-clones'] = 1
 	params.update(vars(args))
-	print("params: ", params)
+	params['epochs'] = params.pop('num-steps') 
+	print("Processed parameters: ", params)
 	start_training(params)
 
 
