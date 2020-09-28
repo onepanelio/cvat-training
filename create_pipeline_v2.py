@@ -11,7 +11,11 @@ def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval
     pipeline_config = pipeline_pb2.TrainEvalPipelineConfig()                                                                                                                                                                                                          
     with tf.gfile.GFile(pipeline_path, "r") as f:                                                                                                                                                                                                                     
         proto_str = f.read()                                                                                                                                                                                                                                          
-        text_format.Merge(proto_str, pipeline_config) 
+        text_format.Merge(proto_str, pipeline_config)
+    if 'batch_size' in params:
+        pipeline_config.train_config.batch_size = int(params_n['batch_size'])
+    else:
+        pipeline_config.train_config.batch_size = int(num_clones)
     if format == "ssd":
         pipeline_config.model.ssd.num_classes=int(num_classes)
         if 'image-height' in params_n:
@@ -20,8 +24,6 @@ def create_pipeline(pipeline_path,model_path,label_path,train_tfrecord_path,eval
             pipeline_config.model.ssd.image_resizer.fixed_shape_resizer.width = int(params_n['image-width'])
     else:  #faster-rcnn based models
         pipeline_config.model.faster_rcnn.num_classes=int(num_classes)
-        if int(num_clones) != 1:
-            pipeline_config.train_config.batch_size = int(num_clones)
         if 'min-dimension' in params_n:
             pipeline_config.model.faster_rcnn.image_resizer.keep_aspect_ratio_resizer.min_dimension = int(params_n['min-dimension'])
         if 'max-dimension' in params_n:
