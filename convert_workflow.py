@@ -117,5 +117,3 @@ if __name__ == '__main__':
 	print("Processed parameters: ", params)
 	start_training(params)
 
-
-
