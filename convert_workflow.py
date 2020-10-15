@@ -89,8 +89,6 @@ def start_training(params):
 	#generate lable map
 	os.system("python /mnt/src/train/convert_json_workflow.py {}/".format(params['dataset']))
 
-	print("*** Uploading Trained Model To Bucket Name: ***", os.getenv('AWS_BUCKET_NAME'))
-
 	#evaluate model in the end
 	# this is commented because the v1.13.0 of TF OD API is older uses unicode instead of str and updating it might break other parts.
 	# either fork that repo and update the file or update tf model and fix other parts that it might break
