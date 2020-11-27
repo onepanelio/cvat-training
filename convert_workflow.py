@@ -8,7 +8,10 @@ import argparse
 
 def start_training(params):
 	if not os.path.isdir("/mnt/data/models"):
-		os.remove("/mnt/data/models")
+		try:
+			os.remove("/mnt/data/models")
+		except:
+			pass
 		print("Creating models dir")
 		os.makedirs("/mnt/data/models/")
 
